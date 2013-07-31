@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>LokiJS - a lightweight javascript document oriented database</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" rel="stylesheet">
+	<link href="css/lokijs.css" rel="stylesheet" />
+	<script src="bower_components/angular/angular.min.js"></script>
+	<script src="bower_components/jquery/jquery.min.js"></script>
+	<script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+	<script src="bower_components/lokijs/src/LokiJS.js"></script>
+	<script src="js/app.js"></script>
+</head>
+<body ng-app="lokiApp">
+	
+<div class="row-fluid">
+	<div class="navbar navbar-inverse navbar-static-top">
+		<div class="navbar-inner">
+			<div class="container-fluid">
+				<a href="/overview" class="brand">LokiJS</a>
+				<ul class="nav">
+					<li><a href="/">Overview</a></li>
+					<li><a href="/example">Examples</a></li>
+					<li><a href="/github">Github</a></li>
+				</ul>
+			</div>
+			
+		</div>
+	</div>
+
+	<div id="right" class="container">
+		<div class="hero-unit well">
+			<h1>LokiJS</h1>
+			<p>A lightweight javascript document oriented database</p>
+		</div>
+
+		<div class="row-fluid">
+			<div ng-view>
+			</div>
+		</div>
+
+
+	</div>
+
+</div>
+
+</body>
+</html>
