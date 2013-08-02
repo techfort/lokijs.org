@@ -3,34 +3,37 @@
 <head>
 	<title>LokiJS - a lightweight javascript document oriented database</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" rel="stylesheet">
+	<link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" rel="stylesheet">
+	<link href='http://fonts.googleapis.com/css?family=Audiowide' rel='stylesheet' type='text/css'>
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans:300' rel='stylesheet' type='text/css'>
 	<link href="css/lokijs.css" rel="stylesheet" />
 	<script src="bower_components/angular/angular.min.js"></script>
 	<script src="bower_components/jquery/jquery.min.js"></script>
-	<script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 	<script src="bower_components/lokijs/src/LokiJS.js"></script>
 	<script src="js/app.js"></script>
 </head>
 <body ng-app="lokiApp">
-	
-<div class="row-fluid">
-	<div class="navbar navbar-inverse navbar-static-top">
-		<div class="navbar-inner">
-			<div class="container-fluid">
-				<a href="/overview" class="brand">LokiJS</a>
-				<ul class="nav">
-					<li><a href="/">Overview</a></li>
-					<li><a href="/example">Examples</a></li>
-					<li><a href="/github">Github</a></li>
-				</ul>
-			</div>
-			
+
+<div class="navbar navbar-fixed-top">
+	<div class="navbar-inner">
+		<div class="container-fluid">
+			<a href="/overview" class="brand"><img src="images/loki_small.png" class="logo" /> LokiJS</a>
+			<ul class="nav">
+				<li><a href="/">Overview</a></li>
+				<li><a href="/example">Examples</a></li>
+				<li><a href="/github">Github</a></li>
+			</ul>
 		</div>
+		
 	</div>
+</div>
+
+<div class="row-fluid" id="mainContainer">
+	
 
 	<div id="right" class="container">
-		<div class="hero-unit well">
-			<h1>LokiJS</h1>
+		<div class="hero-unit well darkgreen">
+			<h1><img src="images/loki_medium.png" class="logo" /> LokiJS</h1>
 			<p>A lightweight javascript document oriented database</p>
 		</div>
 
@@ -42,6 +45,10 @@
 
 	</div>
 
+</div>
+
+<div class="footer">
+	&copy; 2013, <a href="http://www.tech-fort.com">techfort</a> | <a href="http://github.com/techfort">techfort @ github</a>
 </div>
 
 </body>

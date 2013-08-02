@@ -1,1 +1,54 @@
-body { height : 100%;}
+body, html { 
+	height : 100%; 
+	font-family: "Open Sans", Sans;
+}
+#mainContainer { padding-top: 60px; padding-bottom:30px;}
+/*
+.bg-1 { background-color: #0D58A6 }
+.bg-2 { background-color: #26517C }
+.bg-3 { background-color: #04376C }
+.bg-4 { background-color: #4188D2 }
+.bg-5 { background-color: #689CD2 }
+
+.color-1 { color: #0D58A6 }
+.color-2 { color: #26517C }
+.color-3 { color: #04376C }
+.color-4 { color: #4188D2 }
+.color-5 { color: #689CD2 }
+*/
+
+.bg-1 { background-color: #A2EF00 }
+.bg-2 { background-color: #88B32D }
+.bg-3 { background-color: #699B00 }
+.bg-4 { background-color: #BBF73E }
+.bg-5 { background-color: #CBF76F }
+
+.color-1 { color: #14D100 }
+.color-2 { color: #329D27 }
+.color-3 { color: #0D8800 }
+.color-4 { color: #4AE83A }
+.color-5 { color: #74E868 }
+
+.darkgreen { color: #699B00;}
+
+.secondary-b-1 { background-color: #FFFF00 }
+.secondary-b-2 { background-color: #BFBF30 }
+.secondary-b-3 { background-color: #A6A600 }
+.secondary-b-4 { background-color: #FFFF40 }
+.secondary-b-5 { background-color: #FFFF73 }
+
+.complement-1 { background-color: #CB0077 }
+.complement-2 { background-color: #982669 }
+.complement-3 { background-color: #84004D }
+.complement-4 { background-color: #E5399E }
+.complement-5 { background-color: #E567B1 }
+
+
+span.loki { color: #699B00; font-family: "Audiowide"; }
+.hero-unit h1, a.brand {
+	font-family : "Audiowide";
+	text-shadow: 2px 2px 4px #222;
+}
+
+img.logo { vertical-align: middle; }
+.footer { height: 25px; background: #eee; padding-top:5px; bottom: 0px}
