@@ -1,10 +1,10 @@
 
 
-var app = angular.module('lokiApp', [])
+var app = angular.module('lokiApp', ['ui.state'])
 .factory('DataStore', function (){
   return new loki('Demo');
 });
-
+/*
 app.config(function($routeProvider, $locationProvider){
   $routeProvider
     .when('/',{
@@ -22,6 +22,38 @@ app.config(function($routeProvider, $locationProvider){
     .otherwise({ redirectTo: '/'})
     $locationProvider.html5Mode(true);
     
+})
+*/
+app.config(function($stateProvider, $urlRouterProvider){
+  $urlRouterProvider.otherwise('/');
+  $stateProvider
+  .state('index',{
+    url: '/',
+    views : {
+      'main' : {
+        templateUrl: 'templates/overview.html',
+        controller: 'OverViewController'  
+      }
+    }
+  })
+  .state('example',{
+    url: '/example',
+    views: {
+      'main' : {
+        templateUrl: 'templates/example.html',
+        controller: 'ExampleController'  
+      }
+    }
+  })
+  .state('github',{
+    url: '/github',
+    views : {
+      'main' : {
+        templateUrl: 'templates/github.html',
+        controller: 'GithubController'
+      }
+    }
+  })
 })
 .controller('GithubController', function ($scope){
   $scope.message = 'github...';

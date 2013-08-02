@@ -7,21 +7,18 @@
 	<link href='http://fonts.googleapis.com/css?family=Audiowide' rel='stylesheet' type='text/css'>
 	<link href='http://fonts.googleapis.com/css?family=Open+Sans:300' rel='stylesheet' type='text/css'>
 	<link href="css/lokijs.css" rel="stylesheet" />
-	<script src="bower_components/angular/angular.min.js"></script>
-	<script src="bower_components/jquery/jquery.min.js"></script>
-	<script src="bower_components/lokijs/src/lokijs.js"></script>
-	<script src="js/app.js"></script>
+	
 </head>
 <body ng-app="lokiApp">
 
 <div class="navbar navbar-fixed-top">
 	<div class="navbar-inner">
 		<div class="container-fluid">
-			<a href="/overview" class="brand"><img src="images/loki_small.png" class="logo" /> LokiJS</a>
+			<a href="#/" class="brand"><img src="images/loki_small.png" class="logo" /> LokiJS</a>
 			<ul class="nav">
-				<li><a href="/">Overview</a></li>
-				<li><a href="/example">Examples</a></li>
-				<li><a href="/github">Github</a></li>
+				<li><a href="#/">Overview</a></li>
+				<li><a href="#/example">Examples</a></li>
+				<li><a href="#/github">Github</a></li>
 			</ul>
 		</div>
 		
@@ -38,7 +35,7 @@
 		</div>
 
 		<div class="row-fluid">
-			<div ng-view>
+			<div ui-view="main">
 			</div>
 		</div>
 
@@ -48,8 +45,16 @@
 </div>
 
 <div id="footer">
-	&copy; 2013, <a href="http://www.tech-fort.com" target="_blank">techfort</a> | <a href="http://github.com/techfort" target="_blank">techfort @ github</a>
+	<div class="container">
+		&copy; 2013, <a href="http://www.tech-fort.com" target="_blank">techfort</a> | <a href="http://github.com/techfort" target="_blank">techfort @ github</a>
+	</div>
 </div>
+
+<script src="bower_components/angular/angular.min.js"></script>
+<script src="bower_components/ui-router/release/angular-ui-router.min.js"></script>
+<script src="bower_components/jquery/jquery.min.js"></script>
+<script src="bower_components/lokijs/src/lokijs.js"></script>
+<script src="js/app.js"></script>
 
 </body>
 </html>

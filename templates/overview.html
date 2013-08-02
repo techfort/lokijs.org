@@ -1,23 +1,63 @@
 <div class="container-fluid">
-<h2>A Javascript Database</h2>
 
-<p>
-<span class="loki">LokiJS</span> is a javascript database that can be used in multiple scenarios.<br>
-<br>
-Javascript is an easy to learn, versatile language, so database development in javascript can be easy and very productive. You may not want to 
-retire your MySQL db just yet but here are some situationss in which you may find <span class="loki">LokiJS</span> to be the ideal solution:
-<ul class="nav nav-pills nav-stacked">
-<li><a href="#">Mobile applications - especially HTML5 based (Cordova, Phonegap, etc.)</a></li>
-<li><a href="#">Node.js embedded datastore for small-to-medium apps</a></li>
-<li><a href="#">Embedded in desktop application with Node Webkit</a></li>
-</ul>
-</p>
-<h3>Installation</h3>
+	<div class="span8">	
+		<h2>A Javascript Database</h2>
 
-<p>
-LokiJS is available on npm and bower. Run:<br>
-<code>npm install lokijs</code> <br>
-or:<br>
-<code>bower install lokijs</code>
-</p>
+		<p>
+		<span class="loki">LokiJS</span> is a javascript database that can be used in multiple scenarios.<br>
+		<br>
+		Javascript is an easy to learn, versatile language, so database development in javascript can be easy and very productive. You may not want to 
+		retire your MySQL db just yet but here are some situationss in which you may find <span class="loki">LokiJS</span> to be the ideal solution:
+		<ul class="nav nav-pills nav-stacked">
+		<li><a href="#">Mobile applications - especially HTML5 based (Cordova, Phonegap, etc.)</a></li>
+		<li><a href="#">Node.js embedded datastore for small-to-medium apps</a></li>
+		<li><a href="#">Embedded in desktop application with Node Webkit</a></li>
+		</ul>
+		</p>
+
+		<h2>OOP, Functional, why choose between the two.</h2>
+
+		<p>
+		<span class="loki">LokiJS</span> leverage the power of javascript by being versatile.<br>
+		If functional programming is your preferred style then you may want to create views to query your data.<br>
+		If you prefer object literals in MongoDB shell style, you can use those.<br>
+		If you prefer SQL, you're going to have to wait a bit, but it is coming.
+		</p>
+
+	</div>
+
+	<div class="span4 well">
+		<h3>Quick Start</h3>
+		<h4>Installation</h4>
+		<p>
+		LokiJS is available on npm and bower. Run:<br>
+		<code>npm install lokijs</code> <br>
+		or:<br>
+		<code>bower install lokijs</code>
+		</p>
+
+		<h4>Usage</h4>
+		<p>
+		Create the database:<br>
+		<code>var db = new loki('Loki')</code>
+		</p>
+		<p>
+		Create a collection:<br>
+		<code>var children = db.addCollection('children','NorseGod')</code>
+		Parameters are the collection name and the object Type which is an arbitrary string
+		</p>
+		<p>
+		Insert a document:<br>
+		<code>children.document({name:'Sleipnir', legs: 8})</code><br >
+		<code>children.document({name:'Jormungandr', legs: 0})</code><br>
+		<code>children.document({name:'Hel', legs: 2})</code>
+		</p>
+		<p>
+		Retrieve documents:<br>
+		<code>children.find('name','Joe')</code>
+		</p>
+
+
+	</div>
+
 </div>

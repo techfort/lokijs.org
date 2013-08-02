@@ -29,9 +29,9 @@ html { height : 100%; background: #eef9ee;}
 .color-2 { color: #329D27 }
 .color-3 { color: #0D8800 }
 .color-4 { color: #4AE83A }
-.color-5 { color: #74E868 }
+ h2, .color-5 { color: #74E868 }
 
-.darkgreen { color: #699B00;}
+h3, h2, .darkgreen { color: #699B00;}
 
 .secondary-b-1 { background-color: #FFFF00 }
 .secondary-b-2 { background-color: #BFBF30 }
@@ -39,11 +39,11 @@ html { height : 100%; background: #eef9ee;}
 .secondary-b-4 { background-color: #FFFF40 }
 .secondary-b-5 { background-color: #FFFF73 }
 
-.complement-1 { background-color: #CB0077 }
-.complement-2 { background-color: #982669 }
-.complement-3 { background-color: #84004D }
-.complement-4 { background-color: #E5399E }
-.complement-5 { background-color: #E567B1 }
+.complement-1 { color: #CB0077 }
+.complement-2 { color: #982669 }
+h4,.complement-3 { color: #84004D }
+.complement-4 { color: #E5399E }
+.complement-5 { color: #E567B1 }
 
 a { color: #699B00; outline: 0;}
 
@@ -54,4 +54,4 @@ span.loki { color: #699B00; font-family: "Audiowide"; }
 }
 
 img.logo { vertical-align: middle; }
-#footer { height: 25px; background: #eef9ee; padding-top:5px; bottom: 0px}
+#footer { height: 45px; background: #eef9ee; padding-top:5px; bottom: 0px; box-shadow: 0px -4px 8px 1px #eee; border-top: 1px solid #999; }
