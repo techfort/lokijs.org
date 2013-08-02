@@ -1,7 +1,9 @@
 body, html { 
-	height : 100%; 
 	font-family: "Open Sans", Sans;
+	background: #fff;
 }
+
+html { height : 100%; background: #eef9ee;}
 #mainContainer { padding-top: 60px; padding-bottom:30px;}
 /*
 .bg-1 { background-color: #0D58A6 }
@@ -43,6 +45,7 @@ body, html {
 .complement-4 { background-color: #E5399E }
 .complement-5 { background-color: #E567B1 }
 
+a { color: #699B00; outline: 0;}
 
 span.loki { color: #699B00; font-family: "Audiowide"; }
 .hero-unit h1, a.brand {
@@ -51,4 +54,4 @@ span.loki { color: #699B00; font-family: "Audiowide"; }
 }
 
 img.logo { vertical-align: middle; }
-.footer { height: 25px; background: #eee; padding-top:5px; bottom: 0px}
+#footer { height: 25px; background: #eef9ee; padding-top:5px; bottom: 0px}
