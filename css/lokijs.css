@@ -29,9 +29,9 @@ html { height : 100%; background: #eef9ee;}
 .color-2 { color: #329D27 }
 .color-3 { color: #0D8800 }
 .color-4 { color: #4AE83A }
- h2, .color-5 { color: #74E868 }
+.color-5 { color: #74E868 }
 
-h3, h2, .darkgreen { color: #699B00;}
+h1, h3, h2, h4, .darkgreen { color: #699B00;}
 
 .secondary-b-1 { background-color: #FFFF00 }
 .secondary-b-2 { background-color: #BFBF30 }
@@ -41,7 +41,7 @@ h3, h2, .darkgreen { color: #699B00;}
 
 .complement-1 { color: #CB0077 }
 .complement-2 { color: #982669 }
-h4,.complement-3 { color: #84004D }
+.complement-3 { color: #84004D }
 .complement-4 { color: #E5399E }
 .complement-5 { color: #E567B1 }
 
@@ -55,3 +55,4 @@ span.loki { color: #699B00; font-family: "Audiowide"; }
 
 img.logo { vertical-align: middle; }
 #footer { height: 45px; background: #eef9ee; padding-top:5px; bottom: 0px; box-shadow: 0px -4px 8px 1px #eee; border-top: 1px solid #999; }
+.lightgreen { background: #eef9ee;}
