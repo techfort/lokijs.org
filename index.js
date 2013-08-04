@@ -1,3 +1,3 @@
 var connect = require('connect');
-connect.createServer(connect.static(__dirname)).listen(3000);
+connect.createServer(connect.static(__dirname)).listen(80);
 
