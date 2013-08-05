@@ -45,6 +45,15 @@ app.config(function($stateProvider, $urlRouterProvider){
       }
     }
   })
+  .state('docs',{
+    url: '/docs',
+    views: {
+      'main' : {
+        templateUrl: 'templates/docs.html',
+        controller: 'DocsController'  
+      }
+    }
+  })
   .state('github',{
     url: '/github',
     views : {
@@ -76,6 +85,9 @@ app.config(function($stateProvider, $urlRouterProvider){
 })
 .controller('OverViewController', function ($scope){
   $scope.message = 'Overview...';
+})
+.controller('DocsController', function ($scope){
+  
 });
 
 app.directive('formrow', function(){
@@ -86,4 +98,11 @@ app.directive('formrow', function(){
       scope.createNewTodo();
     }
   };
+});
+
+$(document).ready(function(){
+  $("li.navitem").click(function(){
+    $(".active").removeClass("active");
+    $(this).addClass("active");
+  });
 });
