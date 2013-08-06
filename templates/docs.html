@@ -16,6 +16,8 @@
 			<li><a href="#/docs#document">Adding documents</a></li>
 			<li><a href="#/docs#update">Updating documents</a></li>
 			<li><a href="#/docs#remove">Removing documents</a></li>
+			<li class="nav-header">Finding documents</li>
+			<li><a href="#/docs#get">Get</a></li>
 			<li><a href="#/docs#find">Simple query</a></li>
 			<li class="nav-header">Querying: Views and MapReduce</li>
 			<li><a href="#/docs#views">Creating views and storing them</a></li>
@@ -38,7 +40,7 @@
 				LokiJS draws inspiration from MongoDB and CouchDB, in that the API is similar (but not identical or compliant) to MongoDB and you can define your own views in a CouchDB style.
 				The glossary used is also classic NoSQL in that records are <a href="#document">"documents"</a>, documents are stored in <a href="#collection">collections"</a>.
 				<br><br>
-				LokiJS supports a limited form of indexing for faster document access. The id field in particular is automaticallly populated and indexed, and searched using binary search algorithm. Other document properties can be indexed for faster search on a particular object field.
+				LokiJS supports a limited form of indexing for faster document access. The id field in particular is automaticallly populated and indexed, and searched using the binary search algorithm. Other document properties can be indexed for faster search on a particular object field.
 		</div>
 
 		<h2>Database class</h2>
@@ -209,6 +211,30 @@
 							<th>arguments</th>
 							<td>
 								<strong>obj</strong>: the document to be removed from the collection.<br>
+							</td>
+						</tr>
+					</table>
+				</div>
+			</p>
+		</div>
+
+		<h3>Finding documents</h3>
+		<div class="container-fluid" id="get">
+			<div><code class="docheading">get( id )</code></div>
+			<p>
+				You can get a specific document by its id and avail of the faster binary search algorithm used on the id index.
+				<div class="codeExplanation">
+					<table class="table table-striped">
+						<tr>
+							<th>arguments</th>
+							<td>
+								<strong>id</strong>: the id of the document to be retrieved.<br>
+							</td>
+						</tr>
+						<tr>
+							<th>returns</th>
+							<td>
+								the document itself or null if the document is not found.
 							</td>
 						</tr>
 					</table>

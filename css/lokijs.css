@@ -51,7 +51,7 @@ a { color: #699B00; outline: 0;}
 span.loki { color: #699B00; font-family: "Audiowide"; }
 .hero-unit h1, a.brand {
 	font-family : "Audiowide";
-	text-shadow: 2px 2px 4px #222;
+	text-shadow: 1px 1px 2px #000;
 }
 
 img.logo { vertical-align: middle; }
@@ -66,3 +66,4 @@ img.logo { vertical-align: middle; }
 
 code { color: #333; }
 code.docheading{ color: #699B00; font-size: 1.2em;}
+.striken { text-decoration: line-through; }

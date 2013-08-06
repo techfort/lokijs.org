@@ -5,13 +5,13 @@ window.runExample = function(){
 
 
     // create two example collections
-    var users = db.addCollection('users','User', ['email'], true);
+    var users = db.addCollection('users','User', ['email'], true, true);
     var projects = db.addCollection('projects', 'Project', ['name']);
 
     // show collections in db
     db.listCollections();
 
-
+    trace('Adding 6 users');
     // create six users
     var odin = users.document( { name : 'odin', email: 'odin.soap@lokijs.org', age: 38 } );
     var thor = users.document( { name : 'thor', email : 'thor.soap@lokijs.org', age: 25 } );
@@ -19,7 +19,11 @@ window.runExample = function(){
     var oliver = users.document( { name : 'oliver', email : 'oliver.soap@lokijs.org', age: 31 } );
     var hector = users.document( { name : 'hector', email : 'hector.soap@lokijs.org', age: 15} );
     var achilles = users.document( { name : 'achilles', email : 'achilles.soap@lokijs.org', age: 31 } );
+    var lugh = users.document( { name : 'lugh', email : 'lugh.soap@lokijs.org', age: 31 } );
+    var nuada = users.document( { name : 'nuada', email : 'nuada.soap@lokijs.org', age: 31 } );
+    var cuchullain = users.document( { name : 'cuchullain', email : 'cuchullain.soap@lokijs.org', age: 31 } );
 
+    trace('Finished adding users');
     
     // create an example project
     var prj = projects.document( { name : 'LokiJS', owner: stan });
@@ -31,7 +35,16 @@ window.runExample = function(){
 
     // update object (this really only syncs the index)
     users.update(stan);
-    //trace(prj);
+    users.remove(achilles);
+    // finding users with age greater than 25
+    trace('Find by age > 25');
+    trace(users.find( {'age':{'$gt': 25} } ));
+    trace('Get all users');
+    trace(users.find());
+    trace('Get all users with age equal to 25');
+    trace(users.find({'age': 25}));
+    // get by id with binary search index
+    trace(users.get(8));
   
     // a simple filter for users over 30
     function ageView(obj){
@@ -42,9 +55,12 @@ window.runExample = function(){
       return obj.name.length  < 5 && obj.age > 30;
     }
 
+
+
     // test the filters
     trace('Example: View "Age" test');
-    trace(users.view(ageView));
+    users.storeView('age', function(obj){ return obj.age > 30; });
+    trace(users.view('age'));
     trace('End view test');
     sep();
 
@@ -90,8 +106,15 @@ window.runExample = function(){
       trace('//---------------------------------------------//');
     }
 
+    function trace(message){
+        if(typeof console !='undefined' && console.log){
+            console.log(message);
+        }
+    }
+
   } catch(err){
-    console.log(err);
+    console.error(err);
+    console.log(err.message);
   }
   
 };

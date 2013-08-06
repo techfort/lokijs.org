@@ -1,5 +1,10 @@
 <div class="container-fluid">
-
+	
+	<div class="hero-unit well darkgreen">
+		<h1><img src="images/loki_medium.png" class="logo" style="width:90px"/> LokiJS</h1>
+		<p>A lightweight javascript document oriented database</p>
+	</div>
+	
 	<div class="span7">	
 		<h2>A Javascript Database</h2>
 
@@ -43,7 +48,7 @@
 		</p>
 		<p>
 		Create a collection:<br>
-		<code>var children = db.addCollection('children','NorseGod')</code>
+		<code>var children = db.addCollection('children','Child')</code>
 		Parameters are the collection name and the object Type which is an arbitrary string
 		</p>
 		<p>
@@ -54,7 +59,9 @@
 		</p>
 		<p>
 		Retrieve documents:<br>
-		<code>children.find('name','Sleipnir')</code>
+		<code>children.get(1); // returns Sleipnir</code><br> 
+		<code>children.find( {'name':'Sleipnir'} )</code><br>
+		<code>children.find( { legs: { '$gt' : 2 } } )</code><br>
 		</p>
 
 

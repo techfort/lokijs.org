@@ -1,12 +1,62 @@
-<h3>YATDA: The unmissable "Yet Another ToDo App"</h3>
 
-<table class="table table-striped">
-<tbody>
-	<tr ng-repeat="todo in todos.data">
-		<th>{{ todo.title }}</th>
-		<td>{{ todo.description}}</td>
-	</tr>
-	<formrow />
-</tbody>
+<div class="container-fluid">
+	<div class="row-fluid">
+		<h3>YATDA: The inevitable "Yet Another ToDo App"</h3>
+		<p>
+			A classic demonstration of the usage of a library: a todo app. On the right hand side you populate the database and remove documents from it, whereas on the right hand side you can see real time queries being run, including a mapreduce of the average duration of a todo, the IDs of the outstanding tasks and the size of the todo collection. Enjoy!
+		</p>		
+	</div>
+	<div class="row-fluid">
+		<div class="span8">
+			<table class="table table-striped">
+				<thead>
+					<tr>
+						<th>title</th>
+						<th>description</th>
+						<th>duration</th>
+						<th>complete</th>
+						<th></th>
+					</tr>	
+				</thead>
+				<tbody>
+					<tr ng-repeat="todo in todos.data" ng-class="{true:'striken', false:''}[todo.complete]">
+						<th>{{ todo.title }}</th>
+						<td>{{ todo.description}}</td>
+						<td>{{ todo.duration }} hours</td>
+						<td><input type="checkbox" ng-model="todo.complete" /></td>
+						<td><button class="btn btn-danger" ng-click="deleteRecord( $index )"><i class="icon-remove icon-white"></i>delete</button></td>
+					</tr>
+					<formrow />
+				</tbody>
 
-</table>
+			</table>
+		</div>	
+		
+		<div class="span4 well darkgreen">
+			<h4>Queries</h4>
+			<table class="table table-striped">
+				<tr>
+					<th>Records</th>
+					<td>{{ todos.data.length }} 
+				</tr>
+
+				<tr>
+					<th>Avg. duration (mapreduce)</th>
+					<td>{{ avgDuration() }}</td>
+				</tr>
+				<tr>
+					<th>Outstanding (view query)</th>
+					<td>{{ getIncomplete() }}</td>
+				</tr>
+				<tr>
+					<th>Size of collection</th>
+					<td>{{ getCollectionSize() }} bytes</td>
+				</tr>
+			</table>
+
+		</div>
+
+	</div>
+
+
+</div>
