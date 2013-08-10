@@ -247,6 +247,8 @@ var loki = (function(){
       coll.add(doc);
       return doc;
     };
+    // just an alias for compatibility with most APIs
+    this.insert = this.document;
 
     /**
      * Ensure indexes on a certain field
@@ -470,11 +472,13 @@ var loki = (function(){
         var obj = coll.findOne('id', doc.id);
         var position = obj.__pos__;
         delete obj.__pos__;
-        coll.data.splice(position,1);
+        var deleted = coll.data.splice(position,1);
+        //delete deleted;
 
         var i = coll.indices.length;
         while (i--) {
-          coll.indices[i].data.splice( position ,1);
+          var deletedIndex = coll.indices[i].data.splice( position ,1);
+          //delete deletedIndex;
         }
         coll.commit();
 

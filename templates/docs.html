@@ -13,7 +13,7 @@
 			<li class="nav-header">Collection</li>
 			<li><a href="#/docs#document">Document</a></li>
 			<li><a href="#/docs#collection">Collection</a></li>
-			<li><a href="#/docs#document">Adding documents</a></li>
+			<li><a href="#/docs#insert">Adding documents</a></li>
 			<li><a href="#/docs#update">Updating documents</a></li>
 			<li><a href="#/docs#remove">Removing documents</a></li>
 			<li class="nav-header">Finding documents</li>
@@ -137,9 +137,10 @@
 		<h2>Collection class</h2>
 		
 		<div class="container-fluid" id="document">
-			<div><code class="docheading">document( obj )</code></div>
+			<div><code class="docheading">insert( obj )</code></div>
 			<p>
 				Each record in the database is a document. A document is created through the <code>document()</code> method of the collection class. You can take any object and store it in the collection. While like all nosql databases there's no rule on how documents should be structured it just is good practice to put documents with identical structures in the same collection.
+				<br>This method also has an alias <code>document( obj )</code><br>
 				For example:<br>
 				<code>childrenOfLoki.document({name:'Sleipnir', legs: 8});</code>
 

@@ -71,10 +71,10 @@ app.config(function($stateProvider, $urlRouterProvider){
   $scope.message = 'Examples...';
   $scope.newtodo = null;
   $scope.todos = DataStore.addCollection('todos', 'Todo',['title']);
-  $scope.todos.document({ title: 'Learn LokiJS', description: 'Learn to use lokijs', duration : 3, complete: false });
-  $scope.todos.document({ title: 'Use LokiJS', description: 'Use lokijs in my next project', duration: 10, complete: false });
-  $scope.todos.document({ title: 'Contribute', description: 'Contribute to lokijs to make it even better', duration: 5, complete: false });
-  $scope.todos.document({ title: 'Fork it', description: 'Fork lokijs on github', duration: 5, complete: false });
+  $scope.todos.insert({ title: 'Learn LokiJS', description: 'Learn to use lokijs', duration : 3, complete: false });
+  $scope.todos.insert({ title: 'Use LokiJS', description: 'Use lokijs in my next project', duration: 10, complete: false });
+  $scope.todos.insert({ title: 'Contribute', description: 'Contribute to lokijs to make it even better', duration: 5, complete: false });
+  $scope.todos.insert({ title: 'Fork it', description: 'Fork lokijs on github', duration: 5, complete: false });
 
   function outstanding(obj){
     return !obj.complete;
@@ -120,7 +120,7 @@ app.config(function($stateProvider, $urlRouterProvider){
       duration: $scope.newtodo.duration,
       complete: false
     }
-    $scope.todos.document(newToDo);
+    $scope.todos.insert(newToDo);
     $scope.newtodo = null;
   }
 
