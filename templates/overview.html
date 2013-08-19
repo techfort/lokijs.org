@@ -55,15 +55,28 @@
 			</p>
 			<p>
 			Insert a document:<br>
-			<code>children.document({name:'Sleipnir', legs: 8})</code><br >
-			<code>children.document({name:'Jormungandr', legs: 0})</code><br>
-			<code>children.document({name:'Hel', legs: 2})</code>
+			<code>children.insert({name:'Sleipnir', legs: 8})</code><br >
+			<code>children.insert({name:'Jormungandr', legs: 0})</code><br>
+			<code>children.insert({name:'Hel', legs: 2})</code>
 			</p>
 			<p>
 			Retrieve documents:<br>
 			<code>children.get(1); // returns Sleipnir</code><br> 
 			<code>children.find( {'name':'Sleipnir'} )</code><br>
 			<code>children.find( { legs: { '$gt' : 2 } } )</code><br>
+			</p>
+			<p>
+			MapReduce:<br>
+			<pre>
+children.mapReduce( 
+  function( obj ){ return obj.legs; } , 
+  function( array ) { 
+    var sum = 0;
+    for (var i=0; i < array.length; i++ ){ 
+      sum += array[i];
+    }
+    return ( sum / array.length ).toFixed(2);
+ });</pre>
 			</p>
 
 
