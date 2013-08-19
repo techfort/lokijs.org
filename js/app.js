@@ -4,26 +4,7 @@ var app = angular.module('lokiApp', ['ui.state'])
 .factory('DataStore', function (){
   return new loki('Demo');
 });
-/*
-app.config(function($routeProvider, $locationProvider){
-  $routeProvider
-    .when('/',{
-      templateUrl: 'templates/overview.html',
-      controller: 'OverViewController'
-    })
-    .when('/example',{
-      templateUrl: 'templates/example.html',
-      controller: 'ExampleController'
-    })
-    .when('/github',{
-      templateUrl: 'templates/github.html',
-      controller: 'GithubController'
-    })
-    .otherwise({ redirectTo: '/'})
-    $locationProvider.html5Mode(true);
-    
-})
-*/
+
 app.config(function($stateProvider, $urlRouterProvider){
   $urlRouterProvider.otherwise('/');
   $stateProvider

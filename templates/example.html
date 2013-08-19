@@ -57,6 +57,70 @@
 		</div>
 
 	</div>
+	<div class="row-fluid">
+		<h4>Queries explained</h4>
+		Todos are stored in a collection in the variable <code>todos</code>:
+		<table class="table table-striped">
+				<tr>
+					<th>Records</th>
+					<td>
+						<code>
+							var records = todos.data.length;
+						</code>
+					</td>
+				</tr>
+
+				<tr>
+					<th>Average duration</th>
+					<td>
+						<pre>
+
+
+  function getDuration( obj ){
+
+    return obj.complete ? null : obj.duration;
+  }
+
+
+  function getAverage( array ){
+
+    var cumulator = 0;
+    var i = array.length >>> 0;
+    var actual = 0;
+    while(i--){
+      if(array[i] != null){
+        cumulator += array[i];
+        actual++;
+      }
+    }
+    return ( cumulator / actual).toFixed(2);
+  }
+
+  var avgDuration = todos.mapReduce( getDuration, getAverage );
+
+						</pre>
+					</td>
+				</tr>
+
+				<tr>
+					<th>Oustanding</th>
+					<td>
+						<pre>
+// usage of views							
+function outstanding(obj){
+  return !obj.complete;
+}
+// store the view for later usage
+todos.storeView('outstanding', outstanding);
+
+var outstanding = todos.view( 'outstanding' );
+						</pre>
+					</td>
+				</tr>
+				
+		</table>
+
+	</div>
 
 
 </div>

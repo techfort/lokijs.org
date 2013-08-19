@@ -7,7 +7,9 @@
 			<li class="nav-header">Database</li>
 			<li><a href="#/docs#db">loki</a></li>
 			<li><a href="#/docs#addCollection">add collection</a></li>
-			<li><a href="#/docs#load">load db</a></li>
+			<li><a href="#/docs#load">load</a></li>
+			<li><a href="#/docs#loadJSON">loadJSON</a></li>
+			<li><a href="#/docs#save">save</a></li>
 			<li><a href="#/docs#sync">sync db</a></li>
 
 			<li class="nav-header">Collection</li>
@@ -84,7 +86,7 @@
 							<strong>objType</strong>: a string defining the object type. Think it as a class name.<br>
 							<strong>indicesArray</strong>: an array of strings defining the properties to be indexed in the collection.<br>
 							<strong>transactional</strong>: (experimental) if this flag is set to true, then inserts, updates and deletes are performed in a transactional fashion. If something goes wrong during the transaction the database rolls back to the state before the transaction started.<br>
-							<strong>safeMode</strong>: (experimental) if this flag is set to true then inserts, updates and deletes lock the collection for writes so to prevent indices to be out of sync with the actual data.
+							<strong>safeMode</strong>: (experimental) if this flag is set to true then inserts, updates and deletes are preceded and followed by user-defined handlers, and errors caught by a user-defined error handler.
 
 						</td>
 					</tr>
@@ -98,14 +100,49 @@
 		</div>
 
 		<div class="container-fluid" id="load">
-			<div><code class="docheading">load( filename )</code></div>
-			<p>Not implemented yet, this will load the database from a file.</p>
+			<div><code class="docheading">loadDatabase( filename, callback )</code></div>
+			<p>In a CommonJS environment, you can load the database from a local file and provide a callback handler.</p>
 			<div class="codeExplanation">
 				<table class="table table-striped">
 					<tr>
 						<th>arguments</th>
 						<td>
 							<strong>filename</strong>: the name of the file to load the database from.<br>
+							<strong>callback</strong>: the callback handler
+						</td>
+					</tr>
+				</table>
+			</div>
+		</div>
+
+		<div class="container-fluid" id="loadJSON">
+			<div><code class="docheading">loadJSON( serializedDB )</code></div>
+			<p>This method takes a json string and loads the database from it. Useful if you want to persist your database somewhere on the cloud and re-initialize it with an ajax call returning JSON.</p>
+			<div class="codeExplanation">
+				<table class="table table-striped">
+					<tr>
+						<th>arguments</th>
+						<td>
+							<strong>serializedDB</strong>: the JSON string to load into the db<br>
+						</td>
+					</tr>
+				</table>
+			</div>
+		</div>
+
+
+		<div class="container-fluid" id="save">
+			<div><code class="docheading">save( filename, callback )</code></div>
+			<p>In a CommonJS environment, you can save the database to a local file and provide a callback handler.<br>
+				This method also has the alias <code>saveToDisk( filename, callback)</code>.
+			</p>
+			<div class="codeExplanation">
+				<table class="table table-striped">
+					<tr>
+						<th>arguments</th>
+						<td>
+							<strong>filename</strong>: the name of the file to save the database to.<br>
+							<strong>callback</strong>: the callback handler
 						</td>
 					</tr>
 				</table>

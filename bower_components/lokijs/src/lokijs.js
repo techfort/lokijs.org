@@ -21,6 +21,26 @@ var loki = (function(){
     this.name = name || 'Loki';
     this.collections = [];
 
+    this.ENV = (function(){
+      if(typeof module != 'undefined' && module.exports){
+        return 'NODEJS';
+      } else {
+        if(document){
+          if(document.URL.indexOf('http://') == -1 && document.URL.indexOf('https://') == -1 ){
+            return 'CORDOVA';
+          } else {
+            return 'BROWSER';
+          }
+        } else {
+          return 'CORDOVA';
+        }
+      }
+    })();
+
+    if(this.ENV=='NODEJS'){
+      this.fs = require('fs');
+    }
+
     var self = this;
     
     this.getName = function(){
@@ -37,27 +57,87 @@ var loki = (function(){
       self.collections.push(collection);
     }
 
+    this.getCollection = function(collectionName){
+      var found = false;
+      var len = this.collections.length;
+      for( var i =0; i < len; i++){
+        if(this.collections[i].name == collectionName){
+          found = true;
+          return this.collections[i];
+        }
+      }
+      if(!found) throw 'No such collection';
+
+    };
+
     this.listCollections = function(){
       
       var i = self.collections.length;
       
     };
 
+    // toJson
     this.serialize = function(){
       return JSON.stringify(self);
     };
+    this.toJson = this.serialize;
 
-    this.load = function(serializedDb){
+    // load Json function - db is saved to disk as json
+    this.loadJSON = function(serializedDb){
       // future use method for remote loading of db
       var obj = JSON.parse(serializedDb);
-      self = obj;
+
+      self.name = obj.name;
+      self.collections = [];
+      for(var i = 0; i < obj.collections.length; i++){
+        var coll = obj.collections[i];
+        var copyColl = self.addCollection(coll.name, coll.objType);
+
+        // load each element individually 
+        var len = coll.data.length;
+        for( var j = 0; j < len; j++){
+          copyColl.data[j] = coll.data[j];
+        }
+
+        copyColl.maxId = coll.data.maxId;
+        copyColl.indices = coll.indices;
+        copyColl.idIndex = coll.indices.id;
+        copyColl.transactional = coll.transactional;
+        copyColl.ensureAllIndexes();
+      }
     };
 
-    this.persist = function(callback){
-      callback(this.serialize());
+    // load db from a file
+    this.loadDatabase = function( filename, callback ){
+      var callback = callback || function(){};
+      if(self.ENV=='NODEJS'){
+        self.fs.readFile( filename, {encoding: 'utf8'}, function(err, data){
+          self.loadJSON(data);
+          callback(data);
+        });
+      }
     };
 
-    this.syncRemote = function(url){
+    // save file to disk as json
+    this.saveToDisk = function( filename, callback ){
+      var callback = callback || function(){};
+      // persist in nodejs
+      if(self.ENV=='NODEJS'){
+        self.fs.exists( filename, function(exists){
+          
+          if(exists){
+            self.fs.unlink(filename);
+          }
+
+          self.fs.writeFile( filename, self.serialize(), function(err){
+            if(err) throw err;
+            callback();
+          });
+        });
+      }
+    };
+
+    this.saveRemote = function(url){
       // future use for saving collections to remote db
     };
 
@@ -73,7 +153,7 @@ var loki = (function(){
     // the data held by the collection
     this.data = [];
     // indices multi-dimensional array
-    this.indices = [];
+    this.indices = {};
     this.idIndex = {}; // index of idx
     // the object type of the collection
     this.objType = _objType || "";
@@ -83,81 +163,48 @@ var loki = (function(){
     this.transactional = transactional || false;
     // private holders for cached data
     var cachedIndex = null, cachedData = null;
-    // safe mode
-    var safe = safeMode || false;
 
-    /**
-     * Collection write lock
-     * Javascript is single threaded but you can trigger async functions that may cause indexes
-     * to be out of sync with the collection data. This lock blocks write access to collection indexes
-     * and data. Operations will retry every 10ms until the lock is released
-     */
-    var writeLock = false;
-    // timeout property - if lock is used for more than this value the current operation will throw an error
-    var timeout = 5000;
-    var elapsed = 0;
-
-    var maxId = 1;
+    // currentMaxId - change manually at your own peril!
+    this.maxId = 0;
     // view container is an object because each views gets a name
     this.Views = {};
 
+    this.safe = safeMode || false;
+
     // pointer to self to avoid this tricks
     var coll = this;
+    
 
-    this.setTimeOutValue = function(duration){
-      timeout = duration;
-    };
-    this.timeOutExceededHandler = function(){
-      throw 'Operation timed out';
-    };
+    // set these methods if you want to add a before and after handler when using safemode
+    this.onBeforeSafeModeOp = function(){ /* no op */};
+    // the onAfter handler could take the result of the current operation as optional value
+    this.onAfterSafeModeOp = function(result){ /* no op */ };
 
-    // gets the current lock status
-    this.getLock = function(){
-      return writeLock;
-    };
-    // locks collection for writing
-    function lock(){
-      writeLock = true;
-    };
-    // releases lock on collection
-    function releaseLock(){
-      writeLock = false;
-      // reset the lock elapse counter
-      elapsed = 0;
+    this.onSafeModeError = function(err){
+      console.error(err);
     };
 
-    function acquireLock(){
-      elapsed += 10;
-      if(elapsed > timeout){
-        coll.timeOutExceededHandler();
-      }
-      if(coll.getLock()){
-        
-        setTimeout(acquireLock, 10);
-      } else {
-        lock();
-      }
-    }
     // wrapper for safe usage
     this._wrapCall = function( op, args ){
       
       try{
-        acquireLock();
+        coll.onBeforeSafeModeOp();
         var retval = coll[op].apply(coll, [args]);
-        releaseLock();
+        coll.onAfterSafeModeOp(retval);
         return retval;
       } catch(err){
         //console.error(err);
+        coll.onSafeModeError();
       }
       
     };
 
     this.execute = function(methodName, args){
-      return safe ? coll._wrapCall(methodName, args) : coll[methodName](args);
+      return coll.safe ? coll._wrapCall(methodName, args) : coll[methodName](args);
     };
 
 
-    // async executor with callback
+    // async executor. This is only to enable callbacks at the end of the execution. 
     this.async = function( fun, callback){
       setTimeout(function(){
         if(typeof fun == 'function'){
@@ -204,16 +251,22 @@ var loki = (function(){
           try {
             
             coll.startTransaction();
-            maxId++;
-            obj.id = maxId;
+            this.maxId++;
+            
+            if(isNaN(this.maxId)){
+              this.maxId = (coll.data[ coll.data.length - 1 ].id + 1);
+            }
+
+            obj.id = this.maxId;
             // add the object
             coll.data.push(obj);
 
             // resync indexes to make sure all IDs are there
-            //coll.ensureAllIndexes();    
-            var i = coll.indices.length;
-            while (i--) {
-              coll.indices[i].data.push( obj[coll.indices[i].name ]);
+            //coll.ensureAllIndexes(); 
+            for (var i in coll.indices ) {
+
+              coll.indices[i].push( obj[ i ] );
+
             };
             coll.commit();
             return obj;
@@ -245,6 +298,8 @@ var loki = (function(){
 
     /**
      * generate document method - ensure objects have id and objType properties
+     * Come to think of it, really unfortunate name because of what document normally refers to in js.
+     * that's why there's an alias below but until I have this implemented 
      */
     this.document = function(doc){
       doc.id == null;
@@ -262,36 +317,21 @@ var loki = (function(){
       
       if (property == null || property === undefined) throw 'Attempting to set index without an associated property'; 
       
-      var index = {
-        name : property,
-        data : []
-      };
-
-      var i = coll.indices.length;
-      while( i-- ){
-        if( coll.indices[i].name == property){
-          
-          index = coll.indices[i];
-        } else {
-          
-          // to do
-              
-        }
+      var index;
+      if(coll.indices.hasOwnProperty(property) ) {
+        index = coll.indices[property];
+      } else {
+        coll.indices[property] = [];
+        index = coll.indices[property];
       }
 
-      coll.indices.push(index);
-      delete index.data;
-
-      index.data = [];
-      var i = coll.data.length;
-      while( i-- ){
-        index.data.push( coll.data[i][index.name] );
+      var len = coll.data.length;
+      for(var i=0; i < len; i++){
+        index.push( coll.data[i][property] );
       }
-
-      if(index.name == 'id'){
+      if(property == 'id'){
         coll.idIndex = index;
       }
-      
       
     };
 
@@ -312,6 +352,7 @@ var loki = (function(){
       while (i--) {
         coll.ensureIndex(coll.indices[i].name);
       };
+      if(i==0) ensureIndex('id');
     };
 
     this.ensureAllIndexesAsync = function(callback){
@@ -319,6 +360,93 @@ var loki = (function(){
         coll.ensureAllIndexes();
       }, callback);
     };
+
+
+    /**
+     * Update method
+     */
+    this._update = function(doc){
+      
+      // verify object is a properly formed document
+      if( doc.id == 'undefined' || doc.id == null || doc.id < 0){
+        throw 'Trying to update unsynced document. Please save the document first by using add() or addMany()';
+      } else {
+
+        try{
+
+          coll.startTransaction();
+          var obj = coll.findOne('id', doc.id);
+          // get current position in data array
+          var position = obj.__pos__;
+          delete obj.__pos__;
+          // operate the update
+          coll.data[position] = doc;
+          
+          for( var i in coll.indices ) {
+            coll.indices[i][position] = obj[ i ];
+          };
+          coll.commit();
+
+        } catch(err){
+          coll.rollback();
+        }
+      }
+      
+    };
+
+    this.update = function(obj){
+      return coll.execute('_update', obj);
+    }
+
+    this.findAndModify = function(filterFunction, updateFunction ){
+      
+      var results = coll.view(filterFunction);
+      try {
+        for( var i in results){
+          var obj = updateFunction(results[i]);
+          coll.update(obj);
+        }
+
+      } catch(err){
+        coll.rollback();
+      }
+    };
+
+    /**
+     * Delete function
+     */
+    this._remove = function(doc){
+      
+      if('object' != typeof doc){
+        throw 'Parameter is not an object';
+      }
+
+      if(doc.id == null || doc.id == undefined){
+        throw 'Object is not a document stored in the collection';
+      }
+
+      try {
+        coll.startTransaction();
+        var obj = coll.findOne('id', doc.id);
+        var position = obj.__pos__;
+        delete obj.__pos__;
+        var deleted = coll.data.splice(position,1);
+        
+        for (i in coll.indices ) {
+          var deletedIndex = coll.indices[i].splice( position ,1);
+        }
+        coll.commit();
+
+      } catch(err){
+        coll.rollback();
+
+      }
+
+    };
+
+    this.remove = function(obj){
+      coll.execute('_remove', obj);
+    }
 
     /*---------------------+
     | Querying methods     |
@@ -328,15 +456,14 @@ var loki = (function(){
      * Get by Id - faster than other methods because of the searching algorithm
      */
     this.get = function(id){
-      console.log(coll.idIndex);
-      var data = coll.idIndex.data;
+      
+      var data = coll.indices['id'];
       var max = data.length - 1;
       var min = 0, mid = Math.floor(min +  (max - min ) /2 );
-      console.log(data[min] + ' ' + data[max]);
+      
       while( data[min] < data[max] ){
         
         mid = Math.floor( (min + max )/2 );
-        console.log(max + ' ' + mid + ' ' + min + ' ' + data[mid]) ;
         
         if(data[mid] < id){
           
@@ -347,7 +474,7 @@ var loki = (function(){
         }
           
       }
-      console.log('stats : ' + max + ' ' + mid + ' ' + min);
+      
       if( max == min && data[min] == id)
         return coll.data[min];
       else
@@ -407,97 +534,6 @@ var loki = (function(){
         return null;
       };
     };
-
-    /**
-     * Update method
-     */
-    this._update = function(doc){
-      
-      // verify object is a properly formed document
-      if( doc.id == 'undefined' || doc.id == null || doc.id < 0){
-        throw 'Trying to update unsynced document. Please save the document first by using add() or addMany()';
-      } else {
-
-        try{
-
-          coll.startTransaction();
-          var obj = coll.findOne('id', doc.id);
-          // get current position in data array
-          var position = obj.__pos__;
-          delete obj.__pos__;
-          // operate the update
-          coll.data[position] = doc;
-          // coll.ensureAllIndexes();
-          var i = coll.indices.length;
-          while(i--) {
-            coll.indices[i].data[position] = obj[ coll.indices[i].name ];
-          };
-          coll.commit();
-
-        } catch(err){
-          coll.rollback();
-        }
-      }
-      
-    };
-
-    this.update = function(obj){
-      return coll.execute('_update', obj);
-    }
-
-    this.findAndModify = function(filterFunction, updateFunction ){
-      
-      var results = coll.view(filterFunction);
-      try {
-        for( var i in results){
-          var obj = updateFunction(results[i]);
-          coll.update(obj);
-        }
-
-      } catch(err){
-        coll.rollback();
-      }
-    };
-
-    /**
-     * Delete function
-     */
-    this._remove = function(doc){
-      
-      if('object' != typeof doc){
-        throw 'Parameter is not an object';
-      }
-
-      if(doc.id == null || doc.id == undefined){
-        throw 'Object is not a document stored in the collection';
-      }
-
-      try {
-        coll.startTransaction();
-        var obj = coll.findOne('id', doc.id);
-        var position = obj.__pos__;
-        delete obj.__pos__;
-        var deleted = coll.data.splice(position,1);
-        //delete deleted;
-
-        var i = coll.indices.length;
-        while (i--) {
-          var deletedIndex = coll.indices[i].data.splice( position ,1);
-          //delete deletedIndex;
-        }
-        coll.commit();
-
-      } catch(err){
-        coll.rollback();
-
-      }
-
-    };
-
-    this.remove = function(obj){
-      coll.execute('_remove', obj);
-    }
-
     /**
      * Create view function - CouchDB style
      */
@@ -660,7 +696,7 @@ var loki = (function(){
     };
 
     // handle the indexes passed
-    var indexesArray = indexesArray || [];
+    var indexesArray = indexesArray || ['id'];
     
 
     // initialize optional indexes from arguments passed to Collection
