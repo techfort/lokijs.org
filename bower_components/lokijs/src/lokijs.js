@@ -449,7 +449,7 @@ var loki = (function(){
 
       try {
         coll.startTransaction();
-        var obj = coll.findOne('id', doc.id);
+        var obj = coll.get(doc.id);
         var position = obj.__pos__;
         delete obj.__pos__;
         var deleted = coll.data.splice(position,1);
@@ -497,9 +497,10 @@ var loki = (function(){
         }
       }
       
-      if( max == min && data[min] == id)
+      if( max == min && data[min] == id){
+        coll.data[min].__pos__ = min;
         return coll.data[min];
-      else
+      } else
         return null;
 
     };

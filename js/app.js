@@ -83,7 +83,9 @@ app.config(function($stateProvider, $urlRouterProvider){
   };
 
   $scope.deleteRecord = function(id){
+    console.log( 'Removing id : ' + id + ', todo: ' + $scope.todos.data[id].title );
     $scope.todos.remove( $scope.todos.data[id] );
+
   }
 
   $scope.getIncomplete = function(){
