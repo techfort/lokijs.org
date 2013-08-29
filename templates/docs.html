@@ -10,7 +10,6 @@
 			<li><a href="#/docs#load">load</a></li>
 			<li><a href="#/docs#loadJSON">loadJSON</a></li>
 			<li><a href="#/docs#save">save</a></li>
-			<li><a href="#/docs#sync">sync db</a></li>
 
 			<li class="nav-header">Collection</li>
 			<li><a href="#/docs#document">Document</a></li>
@@ -48,8 +47,8 @@
 		<h2>Database class</h2>
 		<div class="container-fluid" id="db">
 			<div><code class="docheading">loki( name )</code></div>
-			<p>Creating a database is really simple: <code>var db = new loki('NorseGods');</code><br>
-			This class is only used to initialise the database, add collections and load/synchronise it remotely.<br>
+			<p>Creating a database is really simple: <code>var db = new loki('NorseGods.json');</code><br>
+			This class is only used to initialise the database, add collections and load/save.<br>
 			More advanced options are all collection-specific.
 
 			<div class="codeExplanation">
@@ -57,7 +56,7 @@
 					<tr>
 						<th>arguments</th>
 						<td>
-							<strong>name</strong>: database name, defaults to "Loki".
+							<strong>name</strong>: database filename, defaults to "loki.db" (only relevant to CommonJS environments or mobile).
 						</td>
 					</tr>
 					<tr>
@@ -143,21 +142,6 @@
 						<td>
 							<strong>filename</strong>: the name of the file to save the database to.<br>
 							<strong>callback</strong>: the callback handler
-						</td>
-					</tr>
-				</table>
-			</div>
-		</div>
-
-		<div class="container-fluid" id="sync">
-			<div><code class="docheading">sync( url )</code></div>
-			<p>Not implemented yet, this will isave the database to a file either through network or in the filesystem.</p>
-			<div class="codeExplanation">
-				<table class="table table-striped">
-					<tr>
-						<th>arguments</th>
-						<td>
-							<strong>url</strong>: the filename or url to save the database to.<br>
 						</td>
 					</tr>
 				</table>

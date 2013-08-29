@@ -2,7 +2,7 @@
 
 var app = angular.module('lokiApp', ['ui.state'])
 .factory('DataStore', function (){
-  return new loki('Demo');
+  return new loki('demo.db');
 });
 
 app.config(function($stateProvider, $urlRouterProvider){
