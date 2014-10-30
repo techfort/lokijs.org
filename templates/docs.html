@@ -17,13 +17,18 @@
 			<li><a href="#/docs#insert">Adding documents</a></li>
 			<li><a href="#/docs#update">Updating documents</a></li>
 			<li><a href="#/docs#remove">Removing documents</a></li>
+
 			<li class="nav-header">Finding documents</li>
 			<li><a href="#/docs#get">Get</a></li>
 			<li><a href="#/docs#find">Simple query</a></li>
 			<li class="nav-header">Querying: Views and MapReduce</li>
-			<li><a href="#/docs#views">Creating views and storing them</a></li>
+			<li><a href="#/docs#resultset">ResultSet (FLuent API)</a></li>
+			<li><a href="#/docs#views">Creating dynamic views and storing them</a></li>
 			<li><a href="#/docs#mapreduce">Map Reduce</a></li>
 			<li><a href="#/docs#properties">Collection properties</a></li>
+
+			<li class="nav-header">Events</li>
+			<li><a href="#/docs#collectionevents">Events</a></li>
 
 		</ul>
 	</div>
@@ -42,370 +47,498 @@
 				The glossary used is also classic NoSQL in that records are <a href="#document">"documents"</a>, documents are stored in <a href="#collection">collections"</a>.
 				<br><br>
 				LokiJS supports a limited form of indexing for faster document access. The id field in particular is automaticallly populated and indexed, and searched using the binary search algorithm. Other document properties can be indexed for faster search on a particular object field.
-		</div>
-
-		<h2>Database class</h2>
-		<div class="container-fluid" id="db">
-			<div><code class="docheading">loki( name )</code></div>
-			<p>Creating a database is really simple: <code>var db = new loki('NorseGods.json');</code><br>
-			This class is only used to initialise the database, add collections and load/save.<br>
-			More advanced options are all collection-specific.
-
-			<div class="codeExplanation">
-				<table class="table table-striped">
-					<tr>
-						<th>arguments</th>
-						<td>
-							<strong>name</strong>: database filename, defaults to "loki.db" (only relevant to CommonJS environments or mobile).
-						</td>
-					</tr>
-					<tr>
-						<th>returns</th>
-						<td>loki (the database itself)</td>
-					</tr>
-				</table>
 			</div>
 
-		</div>
+			<h2>Database class</h2>
+			<div class="container-fluid" id="db">
+				<div><code class="docheading">loki( name )</code></div>
+				<p>Creating a database is really simple: <code>var db = new loki('NorseGods.json');</code><br>
+					This class is only used to initialise the database, add collections and load/save.<br>
+					More advanced options are all collection-specific.
 
-		<div class="container-fluid" id="addCollection">
-			<div><code class="docheading">addCollection( name, objType [, indicesArray, transactional, safeMode ] )</code></div>
-			<p>
-				Creating a collection is done through the addCollection method, i.e. <code>var lokisChildren = db.addCollection('Children','Child');</code><br>
-				The arguments are the collection name and an arbitrary object type name which will be associated to all documents in the collection as a simple reference, so not to attempt updates of a document belonging to collection A into collection B. As of now a document can only belong to one collection.
-				Collections support indexing: the id field is automatically populated and automatically indexed. This is - as of now - the only index benefitting from a binary search algorithm for fast access of records. Other indexes are scanned sequentially but still much faster than scanning the entire collection of objects.
-			</p>
+					<div class="codeExplanation">
+						<table class="table table-striped">
+							<tr>
+								<th>arguments</th>
+								<td>
+									<strong>name</strong>: database filename, defaults to "loki.db" (only relevant to CommonJS environments or mobile).
+								</td>
+							</tr>
+							<tr>
+								<th>returns</th>
+								<td>loki (the database itself)</td>
+							</tr>
+						</table>
+					</div>
 
-			<div class="codeExplanation">
-				<table class="table table-striped">
-					<tr>
-						<th>arguments</th>
-						<td>
-							<strong>name</strong>: collection name<br>
-							<strong>objType</strong>: a string defining the object type. Think it as a class name.<br>
-							<strong>indicesArray</strong>: an array of strings defining the properties to be indexed in the collection.<br>
-							<strong>transactional</strong>: (experimental) if this flag is set to true, then inserts, updates and deletes are performed in a transactional fashion. If something goes wrong during the transaction the database rolls back to the state before the transaction started.<br>
-							<strong>safeMode</strong>: (experimental) if this flag is set to true then inserts, updates and deletes are preceded and followed by user-defined handlers, and errors caught by a user-defined error handler.
-
-						</td>
-					</tr>
-					<tr>
-						<th>returns</th>
-						<td>collection</td>
-					</tr>
-				</table>
-			</div>
-
-		</div>
-
-		<div class="container-fluid" id="load">
-			<div><code class="docheading">loadDatabase( filename, callback )</code></div>
-			<p>In a CommonJS environment, you can load the database from a local file and provide a callback handler.</p>
-			<div class="codeExplanation">
-				<table class="table table-striped">
-					<tr>
-						<th>arguments</th>
-						<td>
-							<strong>filename</strong>: the name of the file to load the database from.<br>
-							<strong>callback</strong>: the callback handler
-						</td>
-					</tr>
-				</table>
-			</div>
-		</div>
-
-		<div class="container-fluid" id="loadJSON">
-			<div><code class="docheading">loadJSON( serializedDB )</code></div>
-			<p>This method takes a json string and loads the database from it. Useful if you want to persist your database somewhere on the cloud and re-initialize it with an ajax call returning JSON.</p>
-			<div class="codeExplanation">
-				<table class="table table-striped">
-					<tr>
-						<th>arguments</th>
-						<td>
-							<strong>serializedDB</strong>: the JSON string to load into the db<br>
-						</td>
-					</tr>
-				</table>
-			</div>
-		</div>
-
-
-		<div class="container-fluid" id="save">
-			<div><code class="docheading">save( filename, callback )</code></div>
-			<p>In a CommonJS environment, you can save the database to a local file and provide a callback handler.<br>
-				This method also has the alias <code>saveToDisk( filename, callback)</code>.
-			</p>
-			<div class="codeExplanation">
-				<table class="table table-striped">
-					<tr>
-						<th>arguments</th>
-						<td>
-							<strong>filename</strong>: the name of the file to save the database to.<br>
-							<strong>callback</strong>: the callback handler
-						</td>
-					</tr>
-				</table>
-			</div>
-		</div>
-
-		<h2>Document class</h2>
-		<div class="container-fluid" id="document">
-			<p>
-				A document is just a json object. Once saved the document gets an id and objType property equal to that of the collection the document belongs to.
-			</p>
-		</div>
-
-		<h2>Collection class</h2>
-		
-		<div class="container-fluid" id="document">
-			<div><code class="docheading">insert( obj )</code></div>
-			<p>
-				Each record in the database is a document. A document is created through the <code>document()</code> method of the collection class. You can take any object and store it in the collection. While like all nosql databases there's no rule on how documents should be structured it just is good practice to put documents with identical structures in the same collection.
-				<br>This method also has an alias <code>document( obj )</code><br>
-				For example:<br>
-				<code>childrenOfLoki.document({name:'Sleipnir', legs: 8});</code>
-
-				<div class="codeExplanation">
-					<table class="table table-striped">
-						<tr>
-							<th>arguments</th>
-							<td>
-								<strong>obj</strong>: the document to be saved in the collection.<br>
-							</td>
-						</tr>
-						<tr>
-							<th>returns</th>
-							<td>
-								<strong>document</strong>: the document with an automatically generated id.
-							</td>
-						</tr>
-					</table>
 				</div>
-			</p>
-		</div>
 
-		<div class="container-fluid" id="addmany">
-			<div><code class="docheading">addMany( args )</code></div>
-			<p>Same as <code>document()</code>, simply pass as many documents as you wish and they'll all be inserted in a batch operation.</p>
-			<div class="codeExplanation">
-				<table class="table table-striped">
-					<tr>
-						<th>arguments</th>
-						<td>
-							<strong>args</strong>: the documents to be saved in the collection.<br>
-						</td>
-					</tr>
-				</table>
-			</div>
-		</div>
+				<div class="container-fluid" id="addCollection">
+					<div><code class="docheading">addCollection( name, objType [, indicesArray, transactional, safeMode ] )</code></div>
+					<p>
+						Creating a collection is done through the addCollection method, i.e. <code>var lokisChildren = db.addCollection('Children','Child');</code><br>
+						The arguments are the collection name and an arbitrary object type name which will be associated to all documents in the collection as a simple reference, so not to attempt updates of a document belonging to collection A into collection B. As of now a document can only belong to one collection.
+						Collections support indexing: the id field is automatically populated and automatically indexed. This is - as of now - the only index benefitting from a binary search algorithm for fast access of records. Other indexes are scanned sequentially but still much faster than scanning the entire collection of objects.
+					</p>
 
-		<div class="container-fluid" id="update">
-			<div><code class="docheading">update( obj )</code></div>
-			<p>
-				Updating the document is done by simply updating the properties of a document as the collection only holds a reference to the original object. When you call update on an object though you force a resync of the indexes of the collection.
+					<div class="codeExplanation">
+						<table class="table table-striped">
+							<tr>
+								<th>arguments</th>
+								<td>
+									<strong>name</strong>: collection name<br>
+									<strong>objType</strong>: a string defining the object type. Think it as a class name.<br>
+									<strong>indicesArray</strong>: an array of strings defining the properties to be indexed in the collection.<br>
+									<strong>transactional</strong>: (experimental) if this flag is set to true, then inserts, updates and deletes are performed in a transactional fashion. If something goes wrong during the transaction the database rolls back to the state before the transaction started.<br>
+									<strong>safeMode</strong>: (experimental) if this flag is set to true then inserts, updates and deletes are preceded and followed by user-defined handlers, and errors caught by a user-defined error handler.
 
-				<div class="codeExplanation">
-					<table class="table table-striped">
-						<tr>
-							<th>arguments</th>
-							<td>
-								<strong>obj</strong>: the document to be updated in the collection.<br>
-							</td>
-						</tr>
-						<tr>
-							<th>returns</th>
-							<td>
-								<strong>document</strong>: the document itself.
-							</td>
-						</tr>
-					</table>
+								</td>
+							</tr>
+							<tr>
+								<th>returns</th>
+								<td>collection</td>
+							</tr>
+						</table>
+					</div>
+
 				</div>
-			</p>
-		</div>
 
-		<div class="container-fluid" id="remove">
-			<div><code class="docheading">remove( obj )</code></div>
-			<p>
-				Removes a document from the collection.
-				<div class="codeExplanation">
-					<table class="table table-striped">
-						<tr>
-							<th>arguments</th>
-							<td>
-								<strong>obj</strong>: the document to be removed from the collection.<br>
-							</td>
-						</tr>
-					</table>
+				<div class="container-fluid" id="load">
+					<div><code class="docheading">loadDatabase( filename, callback )</code></div>
+					<p>In a CommonJS environment, you can load the database from a local file and provide a callback handler.</p>
+					<div class="codeExplanation">
+						<table class="table table-striped">
+							<tr>
+								<th>arguments</th>
+								<td>
+									<strong>filename</strong>: the name of the file to load the database from.<br>
+									<strong>callback</strong>: the callback handler
+								</td>
+							</tr>
+						</table>
+					</div>
 				</div>
-			</p>
-		</div>
 
-		<h3>Finding documents</h3>
-		<div class="container-fluid" id="get">
-			<div><code class="docheading">get( id )</code></div>
-			<p>
-				You can get a specific document by its id and avail of the faster binary search algorithm used on the id index.
-				<div class="codeExplanation">
-					<table class="table table-striped">
-						<tr>
-							<th>arguments</th>
-							<td>
-								<strong>id</strong>: the id of the document to be retrieved.<br>
-							</td>
-						</tr>
-						<tr>
-							<th>returns</th>
-							<td>
-								the document itself or null if the document is not found.
-							</td>
-						</tr>
-					</table>
+				<div class="container-fluid" id="loadJSON">
+					<div><code class="docheading">loadJSON( serializedDB )</code></div>
+					<p>This method takes a json string and loads the database from it. Useful if you want to persist your database somewhere on the cloud and re-initialize it with an ajax call returning JSON.</p>
+					<div class="codeExplanation">
+						<table class="table table-striped">
+							<tr>
+								<th>arguments</th>
+								<td>
+									<strong>serializedDB</strong>: the JSON string to load into the db<br>
+								</td>
+							</tr>
+						</table>
+					</div>
 				</div>
-			</p>
-		</div>
 
-		<div class="container-fluid" id="find">
-			<div><code class="docheading">find( query )</code></div>
-			<p>
-				Querying a collection can be done in a mongo style by passing an object literal.<br>
-				<code>find()</code> is used for 
-				querying a single field in the documents, for more complex queries use <a href="#/docs#views">views</a><br>
-				The object literal can be a simple <code>{ property : value }</code> or <code>{ property : { operator: value } }</code>, where 
-				property is the field being queried, value is the value being queried, operator is one of the comparison operators:<br>
-				<ul class="unstyled">
-					<li>$eq: equal to</li>
-					<li>$gt: greater than</li>
-					<li>$gte: greater than or equal to</li>
-					<li>$lt: less than</li>
-					<li>$lte: less than or equal to</li>
-					<li>$ne: not equal to</li>
-				</ul>
-				So for example we can query for all the children with more than two legs: <code>childrenOfLoki.find({'legs':{ '$gt' : 2 }})</code>
-				<br>If an operator is not passed, i.e. like in <code>childrenOfLoki.find({'legs' : 2})</code> then $eq is assumed.
-				<div class="codeExplanation">
-					<table class="table table-striped">
-						<tr>
-							<th>arguments</th>
-							<td>
-								<strong>query</strong>: the query object literal.<br>
-							</td>
-						</tr>
-					</table>
+
+				<div class="container-fluid" id="save">
+					<div><code class="docheading">save( filename, callback )</code></div>
+					<p>In a CommonJS environment, you can save the database to a local file and provide a callback handler.<br>
+						This method also has the alias <code>saveToDisk( filename, callback)</code>.
+					</p>
+					<div class="codeExplanation">
+						<table class="table table-striped">
+							<tr>
+								<th>arguments</th>
+								<td>
+									<strong>filename</strong>: the name of the file to save the database to.<br>
+									<strong>callback</strong>: the callback handler
+								</td>
+							</tr>
+						</table>
+					</div>
 				</div>
-			</p>
-		</div>
 
-		<h2>Querying: Views and MapReduce</h2>
-		<div class="container-fluid" id="views">
-			<div><code class="docheading">view( fun )</code></div>
-			<p>
-				Querying a collection can be done in a couchdb style by using views.<br>
-				A view function can be used on-the-fly by passing a function, or they can be stored for later use in the collection (see <a href="#/docs#storeView">storeView</a>). If the argument is a string then the collection looks for a stored view function in the collection itself to be used as the filter function. Otherwise it expects a normal javascript function.
-
-				There's two rules to the view function: it takes an object argument and it has to return a boolean. If the result is true than the record will be included in the resultset, if the result is false it will not.
-				So for example, we can search the database for all users with an age greater than 30 and whose first language is English this way:
-				<code>var resultSet = users.view( function( obj ){ return obj.age > 30 && obj.firstLanguage == 'English'; });</code>
-
-				<div class="codeExplanation">
-					<table class="table table-striped">
-						<tr>
-							<th>arguments</th>
-							<td>
-								<strong>fun</strong>: the name of the view to be called or the function itself.<br>
-							</td>
-						</tr>
-						<tr>
-							<th>returns</th>
-							<td>
-								<strong>result</strong>: array of matching records.
-							</td>
-						</tr>
-					</table>
+				<h2>Document class</h2>
+				<div class="container-fluid" id="document">
+					<p>
+						A document is just a json object. Once saved the document gets an id and objType property equal to that of the collection the document belongs to.
+					</p>
 				</div>
-			</p>
-		</div>
 
-		<div class="container-fluid" id="storeView">
-			<div><code class="docheading">storeView( name, fun )</code></div>
-			<p>
-				Stores a view function with a name for reusability.
-				I.e. <code>users.storeView('ageAndLanguageView', function( obj ){ return obj.age > 30 && obj.firstLanguage == 'English'; });
-			</code><br>
-				The call it like so: <code>var resultSet = users.view('ageAndLanguageView')</code>
-				<div class="codeExplanation">
-					<table class="table table-striped">
-						
-						<tr>
-							<th>arguments</th>
-							<td>
-								<strong>name</strong>: the name of the view<br>
-								<strong>fun</strong>: the function itself obeying the two rules (obj param and boolean result).<br>
-							</td>
-						</tr>
+				<h2>Collection class</h2>
 
-						<tr>
-							<th>returns</th>
-							<td>
-								<strong>result</strong>: array of matching records.
-							</td>
-						</tr>
-					</table>
+				<div class="container-fluid" id="document">
+					<div><code class="docheading">insert( obj )</code></div>
+					<p>
+						Each record in the database is a document. A document is created through the <code>document()</code> method of the collection class. You can take any object and store it in the collection. While like all nosql databases there's no rule on how documents should be structured it just is good practice to put documents with identical structures in the same collection.
+						<br>This method also has an alias <code>document( obj )</code><br>
+						For example:<br>
+						<code>childrenOfLoki.document({name:'Sleipnir', legs: 8});</code>
+
+						<div class="codeExplanation">
+							<table class="table table-striped">
+								<tr>
+									<th>arguments</th>
+									<td>
+										<strong>obj</strong>: the document to be saved in the collection.<br>
+									</td>
+								</tr>
+								<tr>
+									<th>returns</th>
+									<td>
+										<strong>document</strong>: the document with an automatically generated id.
+									</td>
+								</tr>
+							</table>
+						</div>
+					</p>
 				</div>
-			</p>
-		</div>
 
-		<div class="container-fluid" id="mapReduce">
-			<div><code class="docheading">mapReduce( mapFun, reduceFun )</code></div>
-			<p>
-				Map reduce works with two functions, the map function and the reduce function.
-				You can return whatever you want from the map function, and the result will be stored in an array which will be passed in the reduce function.
-				For example we can find the average age of the users in the database by creating a map function:<br>
+				<div class="container-fluid" id="addmany">
+					<div><code class="docheading">addMany( args )</code></div>
+					<p>Same as <code>document()</code>, simply pass as many documents as you wish and they'll all be inserted in a batch operation.</p>
+					<div class="codeExplanation">
+						<table class="table table-striped">
+							<tr>
+								<th>arguments</th>
+								<td>
+									<strong>args</strong>: the documents to be saved in the collection.<br>
+								</td>
+							</tr>
+						</table>
+					</div>
+				</div>
+
+				<div class="container-fluid" id="update">
+					<div><code class="docheading">update( obj )</code></div>
+					<p>
+						Updating the document is done by simply updating the properties of a document as the collection only holds a reference to the original object. When you call update on an object though you force a resync of the indexes of the collection.
+
+						<div class="codeExplanation">
+							<table class="table table-striped">
+								<tr>
+									<th>arguments</th>
+									<td>
+										<strong>obj</strong>: the document to be updated in the collection.<br>
+									</td>
+								</tr>
+								<tr>
+									<th>returns</th>
+									<td>
+										<strong>document</strong>: the document itself.
+									</td>
+								</tr>
+							</table>
+						</div>
+					</p>
+				</div>
+
+				<div class="container-fluid" id="remove">
+					<div><code class="docheading">remove( obj )</code></div>
+					<p>
+						Removes a document from the collection.
+						<div class="codeExplanation">
+							<table class="table table-striped">
+								<tr>
+									<th>arguments</th>
+									<td>
+										<strong>obj</strong>: the document to be removed from the collection.<br>
+									</td>
+								</tr>
+							</table>
+						</div>
+					</p>
+				</div>
+
+				<h3>Finding documents</h3>
+				<div class="container-fluid" id="get">
+					<div><code class="docheading">get( id )</code></div>
+					<p>
+						You can get a specific document by its id and avail of the faster binary search algorithm used on the id index.
+						<div class="codeExplanation">
+							<table class="table table-striped">
+								<tr>
+									<th>arguments</th>
+									<td>
+										<strong>id</strong>: the id of the document to be retrieved.<br>
+									</td>
+								</tr>
+								<tr>
+									<th>returns</th>
+									<td>
+										the document itself or null if the document is not found.
+									</td>
+								</tr>
+							</table>
+						</div>
+					</p>
+				</div>
+
+				<div class="container-fluid" id="find">
+					<div><code class="docheading">find( query )</code></div>
+					<p>
+						Querying a collection can be done in a mongo style by passing an object literal.<br>
+						<code>find()</code> is used for 
+						querying a single field in the documents, for more complex queries use <a href="#/docs#views">views</a><br>
+						The object literal can be a simple <code>{ property : value }</code> or <code>{ property : { operator: value } }</code>, where 
+						property is the field being queried, value is the value being queried, operator is one of the comparison operators:<br>
+						<ul class="unstyled">
+							<li>$eq: equal to</li>
+							<li>$gt: greater than</li>
+							<li>$gte: greater than or equal to</li>
+							<li>$lt: less than</li>
+							<li>$lte: less than or equal to</li>
+							<li>$ne: not equal to</li>
+						</ul>
+						So for example we can query for all the children with more than two legs: <code>childrenOfLoki.find({'legs':{ '$gt' : 2 }})</code>
+						<br>If an operator is not passed, i.e. like in <code>childrenOfLoki.find({'legs' : 2})</code> then $eq is assumed.
+						<div class="codeExplanation">
+							<table class="table table-striped">
+								<tr>
+									<th>arguments</th>
+									<td>
+										<strong>query</strong>: the query object literal.<br>
+									</td>
+								</tr>
+							</table>
+						</div>
+					</p>
+				</div>
+
+				<h2>Querying: Views and MapReduce</h2>
+				<div class="container-fluid" id="views">
+					<div><code class="docheading">view( fun )</code></div>
+					<p>
+						Querying a collection can be done in a couchdb style by using views.<br>
+						A view function can be used on-the-fly by passing a function, or they can be stored for later use in the collection (see <a href="#/docs#storeView">storeView</a>). If the argument is a string then the collection looks for a stored view function in the collection itself to be used as the filter function. Otherwise it expects a normal javascript function.
+
+						There's two rules to the view function: it takes an object argument and it has to return a boolean. If the result is true than the record will be included in the resultset, if the result is false it will not.
+						So for example, we can search the database for all users with an age greater than 30 and whose first language is English this way:
+						<code>var resultSet = users.view( function( obj ){ return obj.age > 30 && obj.firstLanguage == 'English'; });</code>
+
+						<div class="codeExplanation">
+							<table class="table table-striped">
+								<tr>
+									<th>arguments</th>
+									<td>
+										<strong>fun</strong>: the name of the view to be called or the function itself.<br>
+									</td>
+								</tr>
+								<tr>
+									<th>returns</th>
+									<td>
+										<strong>result</strong>: array of matching records.
+									</td>
+								</tr>
+							</table>
+						</div>
+					</p>
+				</div>
+
+		<!--
+Collection class  ----------
+
+chain()
+Returns an unfiltered Resultset class which supports chained queries (see
+
+resultset).
+
+
+ensureIndex(property)
+(Should probably document this or alias it for user)
+
+
+addDynamicView(name [, persistent])
+name : name of the dynamic view
+persistent : (optional) boolean indicating if you want this view to be
+
+persistent. Persistent views store a copy of the results in an internal
+
+array for optimal read speeds.
+
+Establishes a dynamic view for a collection.
+var lgView = childrenOfLoki.addDynamicView("legs");
+legsView.applyFind({'legs':{ '$gt' : 2 }});
+
+
+removeDynamicView(name) : removes a dynamic view from the collection
+name : name of the dynamic view to remove
+
+
+getDynamicView(name) : retrieves a reference a dynamic view by that name
+name : name of the dynamic view you want to retrieve
+
+-->
+<div class="container-fluid" id="resultset">
+<div><code class="docheading">ResultSet</code></div>
+<p>
+The resultset class establishes a 'state' for queries and allows mixing and chaining of various operations together.  It provides the user with the 
+ability to use a fluent-like syntax for expressing query, sorting, and paging criteria.
+
+
+<code class="docheading">.find(query)</code> : similar to collection.find(), pass in a mongo-like query expression to filter results
+<br />
+Example:
+<code>
 <pre>
+    results.find({'legs':{ '$gt' : 2 }});
+</pre>
+</code>
+
+<code class="docheading">.where(fun)</code> : similar to collection.view(), pass in a function to filter results
+<br />
+Example:
+<code>
+<pre>
+    results.where(function( obj ){ return obj.age > 30 && obj.firstLanguage == 'English'; });
+</pre>
+</code>
+
+
+<code class="docheading">.sort(comparefun)</code> : allows you to supply your own compare function to sort the results
+
+comparefun : a javascript function used to compare two objects to determine order for sorting.
+
+Example:
+<code>
+<pre>
+    results.sort( function(obj1, obj2) {
+     if (obj1.name == obj2.name) return 0;
+        if (obj1.name > obj2.name) return 1;
+        if (obj1.name < obj2.name) return -1;
+    });
+</pre>
+</code>
+ 
+
+<code class="docheading">.simplesort(propname [, isdesc])</code>: allows you to specify a sort based on a property name
+
+propname : name of property to sort on<br />
+isdesc : (optional) boolean used to indicate sort descending (default: false)
+<br />
+Example:
+<code><pre>
+    results.simplesort("legs");
+</pre></code>
+ 
+
+<code class="docheading">.data()</code>: terminates chain and returns results as an array of documents
+<code class="docheading">.copy()</code>: creates a clone of the resultset for query forking
+<code class="docheading">.limit(qty)</code> : limit the number of documents passed through the chain
+
+qty : number of results to limit results to
+<code class="docheading">.offset(pos)</code>: skips a number of documents passed through the chain
+<br />
+pos : starting position to return results of
+<br />
+Combined Example:
+<code><pre>    results.offset(10).limit(5).data();</pre></code>
+</p>
+</div>
+
+<div class="container-fluid" id="storeView">
+
+	
+	<div><code class="docheading">addDynamicView(name [, persistent])</code></div>
+	<p>
+
+		The DynamicView class allows for 'live', optionally persistent views. It supports multiple 'find' and 'where' filters and a single sort criteria. 
+		Changes to documents within the collection are automatically evaluated for addition or removal from the view.  DynamicViews are specific to each
+		collection and are serialized along with the database.
+		<br />
+		name : name of the dynamic view
+		<br />
+		persistent : (optional) boolean indicating if you want this view to be persistent. Persistent views store a copy of the results in an internal array for optimal read speeds
+		<br />
+		<code class="docheading">.applySort(comparefun)</code> : allows you to supply your own compare function to sort the results
+		<br />
+		comparefun : a javascript function used to compare two objects to determine order for sorting.
+		<br />
+		Example:
+	<code>
+	<pre>
+	dynView.applySort( function(obj1, obj2) {
+			if (obj1.name == obj2.name) return 0;
+			if (obj1.name > obj2.name) return 1;
+			if (obj1.name < obj2.name) return -1;
+		});
+	</pre>
+	</code>
+
+
+	
+	<code class="docheading">.applySimpleSort(propname [, isdesc])</code>: allows you to specify a sort based	on a property name
+	<br />
+	<code>propname</code> : name of property to sort on
+	<br />
+	<code>isdesc</code>: (optional) boolean used to indicate sort descending (default:
+
+	Example<br />
+	<code class="docheading">dynView.applySimpleSort("legs");</code>
+	
+	<code class="docheading">.applyFind(query)</code>: adds a mongo-like query filter to the DynamicView filter pipeline
+	<br />
+	Example<br />
+	<code>dynView.applyFind({'legs':{ '$gt' : 2 }});</code>
+	<br />
+	<code class="docheading">.applyWhere(fun)</code>: adds a javascript filter function to the DynamicView filter pipeline
+	<br />
+	Example:
+	<code>dynView.applyWhere(function( obj ){ return obj.age > 30 && obj.firstLanguage == 'English'; });</code>
+	
+	<code class="docheading">.data()</code>: resolves any pending filtering and sorting and returns results as
+	an array of documents
+	
+</p>
+</div>
+
+<div class="container-fluid" id="mapReduce">
+	<div><code class="docheading">mapReduce( mapFun, reduceFun )</code></div>
+	<p>
+		Map reduce works with two functions, the map function and the reduce function.
+		You can return whatever you want from the map function, and the result will be stored in an array which will be passed in the reduce function.
+		For example we can find the average age of the users in the database by creating a map function:<br>
+		<pre>
 function mapFun(obj){
 	return obj.age;
 }
-</pre>
-				Then we create the function that will process the obtained resultset:<br>
-<pre>
+	</pre>
+	Then we create the function that will process the obtained resultset:<br>
+	<pre>
 function reduceFun(array){
-  var len = array.length;
-  var i = len;
-  var cumulator = 0;
-  while(i--){
-      cumulator += array[i];
-  }
-  return cumulator / len;
+	var len = array.length;
+	var i = len;
+	var cumulator = 0;
+	while(i--){
+		cumulator += array[i];
+	}
+	return cumulator / len;
 }
 </pre>
-				Lastly, we call <code>var avgAge = users.mapReduce(mapFun, reduceFun);</code>
+Lastly, we call <code>var avgAge = users.mapReduce(mapFun, reduceFun);</code>
 
-				<div class="codeExplanation">
-					<table class="table table-striped">
-						
-						<tr>
-							<th>arguments</th>
-							<td>
-								<strong>mapFun</strong>: map function<br>
-								<strong>reduceFun</strong>: reduce function<br>
-							</td>
-						</tr>
+<div class="codeExplanation">
+	<table class="table table-striped">
 
-						<tr>
-							<th>returns</th>
-							<td>
-								<strong>result</strong>: the result produced by the reduce function, usually a scalar value or a single object.
-							</td>
-						</tr>
-					</table>
-				</div>
+		<tr>
+			<th>arguments</th>
+			<td>
+				<strong>mapFun</strong>: map function<br>
+				<strong>reduceFun</strong>: reduce function<br>
+			</td>
+		</tr>
 
-			</p>
-		</div>
+		<tr>
+			<th>returns</th>
+			<td>
+				<strong>result</strong>: the result produced by the reduce function, usually a scalar value or a single object.
+			</td>
+		</tr>
+	</table>
+</div>
 
-		<div class="container-fluid" id="properties">
-			<h3>Collection Properties</h3>
-			<p>Collection properties documentation coming soon...</p>
-		</div>
+</p>
+</div>
 
-	</div>
+<div class="container-fluid" id="properties">
+	<h3>Collection Properties</h3>
+	<p>Collection properties documentation coming soon...</p>
+</div>
+
+</div>
 </div>
