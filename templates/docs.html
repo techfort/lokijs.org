@@ -21,13 +21,13 @@
 			<li class="nav-header">Finding documents</li>
 			<li><a href="#/docs#get">Get</a></li>
 			<li><a href="#/docs#find">Simple query</a></li>
-			<li class="nav-header">Querying: Views and MapReduce</li>
+			<li class="nav-header">Querying: ResultSet, DynamicViews and MapReduce</li>
 			<li><a href="#/docs#resultset">ResultSet (FLuent API)</a></li>
 			<li><a href="#/docs#views">Creating dynamic views and storing them</a></li>
 			<li><a href="#/docs#mapreduce">Map Reduce</a></li>
 			<li><a href="#/docs#properties">Collection properties</a></li>
 
-			<li class="nav-header">Events</li>
+			<li class="nav-header">Events and Event Listeners</li>
 			<li><a href="#/docs#collectionevents">Events</a></li>
 
 		</ul>
@@ -175,7 +175,7 @@
 								<tr>
 									<th>arguments</th>
 									<td>
-										<strong>obj</strong>: the document to be saved in the collection.<br>
+										<strong>obj</strong>: the document to be saved in the collection, or an array of objects
 									</td>
 								</tr>
 								<tr>
@@ -189,21 +189,6 @@
 					</p>
 				</div>
 
-				<div class="container-fluid" id="addmany">
-					<div><code class="docheading">addMany( args )</code></div>
-					<p>Same as <code>document()</code>, simply pass as many documents as you wish and they'll all be inserted in a batch operation.</p>
-					<div class="codeExplanation">
-						<table class="table table-striped">
-							<tr>
-								<th>arguments</th>
-								<td>
-									<strong>args</strong>: the documents to be saved in the collection.<br>
-								</td>
-							</tr>
-						</table>
-					</div>
-				</div>
-
 				<div class="container-fluid" id="update">
 					<div><code class="docheading">update( obj )</code></div>
 					<p>
@@ -214,7 +199,7 @@
 								<tr>
 									<th>arguments</th>
 									<td>
-										<strong>obj</strong>: the document to be updated in the collection.<br>
+										<strong>obj</strong>: the document to be updated in the collection, or an array of objects
 									</td>
 								</tr>
 								<tr>
@@ -300,7 +285,22 @@
 					</p>
 				</div>
 
-				<h2>Querying: Views and MapReduce</h2>
+				<div><code class="docheading">chain( )</code></div>
+				<p>Returns an unfiltered Resultset class which supports chained queries (see <a href="#resultset">resultset</a>).</p>
+				<div class="codeExplanation">
+					<table class="table table-striped">
+						<tr>
+							<th>arguments</th>
+							<td>
+								none.
+							</td>
+						</tr>
+					</table>
+				</div>
+
+
+				<h2>Querying: ResultSet, DynamicViews and MapReduce</h2>
+				<!--
 				<div class="container-fluid" id="views">
 					<div><code class="docheading">view( fun )</code></div>
 					<p>
@@ -329,14 +329,13 @@
 						</div>
 					</p>
 				</div>
+				-->
 
 		<!--
 Collection class  ----------
 
 chain()
-Returns an unfiltered Resultset class which supports chained queries (see
 
-resultset).
 
 
 ensureIndex(property)
@@ -364,140 +363,307 @@ getDynamicView(name) : retrieves a reference a dynamic view by that name
 name : name of the dynamic view you want to retrieve
 
 -->
-<div class="container-fluid" id="resultset">
-<div><code class="docheading">ResultSet</code></div>
-<p>
-The resultset class establishes a 'state' for queries and allows mixing and chaining of various operations together.  It provides the user with the 
-ability to use a fluent-like syntax for expressing query, sorting, and paging criteria.
+<div class="container-fluid">
+	<h2 id="resultset">ResultSet</h2>
+	The resultset class establishes a 'state' for queries and allows mixing and chaining of various operations together.  It provides the user with the 
+	ability to use a fluent-like syntax for expressing query, sorting, and paging criteria.
+	<code class="docheading">.find(query)</code>
+	<p>similar to collection.find(), pass in a mongo-like query expression to filter results</p>
+	<br />
+	Example:
+	<div>
+		<code>results.find({'legs':{ '$gt' : 2 }});</code>
+	</div>
+	<div class="codeExplanation">
+		<table class="table table-striped">
+			<tr>
+				<th>arguments</th>
+				<td>
+					<strong>query</strong>: mongo-like query
+				</td>
+			</tr>
+			<tr>
+				<th>returns</th>
+				<td>
+					<strong>result</strong>: resultset object that is chainable
+				</td>
+			</tr>
+		</table>
+	</div>
+	<div>
 
+	<div><code class="docheading">.where(fun)</code></div>
+		<p>similar to collection.view(), pass in a function to filter results</p>
 
-<code class="docheading">.find(query)</code> : similar to collection.find(), pass in a mongo-like query expression to filter results
-<br />
-Example:
-<code>
-<pre>
-    results.find({'legs':{ '$gt' : 2 }});
-</pre>
-</code>
-
-<code class="docheading">.where(fun)</code> : similar to collection.view(), pass in a function to filter results
-<br />
-Example:
-<code>
-<pre>
-    results.where(function( obj ){ return obj.age > 30 && obj.firstLanguage == 'English'; });
-</pre>
-</code>
-
-
-<code class="docheading">.sort(comparefun)</code> : allows you to supply your own compare function to sort the results
-
-comparefun : a javascript function used to compare two objects to determine order for sorting.
-
-Example:
-<code>
-<pre>
-    results.sort( function(obj1, obj2) {
-     if (obj1.name == obj2.name) return 0;
-        if (obj1.name > obj2.name) return 1;
-        if (obj1.name < obj2.name) return -1;
-    });
-</pre>
-</code>
- 
-
-<code class="docheading">.simplesort(propname [, isdesc])</code>: allows you to specify a sort based on a property name
-
-propname : name of property to sort on<br />
-isdesc : (optional) boolean used to indicate sort descending (default: false)
-<br />
-Example:
-<code><pre>
-    results.simplesort("legs");
-</pre></code>
- 
-
-<code class="docheading">.data()</code>: terminates chain and returns results as an array of documents
-<code class="docheading">.copy()</code>: creates a clone of the resultset for query forking
-<code class="docheading">.limit(qty)</code> : limit the number of documents passed through the chain
-
-qty : number of results to limit results to
-<code class="docheading">.offset(pos)</code>: skips a number of documents passed through the chain
-<br />
-pos : starting position to return results of
-<br />
-Combined Example:
-<code><pre>    results.offset(10).limit(5).data();</pre></code>
-</p>
-</div>
-
-<div class="container-fluid" id="storeView">
-
-	
-	<div><code class="docheading">addDynamicView(name [, persistent])</code></div>
-	<p>
-
-		The DynamicView class allows for 'live', optionally persistent views. It supports multiple 'find' and 'where' filters and a single sort criteria. 
-		Changes to documents within the collection are automatically evaluated for addition or removal from the view.  DynamicViews are specific to each
-		collection and are serialized along with the database.
-		<br />
-		name : name of the dynamic view
-		<br />
-		persistent : (optional) boolean indicating if you want this view to be persistent. Persistent views store a copy of the results in an internal array for optimal read speeds
-		<br />
-		<code class="docheading">.applySort(comparefun)</code> : allows you to supply your own compare function to sort the results
-		<br />
-		comparefun : a javascript function used to compare two objects to determine order for sorting.
 		<br />
 		Example:
-	<code>
-	<pre>
-	dynView.applySort( function(obj1, obj2) {
+		<div>
+			<code>
+				results.where(function( obj ){ return obj.age > 30 && obj.firstLanguage == 'English'; });
+			</code>
+		</div>
+		<div class="codeExplanation">
+			<table class="table table-striped">
+				<tr>
+					<th>arguments</th>
+					<td>
+						<strong>func</strong>: filter function
+					</td>
+				</tr>
+				<tr>
+					<th>returns</th>
+					<td>
+						<strong>result</strong>: resultset object that is chainable
+					</td>
+				</tr>
+			</table>
+		</div>
+
+	</div>
+
+
+	<div><code class="docheading">.sort(comparefun)</code></div>
+<p>allows you to supply your own compare function to sort the results.</p>
+<div>Example:<div><code><pre>
+			results.sort( function(obj1, obj2) {
 			if (obj1.name == obj2.name) return 0;
 			if (obj1.name > obj2.name) return 1;
 			if (obj1.name < obj2.name) return -1;
 		});
 	</pre>
 	</code>
+	</div>
+	</div>
+	<div class="codeExplanation">
+			<table class="table table-striped">
+				<tr>
+					<th>arguments</th>
+					<td>
+						<strong>copmarefun</strong>: a javascript function used to compare two objects to determine order for sorting.
+					</td>
+				</tr>
+				<tr>
+					<th>returns</th>
+					<td>
+						<strong>result</strong>: resultset object that is chainable
+					</td>
+				</tr>
+			</table>
+		</div>
+
+
+
+<div><code class="docheading">.simplesort(propname [, isdesc])</code></div>
+<p>allows you to specify a sort based on a property name</p>
+Example:
+<div>
+<code><pre>results.simplesort("legs");</pre></code>
+</div>
+<div class="codeExplanation">
+	<table class="table table-striped">
+		<tr>
+			<th>arguments</th>
+			<td>
+				<strong>propname</strong>: name of property to sort on<br />
+				<strong>isdesc</strong>: (optional) boolean used to indicate sort descending (default: false)
+			</td>
+		</tr>
+		<tr>
+			<th>returns</th>
+			<td>
+				<strong>result</strong>: resultset object that is chainable
+			</td>
+		</tr>
+	</table>
+</div>
+
+<div><code class="docheading">.update(fun)</code></div>
+		<p>update all objects in a resultset</p>
+		Example:
+		<div>
+			<code>
+				results.update(function( obj ){ return obj.legs += 1; });
+			</code>
+		</div>
+		<div class="codeExplanation">
+			<table class="table table-striped">
+				<tr>
+					<th>arguments</th>
+					<td>
+						<strong>fun</strong>: update function
+					</td>
+				</tr>
+				<tr>
+					<th>returns</th>
+					<td>
+						<strong>result</strong>: resultset object that is chainable
+					</td>
+				</tr>
+			</table>
+		</div>
+
+		<div><code class="docheading">.remove()</code></div>
+		<p>remove all objects in a resultset</p>
+	
+		<div class="codeExplanation">
+			<table class="table table-striped">
+				<tr>
+					<th>arguments</th>
+					<td>
+						none.
+					</td>
+				</tr>
+				
+			</table>
+		</div>
+<!--
+	</div>
+-->
+<div><code class="docheading">.data()</code></div><p>terminates chain and returns results as an array of documents</p>
+<div><code class="docheading">.copy()</code></div><p>creates a clone of the resultset for query forking</p>
+<div><code class="docheading">.limit(qty)</code></div><p>limit the number of documents passed through the chain</p>
+<div class="codeExplanation">
+	<table class="table table-striped">
+		<tr>
+			<th>arguments</th>
+			<td>
+				<strong>qty</strong>: number of results to limit results to
+			</td>
+		</tr>
+		<tr>
+			<th>returns</th>
+			<td>
+				<strong>result</strong>: resultset object that is chainable
+			</td>
+		</tr>
+	</table>
+</div>
+
+<div><code class="docheading">.offset(pos)</code></div>
+<p>skips a number of documents passed through the chain</p>
+<div>Combined Example:</div>
+<div><code><pre>results.offset(10).limit(5).data();</pre></code></div>
+
+</div>
+<div class="codeExplanation">
+	<table class="table table-striped">
+		<tr>
+			<th>arguments</th>
+			<td>
+				<strong>pos</strong>: starting position to return results of
+			</td>
+		</tr>
+		<tr>
+			<th>returns</th>
+			<td>
+				<strong>result</strong>: resultset object that is chainable
+			</td>
+		</tr>
+	</table>
+</div>
+
+
+<div class="container-fluid">
+
+	<h2 id="views">DynamicView</h2>
+	<div><code class="docheading">addDynamicView(name [, persistent])</code></div>
+	<p>
+
+		The DynamicView class allows for 'live', optionally persistent views. It supports multiple 'find' and 'where' filters and a single sort criteria. 
+		Changes to documents within the collection are automatically evaluated for addition or removal from the view.  DynamicViews are specific to each
+		collection and are serialized along with the database.
+		<div class="codeExplanation">
+			<table class="table table-striped">
+				<tr>
+					<th>arguments</th>
+					<td>
+					<strong>name</strong>: name of the dynamic view<br />
+					<strong>persistent</strong>: (optional) boolean indicating if you want this view to be persistent. Persistent views store a copy of the results in an internal array for optimal read speeds
+					</td>
+				</tr>
+				<tr>
+					<th>returns</th>
+					<td>
+						<strong>result</strong>: a dynamicview object
+					</td>
+				</tr>
+			</table>
+		</div>
+		<code class="docheading">.applySort(comparefun)</code>
+		<p>allows you to supply your own compare function to sort the results</p>
+		Example:<div><code><pre>
+dynView.applySort( function(obj1, obj2) {
+	if (obj1.name == obj2.name) return 0;
+	if (obj1.name > obj2.name) return 1;
+	if (obj1.name < obj2.name) return -1;
+});</pre></code></div>
+			<div class="codeExplanation">
+	<table class="table table-striped">
+		<tr>
+			<th>arguments</th>
+			<td>
+			<strong>comparefun</strong>: a javascript function used to compare two objects to determine order for sorting.
+			</td>
+		</tr>
+		<tr>
+			<th>returns</th>
+			<td>
+				<strong>result</strong>: a chainable dynamicview object
+			</td>
+		</tr>
+	</table>
+</div>
+
+
 
 
 	
-	<code class="docheading">.applySimpleSort(propname [, isdesc])</code>: allows you to specify a sort based	on a property name
-	<br />
-	<code>propname</code> : name of property to sort on
-	<br />
-	<code>isdesc</code>: (optional) boolean used to indicate sort descending (default:
+	<div><code class="docheading">.applySimpleSort(propname [, isdesc])</code></div>
+	 <p>allows you to specify a sort based	on a property name</p>
+	Example
+	<div><code><pre>dynView.applySimpleSort("legs");</pre></code></div>
+	<div class="codeExplanation">
+	<table class="table table-striped">
+		<tr>
+			<th>arguments</th>
+			<td>
+			<strong>propname</strong>: name of property to sort on<br />
+			<strong>isdesc</strong>: (optional) boolean used to indicate sort descending (default: false)
+			</td>
+		</tr>
+		<tr>
+			<th>returns</th>
+			<td>
+				<strong>result</strong>: a chainable dynamicview object
+			</td>
+		</tr>
+	</table>
+</div>
 
-	Example<br />
-	<code class="docheading">dynView.applySimpleSort("legs");</code>
-	
-	<code class="docheading">.applyFind(query)</code>: adds a mongo-like query filter to the DynamicView filter pipeline
-	<br />
-	Example<br />
-	<code>dynView.applyFind({'legs':{ '$gt' : 2 }});</code>
-	<br />
-	<code class="docheading">.applyWhere(fun)</code>: adds a javascript filter function to the DynamicView filter pipeline
-	<br />
-	Example:
-	<code>dynView.applyWhere(function( obj ){ return obj.age > 30 && obj.firstLanguage == 'English'; });</code>
-	
-	<code class="docheading">.data()</code>: resolves any pending filtering and sorting and returns results as
-	an array of documents
-	
+<div><code class="docheading">.applyFind(query)</code></div>
+<p>adds a mongo-like query filter to the DynamicView filter pipeline</p>
+Example
+<div><code>dynView.applyFind({'legs':{ '$gt' : 2 }});</code></div>
+
+<div><code class="docheading">.applyWhere(fun)</code></div>
+<p>adds a javascript filter function to the DynamicView filter pipeline</p>
+Example
+<div><code>dynView.applyWhere(function( obj ){ return obj.age > 30 && obj.firstLanguage == 'English'; });</code></div>
+
+<div><code class="docheading">.data()</code></div>
+<p>resolves any pending filtering and sorting and returns results as an array of documents</p>
 </p>
 </div>
 
 <div class="container-fluid" id="mapReduce">
 	<div><code class="docheading">mapReduce( mapFun, reduceFun )</code></div>
-	<p>
-		Map reduce works with two functions, the map function and the reduce function.
+	<p>Map reduce works with two functions, the map function and the reduce function.
 		You can return whatever you want from the map function, and the result will be stored in an array which will be passed in the reduce function.
-		For example we can find the average age of the users in the database by creating a map function:<br>
-		<pre>
+		For example we can find the average age of the users in the database by creating a map function:
+<pre>
 function mapFun(obj){
 	return obj.age;
-}
-	</pre>
+}</pre>
 	Then we create the function that will process the obtained resultset:<br>
 	<pre>
 function reduceFun(array){
@@ -541,4 +707,25 @@ Lastly, we call <code>var avgAge = users.mapReduce(mapFun, reduceFun);</code>
 </div>
 
 </div>
+</div>
+</div>
+
+<h2 id="collectionevents">Events and Event Listeners</h2>
+<div>Database and Collection emit events.
+<p>Listeners can be associated to an event with the familiar construct method <code>on(eventName, listener)</code>
+</p>
+<p>Database emits 'close' events, so that processing such as backing the database up can be performed before the database is closed.</p>
+<p>Collection emits the following events:
+<ul>
+<li>pre-insert</li>
+<li>insert</li>
+<li>pre-update</li>
+<li>update</li>
+<li>delete</li>
+<li>error</li>
+<li>flushbuffer (not currently used)</li>
+</ul>
+
+<p>'pre-insert' and 'pre-update' events are emitted before operating an insert or an update, 'insert' and 'update' after an insert or an update, 'error' when an error is thrown, and 'delete' when an object is removed.
+</p>
 </div>
