@@ -76,7 +76,7 @@
 				<div class="container-fluid" id="addCollection">
 					<div><code class="docheading">addCollection( name [, indicesArray, transactional ] )</code></div>
 					<p>
-						Creating a collection is done through the addCollection method, i.e. <code>var lokisChildren = db.addCollection('Children','Child');</code><br>
+						Creating a collection is done through the addCollection method, i.e. <code>var lokisChildren = db.addCollection('Children');</code><br>
 						The arguments are the collection name and an arbitrary object type name which will be associated to all documents in the collection as a simple reference, so not to attempt updates of a document belonging to collection A into collection B. As of now a document can only belong to one collection.
 						Collections support indexing: the id field is automatically populated and automatically indexed. This is - as of now - the only index benefitting from a binary search algorithm for fast access of records. Other indexes are scanned sequentially but still much faster than scanning the entire collection of objects.
 					</p>
@@ -87,11 +87,8 @@
 								<th>arguments</th>
 								<td>
 									<strong>name</strong>: collection name<br>
-									<strong>objType</strong>: a string defining the object type. Think it as a class name.<br>
 									<strong>indicesArray</strong>: an array of strings defining the properties to be indexed in the collection.<br>
-									<strong>transactional</strong>: (experimental) if this flag is set to true, then inserts, updates and deletes are performed in a transactional fashion. If something goes wrong during the transaction the database rolls back to the state before the transaction started.<br>
-									<strong>safeMode</strong>: (experimental) if this flag is set to true then inserts, updates and deletes are preceded and followed by user-defined handlers, and errors caught by a user-defined error handler.
-
+									<strong>transactional</strong>: (experimental) if this flag is set to true, then inserts, updates and deletes are performed in a transactional fashion. If something goes wrong during the transaction the database rolls back to the state before the transaction started. This feature is currently being developed so it is not officialy supported at the moment.<br>
 								</td>
 							</tr>
 							<tr>
@@ -168,8 +165,9 @@
 						Each record in the database is a document. A document is created through the <code>document()</code> method of the collection class. You can take any object and store it in the collection. While like all nosql databases there's no rule on how documents should be structured it just is good practice to put documents with identical structures in the same collection.
 						<br>This method also has an alias <code>document( obj )</code><br>
 						For example:<br>
-						<code>childrenOfLoki.document({name:'Sleipnir', legs: 8});</code>
-
+						<code>childrenOfLoki.document({ name:'Sleipnir', legs: 8 });</code>
+						<br />or<br />
+						<code>childrenOfLoki.document([{ name:'Sleipnir', legs: 8 }, { name: 'Fenrir', legs: 4 }]);</code>
 						<div class="codeExplanation">
 							<table class="table table-striped">
 								<tr>
@@ -269,6 +267,8 @@
 							<li>$lt: less than</li>
 							<li>$lte: less than or equal to</li>
 							<li>$ne: not equal to</li>
+							<li>$contains: contains</li>
+							<li>$regex: use a regex pattern for matching</li>
 						</ul>
 						So for example we can query for all the children with more than two legs: <code>childrenOfLoki.find({'legs':{ '$gt' : 2 }})</code>
 						<br>If an operator is not passed, i.e. like in <code>childrenOfLoki.find({'legs' : 2})</code> then $eq is assumed.
@@ -299,70 +299,7 @@
 				</div>
 
 
-				<h2>Querying: ResultSet, DynamicViews and MapReduce</h2>
-				<!--
-				<div class="container-fluid" id="views">
-					<div><code class="docheading">view( fun )</code></div>
-					<p>
-						Querying a collection can be done in a couchdb style by using views.<br>
-						A view function can be used on-the-fly by passing a function, or they can be stored for later use in the collection (see <a href="#/docs#storeView">storeView</a>). If the argument is a string then the collection looks for a stored view function in the collection itself to be used as the filter function. Otherwise it expects a normal javascript function.
-
-						There's two rules to the view function: it takes an object argument and it has to return a boolean. If the result is true than the record will be included in the resultset, if the result is false it will not.
-						So for example, we can search the database for all users with an age greater than 30 and whose first language is English this way:
-						<code>var resultSet = users.view( function( obj ){ return obj.age > 30 && obj.firstLanguage == 'English'; });</code>
-
-						<div class="codeExplanation">
-							<table class="table table-striped">
-								<tr>
-									<th>arguments</th>
-									<td>
-										<strong>fun</strong>: the name of the view to be called or the function itself.<br>
-									</td>
-								</tr>
-								<tr>
-									<th>returns</th>
-									<td>
-										<strong>result</strong>: array of matching records.
-									</td>
-								</tr>
-							</table>
-						</div>
-					</p>
-				</div>
-			-->
-
-		<!--
-Collection class  ----------
-
-chain()
-
-
-
-ensureIndex(property)
-(Should probably document this or alias it for user)
-
-
-addDynamicView(name [, persistent])
-name : name of the dynamic view
-persistent : (optional) boolean indicating if you want this view to be
-
-persistent. Persistent views store a copy of the results in an internal
-
-array for optimal read speeds.
-
-Establishes a dynamic view for a collection.
-var lgView = childrenOfLoki.addDynamicView("legs");
-legsView.applyFind({'legs':{ '$gt' : 2 }});
-
-
-removeDynamicView(name) : removes a dynamic view from the collection
-name : name of the dynamic view to remove
-
-
-getDynamicView(name) : retrieves a reference a dynamic view by that name
-name : name of the dynamic view you want to retrieve
-
--->
+				<h2>ResultSet, DynamicViews and MapReduce</h2>
 <div class="container-fluid">
 	<h2 id="resultset">ResultSet</h2>
 	The resultset class establishes a 'state' for queries and allows mixing and chaining of various operations together.  It provides the user with the 
@@ -393,9 +330,8 @@ name : name of the dynamic view you want to retrieve
 	<div>
 
 		<div><code class="docheading">.where(fun)</code></div>
-		<p>similar to collection.view(), pass in a function to filter results</p>
+		<p>similar to collection.view(), pass in a function to filter results. Note that dynamicview data can be persisted, but not so the filters applied with the <code>where()</code> method.</p>
 
-		<br />
 		Example:
 		<div>
 			<code>
@@ -425,11 +361,11 @@ name : name of the dynamic view you want to retrieve
 	<div><code class="docheading">.sort(comparefun)</code></div>
 	<p>allows you to supply your own compare function to sort the results.</p>
 	<div>Example:<div><code><pre>
-		results.sort( function(obj1, obj2) {
-		if (obj1.name == obj2.name) return 0;
-		if (obj1.name > obj2.name) return 1;
-		if (obj1.name < obj2.name) return -1;
-	});
+results.sort( function(obj1, obj2) {
+  if (obj1.name == obj2.name) return 0;
+  if (obj1.name > obj2.name) return 1;
+  if (obj1.name < obj2.name) return -1;
+});
 </pre>
 </code>
 </div>
@@ -503,7 +439,7 @@ Example:
 </div>
 
 <div><code class="docheading">.remove()</code></div>
-<p>remove all objects in a resultset</p>
+<p>removes all object from the resultset and the underlying collection.</p>
 
 <div class="codeExplanation">
 	<table class="table table-striped">
@@ -520,7 +456,7 @@ Example:
 	</div>
 -->
 <div><code class="docheading">.data()</code></div><p>terminates chain and returns results as an array of documents</p>
-<div><code class="docheading">.copy()</code></div><p>creates a clone of the resultset for query forking</p>
+<div><code class="docheading">.copy()</code></div><p>creates a clone of the resultset for query branching</p>
 <div><code class="docheading">.limit(qty)</code></div><p>limit the number of documents passed through the chain</p>
 <div class="codeExplanation">
 	<table class="table table-striped">
@@ -566,12 +502,19 @@ Example:
 <div class="container-fluid">
 
 	<h2 id="views">DynamicView</h2>
-	<div><code class="docheading">addDynamicView(name [, persistent])</code></div>
+	<div><code class="docheading">collection.addDynamicView(name [, persistent])</code></div>
 	<p>
 
 		The DynamicView class allows for 'live', optionally persistent views. It supports multiple 'find' and 'where' filters and a single sort criteria. 
 		Changes to documents within the collection are automatically evaluated for addition or removal from the view.  DynamicViews are specific to each
 		collection and are serialized along with the database.
+		<br />Example:
+		<div>
+<code><pre>
+var lgView = childrenOfLoki.addDynamicView("legs");
+legsView.applyFind({'legs':{ '$gt' : 2 }});
+</pre></code>
+		</div>
 		<div class="codeExplanation">
 			<table class="table table-striped">
 				<tr>
@@ -589,14 +532,49 @@ Example:
 				</tr>
 			</table>
 		</div>
+
+		<p>
+<div><code class="docheading">collection.removeDynamicView(name)</code></div>
+<p>removes a dynamic view from the collection</p>
+<div class="codeExplanation">
+			<table class="table table-striped">
+				<tr>
+					<th>arguments</th>
+					<td>
+						<strong>name</strong>: name of the dynamic view to remove
+					</td>
+				</tr>
+				
+			</table>
+		</div>
+		</p>
+
+
+		<p>
+<div><code class="docheading">collection.getDynamicView(name)</code></div>
+<p>retrieves a reference a dynamic view by that name</p>
+<div class="codeExplanation">
+			<table class="table table-striped">
+				<tr>
+					<th>arguments</th>
+					<td>
+						<strong>name</strong>: name of the dynamic view you want to retrieve
+					</td>
+				</tr>
+				
+			</table>
+		</div>
+		</p>
+
 		<code class="docheading">.applySort(comparefun)</code>
 		<p>allows you to supply your own compare function to sort the results</p>
 		Example:<div><code><pre>
-		dynView.applySort( function(obj1, obj2) {
-		if (obj1.name == obj2.name) return 0;
-		if (obj1.name > obj2.name) return 1;
-		if (obj1.name < obj2.name) return -1;
-	});</pre></code></div>
+var dynView = coll.addDynamicView('test');
+dynView.applySort( function(obj1, obj2) {
+  if (obj1.name == obj2.name) return 0;
+  if (obj1.name > obj2.name) return 1;
+  if (obj1.name < obj2.name) return -1;
+});</pre></code></div>
 	<div class="codeExplanation">
 		<table class="table table-striped">
 			<tr>
@@ -639,17 +617,19 @@ Example:
 			</tr>
 		</table>
 	</div>
-
+<p>
 	<div><code class="docheading">.applyFind(query)</code></div>
 	<p>adds a mongo-like query filter to the DynamicView filter pipeline</p>
 	Example
 	<div><code>dynView.applyFind({'legs':{ '$gt' : 2 }});</code></div>
-
+</p>
+<p>
 	<div><code class="docheading">.applyWhere(fun)</code></div>
 	<p>adds a javascript filter function to the DynamicView filter pipeline</p>
 	Example
 	<div><code>dynView.applyWhere(function( obj ){ return obj.age > 30 && obj.firstLanguage == 'English'; });</code></div>
-
+</p>
+<p>
 	<div><code class="docheading">.data()</code></div>
 	<p>resolves any pending filtering and sorting and returns results as an array of documents</p>
 </p>
@@ -657,24 +637,24 @@ Example:
 
 <div class="container-fluid" id="mapReduce">
 	<div><code class="docheading">mapReduce( mapFun, reduceFun )</code></div>
-	<p>Map reduce works with two functions, the map function and the reduce function.
+	<p>This method is available on both Collection and ResultSet. Map reduce works with two functions, the map function and the reduce function.
 		You can return whatever you want from the map function, and the result will be stored in an array which will be passed in the reduce function.
 		For example we can find the average age of the users in the database by creating a map function:
 		<pre>
-			function mapFun(obj){
-			return obj.age;
-		}</pre>
+function mapFun(obj){
+  return obj.age;
+}</pre>
 		Then we create the function that will process the obtained resultset:<br>
 		<pre>
-			function reduceFun(array){
-			var len = array.length;
-			var i = len;
-			var cumulator = 0;
-			while(i--){
-			cumulator += array[i];
-		}
-		return cumulator / len;
-	}
+function reduceFun(array){
+  var len = array.length;
+  var i = len;
+  var cumulator = 0;
+  while(i--){
+    cumulator += array[i];
+  }
+  return cumulator / len;
+}
 </pre>
 Lastly, we call <code>var avgAge = users.mapReduce(mapFun, reduceFun);</code>
 
