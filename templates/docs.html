@@ -1,6 +1,6 @@
 <div class="container-fluid">
 	<div class="span3">
-		<ul class="nav nav-list">
+		<ul class="nav nav-list affix">
 			<li class="nav-header">Overview</li>
 			<li><a href="#/docs#overview">LokiJS overview</a></li>
 
@@ -21,7 +21,7 @@
 			<li class="nav-header">Finding documents</li>
 			<li><a href="#/docs#get">Get</a></li>
 			<li><a href="#/docs#find">Simple query</a></li>
-			<li class="nav-header">Querying: ResultSet, DynamicViews and MapReduce</li>
+			<li class="nav-header">ResultSet, DynamicViews and MapReduce</li>
 			<li><a href="#/docs#resultset">ResultSet (FLuent API)</a></li>
 			<li><a href="#/docs#views">Creating dynamic views and storing them</a></li>
 			<li><a href="#/docs#mapreduce">Map Reduce</a></li>
@@ -74,7 +74,7 @@
 				</div>
 
 				<div class="container-fluid" id="addCollection">
-					<div><code class="docheading">addCollection( name, objType [, indicesArray, transactional, safeMode ] )</code></div>
+					<div><code class="docheading">addCollection( name [, indicesArray, transactional ] )</code></div>
 					<p>
 						Creating a collection is done through the addCollection method, i.e. <code>var lokisChildren = db.addCollection('Children','Child');</code><br>
 						The arguments are the collection name and an arbitrary object type name which will be associated to all documents in the collection as a simple reference, so not to attempt updates of a document belonging to collection A into collection B. As of now a document can only belong to one collection.
@@ -257,7 +257,7 @@
 				<div class="container-fluid" id="find">
 					<div><code class="docheading">find( query )</code></div>
 					<p>
-						Querying a collection can be done in a mongo style by passing an object literal.<br>
+						Querying a collection can be done in a mongo style by passing an object literal (supports dot notation for nested properties).<br>
 						<code>find()</code> is used for 
 						querying a single field in the documents, for more complex queries use <a href="#/docs#views">views</a><br>
 						The object literal can be a simple <code>{ property : value }</code> or <code>{ property : { operator: value } }</code>, where 
