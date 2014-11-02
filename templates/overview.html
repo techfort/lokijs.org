@@ -32,7 +32,7 @@
 			If functional programming is your preferred style then you may want to create views to query your data.<br>
 			If you prefer object literals in MongoDB shell style, you can use those.<br>
 			</p>
-
+			<iframe src="//www.slideshare.net/slideshow/embed_code/40269951" width="425" height="355" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;" allowfullscreen> </iframe> <div style="margin-bottom:5px"> <strong> <a href="//www.slideshare.net/techfort/lokijs" title="Lokijs" target="_blank">Lokijs</a> </strong> from <strong><a href="//www.slideshare.net/techfort" target="_blank">Joe Minichino</a></strong> </div>
 			<iframe width="560" height="315" src="//www.youtube.com/embed/jgW23Uo-XZ8" frameborder="0" allowfullscreen></iframe>
 
 		</div>
@@ -50,12 +50,12 @@
 			<h4>Usage</h4>
 			<p>
 			Create the database:<br>
-			<code>var db = new loki('Loki')</code>
+			<code>var db = new loki('loki.json')</code>
+			<br />Pass the filename where to persist data
 			</p>
 			<p>
 			Create a collection:<br>
-			<code>var children = db.addCollection('children','Child')</code>
-			Parameters are the collection name and the object Type which is an arbitrary string
+			<code>var children = db.addCollection('children')</code>
 			</p>
 			<p>
 			Insert a document:<br>
@@ -70,6 +70,15 @@
 			<code>children.find( { legs: { '$gt' : 2 } } )</code><br>
 			</p>
 			<p>
+			<p>
+			Create a dynamic view:<br>
+			<code>var legs = children.addDynamicView('legs');</code><br> 
+			<code>legs.applyFind( { legs: { '$gt' : 2 } )</code><br>
+			<code>legs.applySimpleSort('legs');</code><br>
+			<code>legs.data();</code><br>
+			</p>
+			<p>
+
 			MapReduce:<br>
 			<pre>
 children.mapReduce( 

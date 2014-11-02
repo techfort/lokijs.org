@@ -111,9 +111,8 @@ function outstanding(obj){
   return !obj.complete;
 }
 // store the view for later usage
-todos.storeView('outstanding', outstanding);
-
-var outstanding = todos.view( 'outstanding' );
+var view = todos.addDynamicView('outstanding');
+view.applyFind(outstanding);
 						</pre>
 					</td>
 				</tr>
