@@ -63,7 +63,7 @@ img.logo { vertical-align: middle; }
 .lightgreen { background: #eef9ee;}
 
 .codeExplanation{
-	background: ##CBF76F;
+	background: #CBF76F;
 	margin: 10px;
 	
 }
@@ -73,5 +73,5 @@ code.docheading{ color: #C03233; font-size: 1.2em;}
 .striken { text-decoration: line-through; }
 
 .navbar, .hero-unit, .panel, .well { border-radius: 0px !important;}
-.hero-unit  { background: black !important; color: #999 !important;}
+.hero-unit  { background: #000 !important; color: #999 !important;}
 .hero-unit h1 { color: #999;}
