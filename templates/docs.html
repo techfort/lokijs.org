@@ -329,7 +329,7 @@
 						</div>
 					</p>
 				</div>
-				-->
+			-->
 
 		<!--
 Collection class  ----------
@@ -392,7 +392,7 @@ name : name of the dynamic view you want to retrieve
 	</div>
 	<div>
 
-	<div><code class="docheading">.where(fun)</code></div>
+		<div><code class="docheading">.where(fun)</code></div>
 		<p>similar to collection.view(), pass in a function to filter results</p>
 
 		<br />
@@ -423,33 +423,33 @@ name : name of the dynamic view you want to retrieve
 
 
 	<div><code class="docheading">.sort(comparefun)</code></div>
-<p>allows you to supply your own compare function to sort the results.</p>
-<div>Example:<div><code><pre>
-			results.sort( function(obj1, obj2) {
-			if (obj1.name == obj2.name) return 0;
-			if (obj1.name > obj2.name) return 1;
-			if (obj1.name < obj2.name) return -1;
-		});
-	</pre>
-	</code>
-	</div>
-	</div>
-	<div class="codeExplanation">
-			<table class="table table-striped">
-				<tr>
-					<th>arguments</th>
-					<td>
-						<strong>copmarefun</strong>: a javascript function used to compare two objects to determine order for sorting.
-					</td>
-				</tr>
-				<tr>
-					<th>returns</th>
-					<td>
-						<strong>result</strong>: resultset object that is chainable
-					</td>
-				</tr>
-			</table>
-		</div>
+	<p>allows you to supply your own compare function to sort the results.</p>
+	<div>Example:<div><code><pre>
+		results.sort( function(obj1, obj2) {
+		if (obj1.name == obj2.name) return 0;
+		if (obj1.name > obj2.name) return 1;
+		if (obj1.name < obj2.name) return -1;
+	});
+</pre>
+</code>
+</div>
+</div>
+<div class="codeExplanation">
+	<table class="table table-striped">
+		<tr>
+			<th>arguments</th>
+			<td>
+				<strong>copmarefun</strong>: a javascript function used to compare two objects to determine order for sorting.
+			</td>
+		</tr>
+		<tr>
+			<th>returns</th>
+			<td>
+				<strong>result</strong>: resultset object that is chainable
+			</td>
+		</tr>
+	</table>
+</div>
 
 
 
@@ -457,7 +457,7 @@ name : name of the dynamic view you want to retrieve
 <p>allows you to specify a sort based on a property name</p>
 Example:
 <div>
-<code><pre>results.simplesort("legs");</pre></code>
+	<code><pre>results.simplesort("legs");</pre></code>
 </div>
 <div class="codeExplanation">
 	<table class="table table-striped">
@@ -478,44 +478,44 @@ Example:
 </div>
 
 <div><code class="docheading">.update(fun)</code></div>
-		<p>update all objects in a resultset</p>
-		Example:
-		<div>
-			<code>
-				results.update(function( obj ){ return obj.legs += 1; });
-			</code>
-		</div>
-		<div class="codeExplanation">
-			<table class="table table-striped">
-				<tr>
-					<th>arguments</th>
-					<td>
-						<strong>fun</strong>: update function
-					</td>
-				</tr>
-				<tr>
-					<th>returns</th>
-					<td>
-						<strong>result</strong>: resultset object that is chainable
-					</td>
-				</tr>
-			</table>
-		</div>
+<p>update all objects in a resultset</p>
+Example:
+<div>
+	<code>
+		results.update(function( obj ){ return obj.legs += 1; });
+	</code>
+</div>
+<div class="codeExplanation">
+	<table class="table table-striped">
+		<tr>
+			<th>arguments</th>
+			<td>
+				<strong>fun</strong>: update function
+			</td>
+		</tr>
+		<tr>
+			<th>returns</th>
+			<td>
+				<strong>result</strong>: resultset object that is chainable
+			</td>
+		</tr>
+	</table>
+</div>
 
-		<div><code class="docheading">.remove()</code></div>
-		<p>remove all objects in a resultset</p>
-	
-		<div class="codeExplanation">
-			<table class="table table-striped">
-				<tr>
-					<th>arguments</th>
-					<td>
-						none.
-					</td>
-				</tr>
-				
-			</table>
-		</div>
+<div><code class="docheading">.remove()</code></div>
+<p>remove all objects in a resultset</p>
+
+<div class="codeExplanation">
+	<table class="table table-striped">
+		<tr>
+			<th>arguments</th>
+			<td>
+				none.
+			</td>
+		</tr>
+
+	</table>
+</div>
 <!--
 	</div>
 -->
@@ -577,8 +577,8 @@ Example:
 				<tr>
 					<th>arguments</th>
 					<td>
-					<strong>name</strong>: name of the dynamic view<br />
-					<strong>persistent</strong>: (optional) boolean indicating if you want this view to be persistent. Persistent views store a copy of the results in an internal array for optimal read speeds
+						<strong>name</strong>: name of the dynamic view<br />
+						<strong>persistent</strong>: (optional) boolean indicating if you want this view to be persistent. Persistent views store a copy of the results in an internal array for optimal read speeds
 					</td>
 				</tr>
 				<tr>
@@ -592,66 +592,66 @@ Example:
 		<code class="docheading">.applySort(comparefun)</code>
 		<p>allows you to supply your own compare function to sort the results</p>
 		Example:<div><code><pre>
-dynView.applySort( function(obj1, obj2) {
-	if (obj1.name == obj2.name) return 0;
-	if (obj1.name > obj2.name) return 1;
-	if (obj1.name < obj2.name) return -1;
-});</pre></code></div>
-			<div class="codeExplanation">
-	<table class="table table-striped">
-		<tr>
-			<th>arguments</th>
-			<td>
-			<strong>comparefun</strong>: a javascript function used to compare two objects to determine order for sorting.
-			</td>
-		</tr>
-		<tr>
-			<th>returns</th>
-			<td>
-				<strong>result</strong>: a chainable dynamicview object
-			</td>
-		</tr>
-	</table>
-</div>
+		dynView.applySort( function(obj1, obj2) {
+		if (obj1.name == obj2.name) return 0;
+		if (obj1.name > obj2.name) return 1;
+		if (obj1.name < obj2.name) return -1;
+	});</pre></code></div>
+	<div class="codeExplanation">
+		<table class="table table-striped">
+			<tr>
+				<th>arguments</th>
+				<td>
+					<strong>comparefun</strong>: a javascript function used to compare two objects to determine order for sorting.
+				</td>
+			</tr>
+			<tr>
+				<th>returns</th>
+				<td>
+					<strong>result</strong>: a chainable dynamicview object
+				</td>
+			</tr>
+		</table>
+	</div>
 
 
 
 
 	
 	<div><code class="docheading">.applySimpleSort(propname [, isdesc])</code></div>
-	 <p>allows you to specify a sort based	on a property name</p>
+	<p>allows you to specify a sort based	on a property name</p>
 	Example
 	<div><code><pre>dynView.applySimpleSort("legs");</pre></code></div>
 	<div class="codeExplanation">
-	<table class="table table-striped">
-		<tr>
-			<th>arguments</th>
-			<td>
-			<strong>propname</strong>: name of property to sort on<br />
-			<strong>isdesc</strong>: (optional) boolean used to indicate sort descending (default: false)
-			</td>
-		</tr>
-		<tr>
-			<th>returns</th>
-			<td>
-				<strong>result</strong>: a chainable dynamicview object
-			</td>
-		</tr>
-	</table>
-</div>
+		<table class="table table-striped">
+			<tr>
+				<th>arguments</th>
+				<td>
+					<strong>propname</strong>: name of property to sort on<br />
+					<strong>isdesc</strong>: (optional) boolean used to indicate sort descending (default: false)
+				</td>
+			</tr>
+			<tr>
+				<th>returns</th>
+				<td>
+					<strong>result</strong>: a chainable dynamicview object
+				</td>
+			</tr>
+		</table>
+	</div>
 
-<div><code class="docheading">.applyFind(query)</code></div>
-<p>adds a mongo-like query filter to the DynamicView filter pipeline</p>
-Example
-<div><code>dynView.applyFind({'legs':{ '$gt' : 2 }});</code></div>
+	<div><code class="docheading">.applyFind(query)</code></div>
+	<p>adds a mongo-like query filter to the DynamicView filter pipeline</p>
+	Example
+	<div><code>dynView.applyFind({'legs':{ '$gt' : 2 }});</code></div>
 
-<div><code class="docheading">.applyWhere(fun)</code></div>
-<p>adds a javascript filter function to the DynamicView filter pipeline</p>
-Example
-<div><code>dynView.applyWhere(function( obj ){ return obj.age > 30 && obj.firstLanguage == 'English'; });</code></div>
+	<div><code class="docheading">.applyWhere(fun)</code></div>
+	<p>adds a javascript filter function to the DynamicView filter pipeline</p>
+	Example
+	<div><code>dynView.applyWhere(function( obj ){ return obj.age > 30 && obj.firstLanguage == 'English'; });</code></div>
 
-<div><code class="docheading">.data()</code></div>
-<p>resolves any pending filtering and sorting and returns results as an array of documents</p>
+	<div><code class="docheading">.data()</code></div>
+	<p>resolves any pending filtering and sorting and returns results as an array of documents</p>
 </p>
 </div>
 
@@ -660,21 +660,21 @@ Example
 	<p>Map reduce works with two functions, the map function and the reduce function.
 		You can return whatever you want from the map function, and the result will be stored in an array which will be passed in the reduce function.
 		For example we can find the average age of the users in the database by creating a map function:
-<pre>
-function mapFun(obj){
-	return obj.age;
-}</pre>
-	Then we create the function that will process the obtained resultset:<br>
-	<pre>
-function reduceFun(array){
-	var len = array.length;
-	var i = len;
-	var cumulator = 0;
-	while(i--){
-		cumulator += array[i];
+		<pre>
+			function mapFun(obj){
+			return obj.age;
+		}</pre>
+		Then we create the function that will process the obtained resultset:<br>
+		<pre>
+			function reduceFun(array){
+			var len = array.length;
+			var i = len;
+			var cumulator = 0;
+			while(i--){
+			cumulator += array[i];
+		}
+		return cumulator / len;
 	}
-	return cumulator / len;
-}
 </pre>
 Lastly, we call <code>var avgAge = users.mapReduce(mapFun, reduceFun);</code>
 
@@ -706,26 +706,34 @@ Lastly, we call <code>var avgAge = users.mapReduce(mapFun, reduceFun);</code>
 	<p>Collection properties documentation coming soon...</p>
 </div>
 
-</div>
-</div>
-</div>
-
 <h2 id="collectionevents">Events and Event Listeners</h2>
-<div>Database and Collection emit events.
-<p>Listeners can be associated to an event with the familiar construct method <code>on(eventName, listener)</code>
-</p>
-<p>Database emits 'close' events, so that processing such as backing the database up can be performed before the database is closed.</p>
-<p>Collection emits the following events:
-<ul>
-<li>pre-insert</li>
-<li>insert</li>
-<li>pre-update</li>
-<li>update</li>
-<li>delete</li>
-<li>error</li>
-<li>flushbuffer (not currently used)</li>
-</ul>
+<div>Database and Collection emit events. They both inherit from a constructor function called LokiEventEmitter, which is a custom stripped down version of the node.js built-in EventEmitter. This makes the library perfectly compatible with a browser as well as keeping the footprint extremely low.
+	<p>Listeners can be associated to an event with the familiar method <code>on(eventName, listener)</code>
+	</p>
+	<p>Database emits 'close' events, so that processing such as backing the database up can be performed before the database is closed.</p>
+	<p>Collection emits the following events:
+		<ul>
+			<li>pre-insert</li>
+			<li>insert</li>
+			<li>pre-update</li>
+			<li>update</li>
+			<li>delete</li>
+			<li>error</li>
+			<li>flushbuffer (not currently used)</li>
+		</ul>
 
-<p>'pre-insert' and 'pre-update' events are emitted before operating an insert or an update, 'insert' and 'update' after an insert or an update, 'error' when an error is thrown, and 'delete' when an object is removed.
-</p>
+		<p>'pre-insert' and 'pre-update' events are emitted before operating an insert or an update, 'insert' and 'update' after an insert or an update, 'error' when an error is thrown, and 'delete' when an object is removed.
+		</p>
+	</div>
+
+
+
 </div>
+
+
+
+</div>
+
+
+</div>
+
