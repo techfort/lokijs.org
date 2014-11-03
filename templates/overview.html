@@ -7,21 +7,25 @@
 	
 	<div class="row-fluid">
 		
-		<div class="span7">	
+		<div class="span7 col-md-7">	
 			<h2>A Javascript Database</h2>
 
 			<p>
-			<span class="loki">LokiJS</span> is an in-memory javascript database which prioritises performance over everything.<br>
-			<span class="loki">LokiJS</span> supports field indexing for faster document access and performs really well (near 500,000 ops/s) on those.
+			<span class="loki">LokiJS</span> is an in-memory javascript database which prioritises <span class="loki">performance</span> over everything.<br>
+			<span class="loki">LokiJS</span> supports field indexing for faster document access and performs really well (near 500,000 ops/s) on those. Its built-in DynamicView class also enables to utilize indexes on data subsets for even faster performance.<br />
+			<span class="loki">LokiJS</span> supports collections, much like MongoDB, and saves data to disk (to resume state across sessions) in JSON, so your data is portable.<br />
+			<span class="loki">LokiJS</span> is compatible with node.js and browser.
 			</p>
 			<p>
 			Javascript is an easy to learn, versatile language, so database development in javascript can be easy and very productive. You may not want to 
-			retire your MongoDB instances just yet but here are some situationss in which you may find <span class="loki">LokiJS</span> to be the ideal solution:
+			retire your MongoDB instances just yet but here are some situations in which you may find <span class="loki">LokiJS</span> to be the ideal solution:
 			<ul class="nav nav-pills nav-stacked">
 			<li><a href="#">Mobile applications - especially HTML5 based (Cordova, Phonegap, etc.)</a></li>
 			<li><a href="#">Node.js embedded datastore for small-to-medium apps</a></li>
 			<li><a href="#">Embedded in desktop application with Node Webkit</a></li>
 			</ul>
+
+			<span class="loki">LokiJS</span> is also going full blown server soon, with http and tcp clients available.
 			
 			</p>
 
@@ -32,12 +36,15 @@
 			If functional programming is your preferred style then you may want to create views to query your data.<br>
 			If you prefer object literals in MongoDB shell style, you can use those.<br>
 			</p>
-			<iframe src="//www.slideshare.net/slideshow/embed_code/40269951" width="425" height="355" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;" allowfullscreen> </iframe> <div style="margin-bottom:5px"> <strong> <a href="//www.slideshare.net/techfort/lokijs" title="Lokijs" target="_blank">Lokijs</a> </strong> from <strong><a href="//www.slideshare.net/techfort" target="_blank">Joe Minichino</a></strong> </div>
-			<iframe width="560" height="315" src="//www.youtube.com/embed/jgW23Uo-XZ8" frameborder="0" allowfullscreen></iframe>
-
+			<div class="embed-responsive embed-responsive-16by9">
+				<iframe class="embed-responsive-item" src="//www.slideshare.net/slideshow/embed_code/40269951" width="425" height="355" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;" allowfullscreen> </iframe> <div style="margin-bottom:5px"> <strong> <a href="//www.slideshare.net/techfort/lokijs" title="Lokijs" target="_blank">Lokijs</a> </strong> from <strong><a href="//www.slideshare.net/techfort" target="_blank">Joe Minichino</a></strong> </div>
+			</div>
+			<div class="embed-responsive embed-responsive-16by9">
+				<iframe class="embed-responsive-item" width="425" height="315" src="//www.youtube.com/embed/jgW23Uo-XZ8" allowfullscreen></iframe>
+			</div>
 		</div>
 
-		<div class="span5 well lightgreen">
+		<div class="span5 col-md-5 well">
 			<h3>Quick Start</h3>
 			<h4>Installation</h4>
 			<p>

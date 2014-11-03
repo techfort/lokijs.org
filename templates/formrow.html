@@ -1,9 +1,12 @@
+<table class="table">
 <tr>
-	<td><input placeholder="new todo title" type="text" ng-model="newtodo.title" /></td>
-	<td><input placeholder="new todo description" type="text" ng-model="newtodo.description" /></td>
-	<td><input placeholder="new todo duration" type="number" ng-model="newtodo.duration" style="width: 130px" /></td>
+	<td><input class="form-control" placeholder="new todo title" type="text" ng-model="newtodo.title" /></td>
+	<td><input class="form-control" placeholder="new todo description" type="text" ng-model="newtodo.description" /></td>
+	<td><input class="form-control" placeholder="new todo duration" type="number" ng-model="newtodo.duration" style="width: 130px" /></td>
 	<td>
 		<div class="input-append">
 			<button class="btn btn-success" ng-click="createNewTodo()"><i class="icon-plus icon-white"></i> create</button>
 		</div>
+  </td>
 </tr>
+</table>

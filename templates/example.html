@@ -7,7 +7,8 @@
 		</p>		
 	</div>
 	<div class="row-fluid">
-		<div class="span8">
+		<div class="span8 col-md-8">
+			<formrow></formrow>
 			<table class="table table-striped">
 				<thead>
 					<tr>
@@ -19,6 +20,7 @@
 					</tr>	
 				</thead>
 				<tbody>
+					
 					<tr ng-repeat="todo in todos.data" ng-class="{true:'striken', false:''}[todo.complete]">
 						<th>{{ todo.title }}</th>
 						<td>{{ todo.description}}</td>
@@ -26,13 +28,13 @@
 						<td><input type="checkbox" ng-model="todo.complete" /></td>
 						<td><button class="btn btn-danger" ng-click="deleteRecord( $index )"><i class="icon-remove icon-white"></i>delete</button></td>
 					</tr>
-					<formrow />
+					
 				</tbody>
 
 			</table>
 		</div>	
 		
-		<div class="span4 well darkgreen">
+		<div class="span4 col-md-4 well darkgreen">
 			<h4>Queries</h4>
 			<table class="table table-striped">
 				<tr>
@@ -57,7 +59,7 @@
 		</div>
 
 	</div>
-	<div class="row-fluid">
+	<div class="row-fluid" style="clear: both">
 		<h4>Queries explained</h4>
 		Todos are stored in a collection in the variable <code>todos</code>:
 		<table class="table table-striped">

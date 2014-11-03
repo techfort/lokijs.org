@@ -1,7 +1,7 @@
 body, html { 
 	font-family: "Open Sans", Sans;
 	font-weight:500;
-
+  background: #eee;
 }
 
 html { height : 100%; background: #eef9ee;}
@@ -51,7 +51,7 @@ h1 {
 .complement-4 { color: #E5399E }
 .complement-5 { color: #E567B1 }
 
-a { color: #C03233; outline: 0;}
+a { color: #C03233 !important; outline: 0;}
 
 span.loki { color: #C03233; font-family: "Audiowide"; }
 
@@ -76,3 +76,6 @@ code.docheading{ color: #C03233; font-size: 1.2em;}
 .navbar, .hero-unit, .panel, .well { border-radius: 0px !important;}
 .hero-unit  { background: #000 !important; color: #999 !important;}
 .hero-unit h1 { color: #999;}
+.navbar a { color: #777 !important;}
+ul.nav { line-height: 0.7em !important; font-size: 0.9em;}
+.navbar-brand { text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.9);}
