@@ -150,6 +150,22 @@
 					</div>
 				</div>
 
+				<div class="container-fluid" id="close">
+					<div><code class="docheading">close( [callback] )</code></div>
+					<p>Emits a close event with an optional callback. Note that this does not destroy the db or collections, it's a utility method that can be called before closing the process in node.js or 'onbeforeunload' in a browser. See <a href="#/docs#collectionevents">events</a>
+					</p>
+					<div class="codeExplanation">
+						<table class="table table-striped">
+							<tr>
+								<th>arguments</th>
+								<td>
+									<strong>callback</strong>: the callback handler
+								</td>
+							</tr>
+						</table>
+					</div>
+				</div>
+
 				<h2>Document class</h2>
 				<div class="container-fluid" id="document">
 					<p>
@@ -458,6 +474,7 @@ Example:
 -->
 <div><code class="docheading">.data()</code></div><p>terminates chain and returns results as an array of documents</p>
 <div><code class="docheading">.copy()</code></div><p>creates a clone of the resultset for query branching</p>
+<div><code class="docheading">.branchResultset()</code></div><p>alias of <code>copy()</code></p>
 <div><code class="docheading">.limit(qty)</code></div><p>limit the number of documents passed through the chain</p>
 <div class="codeExplanation">
 	<table class="table table-striped">
@@ -703,7 +720,8 @@ Lastly, we call <code>var avgAge = users.mapReduce(mapFun, reduceFun);</code>
 			<li>flushbuffer (not currently used)</li>
 		</ul>
 
-		<p>'pre-insert' and 'pre-update' events are emitted before operating an insert or an update, 'insert' and 'update' after an insert or an update, 'error' when an error is thrown, and 'delete' when an object is removed.
+		<p>
+		'pre-insert' and 'pre-update' events are emitted before operating an insert or an update, 'insert' and 'update' after an insert or an update, 'error' when an error is thrown, and 'delete' when an object is removed. Listeners take a single argument which is the object being inserted / updated / deleted.
 		</p>
 	</div>
 
