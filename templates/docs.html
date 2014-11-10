@@ -101,19 +101,42 @@
 				</div>
 
 				<div class="container-fluid" id="load">
-					<div><code class="docheading">loadDatabase( filename, callback )</code></div>
+					<div><code class="docheading">loadDatabase( [callback] )</code></div>
 					<p>In a CommonJS environment, you can load the database from a local file and provide a callback handler.</p>
 					<div class="codeExplanation">
 						<table class="table table-striped">
 							<tr>
 								<th>arguments</th>
 								<td>
-									<strong>filename</strong>: the name of the file to load the database from.<br>
-									<strong>callback</strong>: the callback handler
+									<strong>callback</strong>: (optional) the callback handler
 								</td>
 							</tr>
 						</table>
 					</div>
+Example:
+<code><pre>
+var loki = require('lokijs'),
+  db = new loki('test.json'),
+  db2 = new loki('test.json');
+ 
+var users = db.addCollection('users');
+users.insert({
+  name: 'joe'
+});
+users.insert({
+  name: 'john'
+});
+users.insert({
+  name: 'jack'
+});
+console.log(users.data);
+db.saveToDisk();
+ 
+db2.loadDatabase(function () {
+  var users2 = db2.getCollection('users')
+  console.log(users2.data);
+});</pre>
+</code>
 				</div>
 
 				<div class="container-fluid" id="loadJSON">
@@ -133,7 +156,7 @@
 
 
 				<div class="container-fluid" id="save">
-					<div><code class="docheading">save( filename, callback )</code></div>
+					<div><code class="docheading">save( [callback] )</code></div>
 					<p>In a CommonJS environment, you can save the database to a local file and provide a callback handler.<br>
 						This method also has the alias <code>saveToDisk( filename, callback)</code>.
 					</p>
@@ -142,7 +165,6 @@
 							<tr>
 								<th>arguments</th>
 								<td>
-									<strong>filename</strong>: the name of the file to save the database to.<br>
 									<strong>callback</strong>: the callback handler
 								</td>
 							</tr>
