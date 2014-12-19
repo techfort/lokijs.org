@@ -14,4 +14,4 @@ var server = http.createServer(function (req, res) {
 })
 
 // Listen
-server.listen(3000)
+server.listen(80)
