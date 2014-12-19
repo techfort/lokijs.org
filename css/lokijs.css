@@ -4,6 +4,7 @@ body, html {
   background: #eee;
 }
 
+
 html { height : 100%; background: #eef9ee;}
 table, .table-striped { background: #fff !important;}
 #mainContainer { /* padding-top: 60px;  */ padding-bottom:30px;}
@@ -54,11 +55,22 @@ h1 {
 a { color: #C03233 !important; outline: 0;}
 
 span.loki { color: #C03233; font-family: "Audiowide"; }
-
+.hero-unit {
+  background: rgba(0,0,0,0) !important;
+}
 .hero-unit h1, a.brand {
 	font-family : "Audiowide";
 }
-
+.hero-unit h1 {
+  color: #eee;
+  font-size: 4em;
+  text-shadow:
+  0px 0px 8px #C03233,
+   -1px -1px 0 #000,  
+    1px -1px 0 #000,
+    -1px 1px 0 #000,
+     1px 1px 0 #000;
+}
 img.logo { vertical-align: middle; }
 #footer { height: 45px; padding-top:5px; bottom: 0px;border-top: 1px solid #999; }
 .lightgreen { background: #eef9ee;}
@@ -74,8 +86,13 @@ code.docheading{ color: #C03233; font-size: 1.2em;}
 .striken { text-decoration: line-through; }
 
 .navbar, .hero-unit, .panel, .well { border-radius: 0px !important;}
+/*
 .hero-unit  { background: #000 !important; color: #999 !important;}
 .hero-unit h1 { color: #999;}
+*/
 .navbar a { color: #777 !important;}
 ul.nav { line-height: 0.7em !important; font-size: 0.9em;}
-.navbar-brand { text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.9);}
+.navbar-brand { text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.9);} 
+.endorsements { background: #C03233; font-family: "Audiowide"; color: white;}
+.logos { text-align: center;}
+ul.nav { line-height: 0.45em !important;}

@@ -30,6 +30,15 @@
 			<li class="nav-header">Events and Event Listeners</li>
 			<li><a href="#/docs#collectionevents">Events</a></li>
 
+			<li class="nav-header">Persistence Adapters</li>
+			<li><a href="#/docs#indexedadapter">IndexedDB Adapter</a></li>
+			<li><a href="#/docs#customadapter">Custom Adapter</a></li>
+
+			<li class="nav-header">Changes API</li>
+			<li><a href="#/docs#generate">generateChangesNotification</a></li>
+			<li><a href="#/docs#serializeChanges">serializeChanges</a></li>
+			<li><a href="#/docs#flushChanges">flushChanges</a></li>
+
 		</ul>
 	</div>
 
@@ -51,7 +60,7 @@
 
 			<h2>Database class</h2>
 			<div class="container-fluid" id="db">
-				<div><code class="docheading">loki( name )</code></div>
+				<div><code class="docheading">loki( name [, options] )</code></div>
 				<p>Creating a database is really simple: <code>var db = new loki('NorseGods.json');</code><br>
 					This class is only used to initialise the database, add collections and load/save.<br>
 					More advanced options are all collection-specific.
@@ -61,7 +70,16 @@
 							<tr>
 								<th>arguments</th>
 								<td>
-									<strong>name</strong>: database filename, defaults to "loki.db" (only relevant to CommonJS environments or mobile).
+									<strong>name</strong>: database filename, defaults to "loki.db" (only relevant to CommonJS environments or mobile).<br />
+									<strong>options</strong>: (optional) a configuration object with the following parameters:
+									<ul>
+										<li>autosave: whether or not to make Loki periodically save data (bool)</li>
+										<li>autosaveInterval: the interval in milliseconds for a periodic save</li>
+										<li>autoload: load a db automatically from a file or localstorage/ indexedDB (bool)</li>
+										<li>autoloadCallback: callback after load (function)</li>
+										<li>persistenceMethod: the persistence method ('adapter'|null)</li>
+										<li>persistenceAdapter: the instance of a persistence adapter used for saving data</li>
+									</ul>
 								</td>
 							</tr>
 							<tr>
@@ -74,7 +92,7 @@
 				</div>
 
 				<div class="container-fluid" id="addCollection">
-					<div><code class="docheading">addCollection( name [, indicesArray, transactional ] )</code></div>
+					<div><code class="docheading">addCollection( name [, options ] )</code></div>
 					<p>
 						Creating a collection is done through the addCollection method, i.e. <code>var lokisChildren = db.addCollection('Children');</code><br>
 						The arguments are the collection name and an arbitrary object type name which will be associated to all documents in the collection as a simple reference, so not to attempt updates of a document belonging to collection A into collection B. As of now a document can only belong to one collection.
@@ -87,8 +105,14 @@
 								<th>arguments</th>
 								<td>
 									<strong>name</strong>: collection name<br>
-									<strong>indicesArray</strong>: an array of strings defining the properties to be indexed in the collection.<br>
-									<strong>transactional</strong>: (experimental) if this flag is set to true, then inserts, updates and deletes are performed in a transactional fashion. If something goes wrong during the transaction the database rolls back to the state before the transaction started. This feature is currently being developed so it is not officialy supported at the moment.<br>
+									<strong>options</strong>: a configuration object containing the following optional properties
+									<ul>
+										<li>indices: an array of strings indicating indexed fields.</li>
+										<li>asyncListeners: a boolean flag indicating whether event listeners are to be executed in an async fashion or not. Default is false.</li>
+										<li>clone: a boolean flag indicating whether Collection should create a copy of the original object when inserting instead of referencing. Default is false.</li>
+										<li>disableChangesApi: a boolean flag to disable the Changes API. Default is false.</li>
+										<li>transactional: a boolean flag indicating if the collection is transactional. Default is false.</li>
+									</ul>
 								</td>
 							</tr>
 							<tr>
@@ -101,13 +125,23 @@
 				</div>
 
 				<div class="container-fluid" id="load">
-					<div><code class="docheading">loadDatabase( [callback] )</code></div>
-					<p>In a CommonJS environment, you can load the database from a local file and provide a callback handler.</p>
+					<div><code class="docheading">loadDatabase( [options, callback] )</code></div>
+					<p>Load the database through a persistence adapter and provide a callback handler.</p>
 					<div class="codeExplanation">
 						<table class="table table-striped">
 							<tr>
 								<th>arguments</th>
 								<td>
+									<strong>options</strong>: (optional) a configuration object which specifies a prototype with which to "inflate" objects.<br />
+									i.e.
+<code><pre>
+{
+	users: {
+		proto: User
+	}
+}
+</pre></code>
+means that the users collection will inflate all objects as instances of a User constructor.									
 									<strong>callback</strong>: (optional) the callback handler
 								</td>
 							</tr>
@@ -140,7 +174,7 @@ db2.loadDatabase(function () {
 				</div>
 
 				<div class="container-fluid" id="loadJSON">
-					<div><code class="docheading">loadJSON( serializedDB )</code></div>
+					<div><code class="docheading">loadJSON( serializedDB, [options] )</code></div>
 					<p>This method takes a json string and loads the database from it. Useful if you want to persist your database somewhere on the cloud and re-initialize it with an ajax call returning JSON.</p>
 					<div class="codeExplanation">
 						<table class="table table-striped">
@@ -148,6 +182,7 @@ db2.loadDatabase(function () {
 								<th>arguments</th>
 								<td>
 									<strong>serializedDB</strong>: the JSON string to load into the db<br>
+									<strong>options</strong>: (optional) see the options in Loki.loadDatabase. This object is normally received by the loadDatabase method, as loadJSON is not normally called directly.
 								</td>
 							</tr>
 						</table>
@@ -157,8 +192,7 @@ db2.loadDatabase(function () {
 
 				<div class="container-fluid" id="save">
 					<div><code class="docheading">save( [callback] )</code></div>
-					<p>In a CommonJS environment, you can save the database to a local file and provide a callback handler.<br>
-						This method also has the alias <code>saveToDisk( filename, callback)</code>.
+					<p>Saves the db, according to the persistence adapter you specified in the Loki constructor. If nothing is specified, Loki tries default methods (fs in Node, localStorage in browser and cordova)</code>.
 					</p>
 					<div class="codeExplanation">
 						<table class="table table-striped">
@@ -196,12 +230,19 @@ db2.loadDatabase(function () {
 				</div>
 
 				<h2>Collection class</h2>
-
+				<div class="container-fluid" id="collection">
+					<div><code class="docheading">Collection</code></div>
+					<p>
+					Collection is a class responsbile for storing data and maintaining indexes on that data.
+					Collections are instantiated using <code>Loki.addCollection()</code> but a collection can also exist independently from a database, if you are not interested in persisting data. The way to access the Collection constructor is through <code>Loki.Collection</code>, for example: <code>var users = new Loki.Collection('users', { indices: ['email']})</code>
+					</p>
+				</div>
+				
 				<div class="container-fluid" id="document">
 					<div><code class="docheading">insert( obj )</code></div>
 					<p>
 						Each record in the database is a document. A document is created through the <code>document()</code> method of the collection class. You can take any object and store it in the collection. While like all nosql databases there's no rule on how documents should be structured it just is good practice to put documents with identical structures in the same collection.
-						<br /><span class="loki">Note!</span>: if you are trying to insert an object that has already a property 'id', then that property will be renamed to 'originalId', and id will become the lokijs id.
+						<br /><span class="loki">Note!</span>: if you were trying to insert an object that has already a property 'id' in v.1.0, then that property would have been renamed to 'originalId', LokiJS v1.1 has changed its own internal id property to <code>$loki</code>. Just don't give your objects a <code>$loki</code> property.
 						<br />
 						For example:<br>
 						<code>childrenOfLoki.document({ name:'Sleipnir', legs: 8 });</code>
@@ -747,10 +788,109 @@ Lastly, we call <code>var avgAge = users.mapReduce(mapFun, reduceFun);</code>
 		</p>
 	</div>
 
+<h2 id="adapters">Persistence Adapters</h2>
+<div>
+Persistence Adapters allow the db to be saved in different contexts. If you write your own just make sure they support the following methods:
+<code>saveDatabase(name, serialized, callback)</code> where name is the name of the file/key/reference, serialized is the string representation of the database, and callback is a callback function, and <code>loadDatabase(options, callback)</code> documented in the Database class above.
+<p>
+<div><code class="docheading" id="indexedadapter">IndexedAdapter</code></div>
+<p>IndexedDB persistence adapter: follows the Adapter convention and saves the database to a particular indexedDB key. Note that this adapter is included in lokiIndexedAdapter.js in <code>src/</code></p>
+</p>
 
+<p>
+<div><code class="docheading" id="customadapter">Custom Adapter</code></div>
+<p>Write you own adapter following the above conventions. There's an example of a jquery adapter for remote save in <code>src/jquerySyncAdapter.js</code></p>
+</p>
 
 </div>
 
+
+<h2 id="changes">Changes API</h2>
+<div>
+The Changes API enables to keep a record of the changes occurred to collections so that you can synchronize with remote databases through incremental changes rather than sending the entire serialized db over the wire. Each change is recorded as an Object recording the following parameters: the collection in which the change happened, a snapshot of the object that changed and a single character representing the change ('I' for Insert, 'U' for update, 'R' for Remove).
+
+<h3>DB-Level Changes API</h3>
+<p>
+<div><code class="docheading" id="generateChanges">generateChangesNotification( [arrayOfCollections] )</code></div>
+<p>This db method generates an array of Change objects.</p>
+<div class="codeExplanation">
+	<table class="table table-striped">
+
+		<tr>
+			<th>arguments</th>
+			<td>
+				<strong>arrayOfCollections</strong>: (optional) array of collection names to generate the changes for.<br>
+			</td>
+		</tr>
+
+		<tr>
+			<th>returns</th>
+			<td>
+				<strong>result</strong>: a changes array.
+			</td>
+		</tr>
+	</table>
+</div>
+</p>
+
+<p>
+<div><code class="docheading" id="serializeChanges">serializeChanges( [arrayOfCollections] )</code></div>
+<p>Identical to generateChangesNotification, except the array is serialized into a string.</p>
+<div class="codeExplanation">
+	<table class="table table-striped">
+
+		<tr>
+			<th>arguments</th>
+			<td>
+				<strong>arrayOfCollections</strong>: (optional) array of collection names to generate the changes for.<br>
+			</td>
+		</tr>
+
+		<tr>
+			<th>returns</th>
+			<td>
+				<strong>result</strong>: a string representation of the changes array.
+			</td>
+		</tr>
+	</table>
+</div>
+</p>
+
+<p>
+<div><code class="docheading" id="clearChanges">clearChanges()</code></div>
+<p>Clears all changes stored.</p>
+</p>
+
+<h3>Collection-Level</h3>
+
+<p>
+<div><code class="docheading" id="setChangesApi">setChangesApi( isEnabled )</code></div>
+<p>Enables/ Disables the Changes API for the collection</p>
+<div class="codeExplanation">
+	<table class="table table-striped">
+
+		<tr>
+			<th>arguments</th>
+			<td>
+				<strong>isEnabled</strong>: enables (true) or disables (false) the changes api.
+			</td>
+		</tr>
+	</table>
+</div>
+</p>
+
+<p>
+<div><code class="docheading" id="flushChanges">flushChanges()</code></div>
+<p>Clears all the changes occurred up to that point.</p>
+</p>
+
+<p>
+<div><code class="docheading" id="getChanges">getChanges()</code></div>
+<p>Returns all the changes occurred up to that point in the collection.</p>
+</p>
+
+
+</div>
 
 
 </div>
