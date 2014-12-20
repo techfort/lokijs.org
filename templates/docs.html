@@ -52,10 +52,20 @@
 				It can be used in the browser or in a node.js environment. LokiJS is available on npm with the name lokijs, and also on bower.<br>
 				So to install lokijs run <code>npm install lokijs</code> or <code>bower install lokijs</code>
 				The main features of lokijs are speed, a very light footprint (making it ideal for mobile as well) and its nosql nature.<br>
-				LokiJS draws inspiration from MongoDB and CouchDB, in that the API is similar (but not identical or compliant) to MongoDB and you can define your own views in a CouchDB style.
+				Its most advanced features are DynamicViews, which work as queries that are recomputed in the background when data changes, so once a view is created you never have to worry about recalling it, refreshing it, resync-ing it, data is always updated and available.<br />
+				LokiJS draws inspiration from MongoDB and CouchDB, in that the API is similar (but not identical or compliant) to MongoDB.
 				The glossary used is also classic NoSQL in that records are <a href="#document">"documents"</a>, documents are stored in <a href="#collection">collections"</a>.
 				<br><br>
 				LokiJS supports a limited form of indexing for faster document access. The id field in particular is automaticallly populated and indexed, and searched using the binary search algorithm. Other document properties can be indexed for faster search on a particular object field.
+
+				<h4>Important: changes in 1.1</h4>
+				<p>
+				<ul>
+					<li><strong>Breaking</strong>: Database and Collection constructor have changed and take an optional configuration object as the second parameter</li>
+					<li><strong>Breaking</strong>: the <code>id</code> property of all objects has been changed to <code>$loki</code> to avoid conflicts with object that may already contain an id property, which is very common.
+					<li>Meta data is recorded in a meta object in documents. This stores revisions, created and last updated timestamps.</li>
+				</ul>
+				</p>
 			</div>
 
 			<h2>Database class</h2>
@@ -124,6 +134,67 @@
 
 				</div>
 
+				<div class="container-fluid" id="getCollection">
+					<div><code class="docheading">getCollection( name  )</code></div>
+					<p>
+						Return a collection with the specified name, returns null and emits a warning if collection is not found.
+					</p>
+
+					<div class="codeExplanation">
+						<table class="table table-striped">
+							<tr>
+								<th>arguments</th>
+								<td>
+									<strong>name</strong>: collection name<br>
+									
+								</td>
+							</tr>
+							<tr>
+								<th>returns</th>
+								<td>collection or null</td>
+							</tr>
+						</table>
+					</div>
+
+				</div>
+
+				<div class="container-fluid" id="listCollections">
+					<div><code class="docheading">listCollections( )</code></div>
+					<p>
+						Returns an array of all the collections.
+					</p>
+
+					<div class="codeExplanation">
+						<table class="table table-striped">
+							
+							<tr>
+								<th>returns</th>
+								<td>array of collections in the db</td>
+							</tr>
+						</table>
+					</div>
+
+				</div>
+
+				<div class="container-fluid" id="loadCollection">
+					<div><code class="docheading">loadCollection( collection )</code></div>
+					<p>
+						Loads a collection into the db, collection must have a name property so it can be retrieved through <code>getCollection</code>
+					</p>
+
+					<div class="codeExplanation">
+						<table class="table table-striped">
+							<tr>
+								<th>arguments</th>
+								<td>
+									<strong>collection</strong>: collection to be loaded
+								</td>
+							</tr>
+						</table>
+					</div>
+
+				</div>
+
 				<div class="container-fluid" id="load">
 					<div><code class="docheading">loadDatabase( [options, callback] )</code></div>
 					<p>Load the database through a persistence adapter and provide a callback handler.</p>
@@ -164,7 +235,7 @@ users.insert({
   name: 'jack'
 });
 console.log(users.data);
-db.saveToDisk();
+db.saveDatabase();
  
 db2.loadDatabase(function () {
   var users2 = db2.getCollection('users')
@@ -191,7 +262,7 @@ db2.loadDatabase(function () {
 
 
 				<div class="container-fluid" id="save">
-					<div><code class="docheading">save( [callback] )</code></div>
+					<div><code class="docheading">saveDatabase( [callback] )</code> also aliased as <code class="docheading">save</code></div>
 					<p>Saves the db, according to the persistence adapter you specified in the Loki constructor. If nothing is specified, Loki tries default methods (fs in Node, localStorage in browser and cordova)</code>.
 					</p>
 					<div class="codeExplanation">
@@ -226,6 +297,7 @@ db2.loadDatabase(function () {
 				<div class="container-fluid" id="document">
 					<p>
 						A document is just a json object. Once saved the document gets an id and objType property equal to that of the collection the document belongs to.
+						<span class="loki">Note:</span> Meta data is recorded in a meta object in documents. This stores revisions, created and last updated timestamps.
 					</p>
 				</div>
 
@@ -493,6 +565,29 @@ Example:
 	</table>
 </div>
 
+<div><code class="docheading">.compoundsort(properties)</code></div>
+<p>allows you to specify multiple sort based on property names.</p>
+Example:
+<div>
+	<code><pre>results.compoundsort(["legs", ["name", true]);</pre></code>
+</div>
+<div class="codeExplanation">
+	<table class="table table-striped">
+		<tr>
+			<th>arguments</th>
+			<td>
+				<strong>properties</strong>: array or properties, in which each element can be a single field name (if ascending order is desired) or an array with <code>[propertyname, isDescendingOrderFlag]</code> elements, i.e. <code>['name', true]</code><br />
+			</td>
+		</tr>
+		<tr>
+			<th>returns</th>
+			<td>
+				<strong>result</strong>: resultset object that is chainable
+			</td>
+		</tr>
+	</table>
+</div>
+
 <div><code class="docheading">.update(fun)</code></div>
 <p>update all objects in a resultset</p>
 Example:
@@ -698,6 +793,31 @@ dynView.applySort( function(obj1, obj2) {
 			</tr>
 		</table>
 	</div>
+
+<p>
+	<div><code class="docheading">.applySortCriteria( properties )</code></div>
+<p>Similar to <code>Resultset.compoundsort</code> allows you to specify multiple sort based on property names.</p>
+Example:
+<div>
+	<code><pre>dynamicview.applySortCriteria(["legs", ["name", true]);</pre></code>
+</div>
+<div class="codeExplanation">
+	<table class="table table-striped">
+		<tr>
+			<th>arguments</th>
+			<td>
+				<strong>properties</strong>: array or properties, in which each element can be a single field name (if ascending order is desired) or an array with <code>[propertyname, isDescendingOrderFlag]</code> elements, i.e. <code>['name', true]</code><br />
+			</td>
+		</tr>
+		<tr>
+			<th>returns</th>
+			<td>
+				<strong>result</strong>: resultset object that is chainable
+			</td>
+		</tr>
+	</table>
+</div>
+</p>
 <p>
 	<div><code class="docheading">.applyFind(query)</code></div>
 	<p>adds a mongo-like query filter to the DynamicView filter pipeline</p>
@@ -791,7 +911,7 @@ Lastly, we call <code>var avgAge = users.mapReduce(mapFun, reduceFun);</code>
 <h2 id="adapters">Persistence Adapters</h2>
 <div>
 Persistence Adapters allow the db to be saved in different contexts. If you write your own just make sure they support the following methods:
-<code>saveDatabase(name, serialized, callback)</code> where name is the name of the file/key/reference, serialized is the string representation of the database, and callback is a callback function, and <code>loadDatabase(options, callback)</code> documented in the Database class above.
+<code>saveDatabase(name, serialized, callback)</code> where name is the name of the file/key/reference, serialized is the string representation of the database, and callback is a callback function, and <code>loadDatabase(dbname, callback)</code>, where <code>dbname</code> is the name of the database to load, and callback is an optional callback.
 <p>
 <div><code class="docheading" id="indexedadapter">IndexedAdapter</code></div>
 <p>IndexedDB persistence adapter: follows the Adapter convention and saves the database to a particular indexedDB key. Note that this adapter is included in lokiIndexedAdapter.js in <code>src/</code></p>

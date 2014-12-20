@@ -95,4 +95,5 @@ ul.nav { line-height: 0.7em !important; font-size: 0.9em;}
 .navbar-brand { text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.9);} 
 .endorsements { background: #C03233; font-family: "Audiowide"; color: white;}
 .logos { text-align: center;}
-ul.nav { line-height: 0.45em !important;}
+ul.nav { line-height: 0.4em !important;}
+ul.nav .nav-header { line-height: 0.6em !important; margin-bottom:2px; }
