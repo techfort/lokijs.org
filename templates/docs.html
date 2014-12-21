@@ -889,7 +889,7 @@ Lastly, we call <code>var avgAge = users.mapReduce(mapFun, reduceFun);</code>
 
 <h2 id="collectionevents">Events and Event Listeners</h2>
 <div>Database and Collection emit events. They both inherit from a constructor function called LokiEventEmitter, which is a custom stripped down version of the node.js built-in EventEmitter. This makes the library perfectly compatible with a browser as well as keeping the footprint extremely low.
-	<p>Listeners can be associated to an event with the familiar method <code>on(eventName, listener)</code>
+	<p>Listeners can be associated to an event with the familiar method <code>on(eventName, listener)</code> which yields an index (the index of the listener in the array of listeners). You can use that index to remove the listener with <code>remove(evenName, index)</code>.
 	</p>
 	<p>Database emits 'close' events, so that processing such as backing the database up can be performed before the database is closed.</p>
 	<p>Collection emits the following events:
