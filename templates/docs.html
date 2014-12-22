@@ -62,7 +62,8 @@
 				<p>
 				<ul>
 					<li><strong>Breaking</strong>: Database and Collection constructor have changed and take an optional configuration object as the second parameter</li>
-					<li><strong>Breaking</strong>: the <code>id</code> property of all objects has been changed to <code>$loki</code> to avoid conflicts with object that may already contain an id property, which is very common.
+					<li><strong>Breaking</strong>: the <code>id</code> property of all objects has been changed to <code>$loki</code> to avoid conflicts with object that may already contain an id property, which is very common.</li>
+					<li>You can now insert class instances in the db and de-serialize / inflate them as such (i.e. load JSON into instances of a User constructor)</li>
 					<li>Meta data is recorded in a meta object in documents. This stores revisions, created and last updated timestamps.</li>
 				</ul>
 				</p>
