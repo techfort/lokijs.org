@@ -382,13 +382,30 @@ db2.loadDatabase(function () {
 				<div class="container-fluid" id="remove">
 					<div><code class="docheading">remove( obj )</code></div>
 					<p>
-						Removes a document from the collection.
+						Removes a document from the collection, either by id or by object.
 						<div class="codeExplanation">
 							<table class="table table-striped">
 								<tr>
 									<th>arguments</th>
 									<td>
-										<strong>obj</strong>: the document to be removed from the collection.<br>
+										<strong>obj</strong>: the document to be removed from the collection (id or the object itself).<br>
+									</td>
+								</tr>
+							</table>
+						</div>
+					</p>
+				</div>
+
+				<div class="container-fluid" id="remove">
+					<div><code class="docheading">removeWhere( filter )</code></div>
+					<p>
+						Removes documents that satisfy the filter.
+						<div class="codeExplanation">
+							<table class="table table-striped">
+								<tr>
+									<th>arguments</th>
+									<td>
+										<strong>filter</strong>: a query object (like in <code>find()</code>) or a filter test function which takes a single <code>obj</code> parameter and returns a boolean.<br>
 									</td>
 								</tr>
 							</table>
