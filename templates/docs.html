@@ -213,14 +213,17 @@
 	}
 }
 </pre></code>
-means that the users collection will inflate all objects as instances of a User constructor. As part of the configuration object you can also specify a property <code>inflate</code> which is a user-specific function to populate objects (this is for complex logic when populating objects).
+means that the users collection will inflate all objects as instances of a User constructor. As part of the configuration object you can also specify a property <code>inflate</code> which is a user-specific function to populate objects (this is for complex logic when populating objects). <code>inflate</code> takes a source and a destination object as arguments.
 I.e.<br />
 <code><pre>
 {
 	shapes: {
 		proto: Shape,
-		inflate: function (obj) {
-			obj.area = obj.width * obj.height
+		inflate: function (src, dst) {
+			dst.name = src.name;
+			dst.width = src.width;
+			dst.height = src.height;
+			dst.area = src.width * src.height;
 		}
 	}
 }
