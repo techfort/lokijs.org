@@ -121,7 +121,7 @@
 										<li>indices: an array of strings indicating indexed fields.</li>
 										<li>asyncListeners: a boolean flag indicating whether event listeners are to be executed in an async fashion or not. Default is false.</li>
 										<li>clone: a boolean flag indicating whether Collection should create a copy of the original object when inserting instead of referencing. Default is false.</li>
-										<li>disableChangesApi: a boolean flag to disable the Changes API. Default is false.</li>
+										<li>disableChangesApi: a boolean flag to disable the Changes API. Default is true.</li>
 										<li>transactional: a boolean flag indicating if the collection is transactional. Default is false.</li>
 									</ul>
 								</td>
@@ -318,9 +318,9 @@ db2.loadDatabase(function () {
 						<br /><span class="loki">Note!</span>: if you were trying to insert an object that has already a property 'id' in v.1.0, then that property would have been renamed to 'originalId', LokiJS v1.1 has changed its own internal id property to <code>$loki</code>. Just don't give your objects a <code>$loki</code> property.
 						<br />
 						For example:<br>
-						<code>childrenOfLoki.document({ name:'Sleipnir', legs: 8 });</code>
+						<code>childrenOfLoki.insert({ name:'Sleipnir', legs: 8 });</code>
 						<br />or<br />
-						<code>childrenOfLoki.document([{ name:'Sleipnir', legs: 8 }, { name: 'Fenrir', legs: 4 }]);</code>
+						<code>childrenOfLoki.insert([{ name:'Sleipnir', legs: 8 }, { name: 'Fenrir', legs: 4 }]);</code>
 						<div class="codeExplanation">
 							<table class="table table-striped">
 								<tr>
