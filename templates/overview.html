@@ -1,8 +1,9 @@
 <div class="container-fluid">
 	
 	<div class="hero-unit well darkgreen">
-		<h1><img src="images/kaunaz.gif" class="logo" style="width:90px"/> LokiJS [v1.1]</h1>
-		<p>A fast, in-memory document-oriented datastore for node.js and browser</p>
+		<h1><img src="images/kaunaz.gif" class="logo" style="width:90px"/> LokiJS [v1.2]</h1>
+		<p>500,000+ ops/s. 
+		<br />A fast, in-memory document-oriented datastore for node.js, browser and cordova</p>
 
 	</div>
 	
@@ -18,18 +19,30 @@
 			<p>
 			<span class="loki">&#42;</span> read <a target="_blank" href="https://github.com/techfort/LokiJS/wiki/Indexing-and-Query-Performance">this</a> to get an idea of <span class="loki">LokiJS</span>'s performance.
 			</p>
-			<p><span class="loki">NEWS</span>: LokiJS 1.1 p brings a whole lot of improvements, namely: 
+			<p>Among the features that make LokiJS attractive are: 
+				<ul>
+					<li>Fast Performance</li>
+					<li>Indexing / Secondary Indexing</li>
+					<li>The "Dynamic View", a kind of "live filter"</li>
+					<li>Resultset with Fluent API</li>
+					<li>Persistence Adapters (with a built-in IndexedDB and node.js FS adapter)</li>
+					<li>Optional periodic autosave</li>
+					<li>changes API</li>
+					<li>Compound sort for sorting on multiple columns</li>
+					<li>Insert class instances and deserialize/ inflate objects into class instances</li>
+					<li>partial compatibility on MongoDB API</li>
+				</ul>
+			</p>
+			<p>
+			<span class="loki">NEWS</span>: LokiJS 1.2 brings the following improvements:
 			<ul>
-			<li>Persistence Adapters (with a built-in IndexedDB and node.js FS adapter)</li>
-			<li>Optional periodic autosave</li>
-			<li>changes API</li>
-			<li>Compound sort for sorting on multiple columns</li>
-			<li>Insert class instances and deserialize/ inflate objects into class instances</li>
-			<li>better Database and Collection constructor</li>
-			<li>improved compatibility on MongoDB API</li>
-			<li><a href="https://github.com/techfort/LokiJS/wiki"> a whole lot more</a> ... </li>
+				<li>Improved MongoDB API compatibility on find() and findOne()</li>
+				<li>Exposed the Collection class</li>
+				<li>Added an AngularJS integration facility</li>
+				<li>Bug fixes and stability improvements</li>
 			</ul>
 			</p>
+			
 			<br />
 			<span class="loki">LokiJS</span> supports collections, much like MongoDB, and saves data to disk (to resume state across sessions) in JSON, so your data is portable.<br />
 			<span class="loki">LokiJS</span> is compatible with node.js and browser.
@@ -46,6 +59,12 @@
 			<span class="loki">LokiJS</span> is also going full blown standalone server soon, with http and tcp clients available.
 			
 			</p>
+			
+			<h2>The story of Loki</h2>
+			In the beginning there were Cordova projects in need of persistence. Developers prayed to the only god they knew capable of saving them, SQLite. But lots of prayers were required for very little results, and developers lost their faith.<br />
+			When all hope seemed lost, Loki descended. He spoke the tongue of developers, and prayers were answered instantly.<br />His word spread to Cordovans, Browserians and Noders in need of session stores and in memory databases.<br />
+			Why Loki helps us... no one knows, but he does, and we are grateful.
+
 
 			<h2>Choose your favourite paradigm</h2>
 

@@ -413,6 +413,13 @@ db2.loadDatabase(function () {
 					</p>
 				</div>
 
+				<div class="container-fluid" id="remove">
+					<div><code class="docheading">removeDataOnly( )</code></div>
+					<p>
+						Removes all documents from the collection but keeps views, resultsets etc.
+					</p>
+				</div>
+
 				<h3>Finding documents</h3>
 				<div class="container-fluid" id="get">
 					<div><code class="docheading">get( id )</code></div>
@@ -453,6 +460,9 @@ db2.loadDatabase(function () {
 							<li>$lte: less than or equal to</li>
 							<li>$ne: not equal to</li>
 							<li>$contains: contains</li>
+							<li>$in: in</li>
+							<li>$and: and operator</li>
+							<li>$or: or operator</li>
 							<li>$regex: use a regex pattern for matching</li>
 						</ul>
 						So for example we can query for all the children with more than two legs: <code>childrenOfLoki.find({'legs':{ '$gt' : 2 }})</code>
