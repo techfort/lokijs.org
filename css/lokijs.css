@@ -99,4 +99,6 @@ ul.nav { line-height: 0.7em !important; font-size: 0.9em;}
 .logos { text-align: center;}
 ul.nav { line-height: 0.4em !important;}
 ul.nav .nav-header { line-height: 0.6em !important; margin-bottom:2px; }
-.table, .table-striped { background: #111 !important;}
+.table-striped > tbody > tr:nth-child(2n+1) > td, .table-striped > tbody > tr:nth-child(2n+1) > th {
+   background-color: #222 !important;
+}
