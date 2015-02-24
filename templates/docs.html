@@ -47,17 +47,27 @@
 		<div class="container-fluid" id="overview">
 			
 			<p>
+				
 				LokiJS is a lightweight javascript document oriented database. It is intended to be used as an in-memory database, 
 				with the possibility of persisting the data.<br>
 				It can be used in the browser or in a node.js environment. LokiJS is available on npm with the name lokijs, and also on bower.<br>
 				So to install lokijs run <code>npm install lokijs</code> or <code>bower install lokijs</code>
+				
 				The main features of lokijs are speed, a very light footprint (making it ideal for mobile as well) and its nosql nature.<br>
 				Its most advanced features are DynamicViews, which work as queries that are recomputed in the background when data changes, so once a view is created you never have to worry about recalling it, refreshing it, resync-ing it, data is always updated and available.<br />
 				LokiJS draws inspiration from MongoDB and CouchDB, in that the API is similar (but not identical or compliant) to MongoDB.
 				The glossary used is also classic NoSQL in that records are <a href="#document">"documents"</a>, documents are stored in <a href="#collection">collections"</a>.
 				<br><br>
 				LokiJS supports a limited form of indexing for faster document access. The id field in particular is automaticallly populated and indexed, and searched using the binary search algorithm. Other document properties can be indexed for faster search on a particular object field.
-
+				<h4>New: AngularJS integration</h4>
+				<p>LokiJS is made available to Angular through a 'lokijs' module. Include lokiAngular.js and the following should suffice to have a Loki constructor available as a factory:
+				<pre>
+var myApp = angular.module('myApp', ['lokijs'])
+.controller('MyController', ['$scope', 'Loki', function ($scope, Loki) {
+	var db = new Loki();
+	// etc.
+}])
+</pre>
 				<h4>Important: changes in 1.1</h4>
 				<p>
 				<ul>
@@ -65,6 +75,16 @@
 					<li><strong>Breaking</strong>: the <code>id</code> property of all objects has been changed to <code>$loki</code> to avoid conflicts with object that may already contain an id property, which is very common.</li>
 					<li>You can now insert class instances in the db and de-serialize / inflate them as such (i.e. load JSON into instances of a User constructor)</li>
 					<li>Meta data is recorded in a meta object in documents. This stores revisions, created and last updated timestamps.</li>
+				</ul>
+				</p>
+
+				<h4 class="loki">Important: changes in 1.2</h4>
+				<ul>
+					<li>Improved MongoDB API compatibility on find() and findOne()</li>
+					<li>Exposed the Collection class</li>
+					<li>Added an AngularJS integration facility</li>
+					<li>Bug fixes and stability improvements</li>
+					<li>Exposed (experimental) Key-Value store class</li>
 				</ul>
 				</p>
 			</div>
@@ -235,7 +255,7 @@ I.e.<br />
 						</table>
 					</div>
 Example:
-<code><pre>
+<pre>
 var loki = require('lokijs'),
   db = new loki('test.json'),
   db2 = new loki('test.json');
@@ -257,7 +277,6 @@ db2.loadDatabase(function () {
   var users2 = db2.getCollection('users')
   console.log(users2.data);
 });</pre>
-</code>
 				</div>
 
 				<div class="container-fluid" id="loadJSON">
@@ -480,6 +499,40 @@ db2.loadDatabase(function () {
 					</p>
 				</div>
 
+				<div class="container-fluid" id="findOne">
+					<div><code class="docheading">findOne( query )</code></div>
+					<p>
+						Returns the first document matching the query.
+						<div class="codeExplanation">
+							<table class="table table-striped">
+								<tr>
+									<th>arguments</th>
+									<td>
+										<strong>query</strong>: the query object literal.<br>
+									</td>
+								</tr>
+							</table>
+						</div>
+					</p>
+				</div>
+
+				<div class="container-fluid" id="where">
+					<div><code class="docheading">where( fun )</code></div>
+					<p>
+						Returns a resultset of documents mathing a filter function.
+						<div class="codeExplanation">
+							<table class="table table-striped">
+								<tr>
+									<th>arguments</th>
+									<td>
+										<strong>fun</strong>: a filter function (takes one argument and returns a boolean).<br>
+									</td>
+								</tr>
+							</table>
+						</div>
+					</p>
+				</div>
+
 				<div><code class="docheading">chain( )</code></div>
 				<p>Returns an unfiltered Resultset class which supports chained queries (see <a href="#resultset">resultset</a>).</p>
 				<div class="codeExplanation">
@@ -555,14 +608,14 @@ db2.loadDatabase(function () {
 
 	<div><code class="docheading">.sort(comparefun)</code></div>
 	<p>allows you to supply your own compare function to sort the results.</p>
-	<div>Example:<div><code><pre>
+	<div>Example:<div>
+<pre>
 results.sort( function(obj1, obj2) {
   if (obj1.name == obj2.name) return 0;
   if (obj1.name > obj2.name) return 1;
   if (obj1.name < obj2.name) return -1;
 });
 </pre>
-</code>
 </div>
 </div>
 <div class="codeExplanation">
@@ -588,7 +641,7 @@ results.sort( function(obj1, obj2) {
 <p>allows you to specify a sort based on a property name</p>
 Example:
 <div>
-	<code><pre>results.simplesort("legs");</pre></code>
+	<pre>results.simplesort("legs");</pre>
 </div>
 <div class="codeExplanation">
 	<table class="table table-striped">
@@ -612,7 +665,7 @@ Example:
 <p>allows you to specify multiple sort based on property names.</p>
 Example:
 <div>
-	<code><pre>results.compoundsort(["legs", ["name", true]);</pre></code>
+	<pre>results.compoundsort(["legs", ["name", true]);</pre>
 </div>
 <div class="codeExplanation">
 	<table class="table table-striped">
@@ -697,7 +750,7 @@ Example:
 <div><code class="docheading">.offset(pos)</code></div>
 <p>skips a number of documents passed through the chain</p>
 <div>Combined Example:</div>
-<div><code><pre>results.offset(10).limit(5).data();</pre></code></div>
+<div><pre>results.offset(10).limit(5).data();</pre></div>
 
 </div>
 <div class="codeExplanation">
@@ -729,10 +782,10 @@ Example:
 		collection and are serialized along with the database.
 		<br />Example:
 		<div>
-<code><pre>
+<pre>
 var lgView = childrenOfLoki.addDynamicView("legs");
 lgView.applyFind({'legs':{ '$gt' : 2 }});
-</pre></code>
+</pre>
 		</div>
 		<div class="codeExplanation">
 			<table class="table table-striped">
@@ -787,13 +840,14 @@ lgView.applyFind({'legs':{ '$gt' : 2 }});
 
 		<code class="docheading">.applySort(comparefun)</code>
 		<p>allows you to supply your own compare function to sort the results</p>
-		Example:<div><code><pre>
+		Example:<div>
+<pre>
 var dynView = coll.addDynamicView('test');
 dynView.applySort( function(obj1, obj2) {
   if (obj1.name == obj2.name) return 0;
   if (obj1.name > obj2.name) return 1;
   if (obj1.name < obj2.name) return -1;
-});</pre></code></div>
+});</pre></div>
 	<div class="codeExplanation">
 		<table class="table table-striped">
 			<tr>
@@ -818,7 +872,7 @@ dynView.applySort( function(obj1, obj2) {
 	<div><code class="docheading">.applySimpleSort(propname [, isdesc])</code></div>
 	<p>allows you to specify a sort based	on a property name</p>
 	Example
-	<div><code><pre>dynView.applySimpleSort("legs");</pre></code></div>
+	<div><pre>dynView.applySimpleSort("legs");</pre></div>
 	<div class="codeExplanation">
 		<table class="table table-striped">
 			<tr>
@@ -842,7 +896,7 @@ dynView.applySort( function(obj1, obj2) {
 <p>Similar to <code>Resultset.compoundsort</code> allows you to specify multiple sort based on property names.</p>
 Example:
 <div>
-	<code><pre>dynamicview.applySortCriteria(["legs", ["name", true]);</pre></code>
+	<pre>dynamicview.applySortCriteria(["legs", ["name", true]);</pre>
 </div>
 <div class="codeExplanation">
 	<table class="table table-striped">
@@ -865,13 +919,13 @@ Example:
 	<div><code class="docheading">.applyFind(query)</code></div>
 	<p>adds a mongo-like query filter to the DynamicView filter pipeline</p>
 	Example
-	<div><code>dynView.applyFind({'legs':{ '$gt' : 2 }});</code></div>
+	<pre>dynView.applyFind({'legs':{ '$gt' : 2 }});</pre>
 </p>
 <p>
 	<div><code class="docheading">.applyWhere(fun)</code></div>
 	<p>adds a javascript filter function to the DynamicView filter pipeline</p>
 	Example
-	<div><code>dynView.applyWhere(function( obj ){ return obj.age > 30 && obj.firstLanguage == 'English'; });</code></div>
+	<div><pre>dynView.applyWhere(function( obj ){ return obj.age > 30 && obj.firstLanguage == 'English'; });</pre></div>
 </p>
 <p>
 	<div><code class="docheading">.data()</code></div>

@@ -2,19 +2,26 @@
 	
 	<div class="hero-unit well darkgreen">
 		<h1><img src="images/kaunaz.gif" class="logo" style="width:90px"/> LokiJS [v1.2]</h1>
-		<p>500,000+ ops/s. 
+		<p>500,000+ ops/s.
 		<br />A fast, in-memory document-oriented datastore for node.js, browser and cordova</p>
+		<iframe src="https://ghbtns.com/github-btn.html?user=techfort&repo=LokiJS&type=star&count=true&v=2&size=large" frameborder="0" scrolling="0" width="160px" height="30px"></iframe>
 
 	</div>
 	
 	<div class="row-fluid">
 		
 		<div class="span7 col-md-7">	
-			<h2>A Javascript Database</h2>
-
+			<h2>In-memory Javascript Datastore wih Persistence</h2>
+			What is LokiJS?
+			<ul>
+				<li>In-Browser NoSQL db with syncing and persisting</li>
+				<li>a Redis-style store an npm install away</li>
+				<li>Persistable NoSQL db for Cordova</li>
+				<li>Embeddable NoSQL db with Persistence for node-webkit</li>
+			</ul>
 			<p>
 			<span class="loki">LokiJS</span> is an in-memory database which prioritises <span class="loki">performance</span> over everything <span class="loki">&#42;</span> <br>
-			<span class="loki">LokiJS</span> supports field indexing for faster document access and performs really well (near 500,000 ops/s) on those. Its built-in DynamicView class also enables to utilize indexes on data subsets for even faster performance. <br />
+			<span class="loki">LokiJS</span> supports field indexing for faster document access and performs really well (near 500,000 ops/s on an average dev machine) on those. Its built-in DynamicView class also enables to utilize indexes on data subsets for even faster performance. <br />
 			DynamicView has the very handy feature of detecting changes in the database and recomputing itself to contain the most up-to-date data, and data is always readily available through the <code>data()</code> method.
 			<p>
 			<span class="loki">&#42;</span> read <a target="_blank" href="https://github.com/techfort/LokiJS/wiki/Indexing-and-Query-Performance">this</a> to get an idea of <span class="loki">LokiJS</span>'s performance.
@@ -22,6 +29,7 @@
 			<p>Among the features that make LokiJS attractive are: 
 				<ul>
 					<li>Fast Performance</li>
+					<li>Replaces SQLite in Cordova, works as a session store in node.js, works an in-browser database with syncing capabilities</li>
 					<li>Indexing / Secondary Indexing</li>
 					<li>The "Dynamic View", a kind of "live filter"</li>
 					<li>Resultset with Fluent API</li>
@@ -30,7 +38,7 @@
 					<li>changes API</li>
 					<li>Compound sort for sorting on multiple columns</li>
 					<li>Insert class instances and deserialize/ inflate objects into class instances</li>
-					<li>partial compatibility on MongoDB API</li>
+					<li>partial compatibility with MongoDB API</li>
 				</ul>
 			</p>
 			<p>
@@ -40,6 +48,7 @@
 				<li>Exposed the Collection class</li>
 				<li>Added an AngularJS integration facility</li>
 				<li>Bug fixes and stability improvements</li>
+				<li>Exposed (experimental) Key-Value store class</li>
 			</ul>
 			</p>
 			
@@ -60,10 +69,7 @@
 			
 			</p>
 			
-			<h2>The story of Loki</h2>
-			In the beginning there were Cordova projects in need of persistence. Developers prayed to the only god they knew capable of saving them, SQLite. But lots of prayers were required for very little results, and developers lost their faith.<br />
-			When all hope seemed lost, Loki descended. He spoke the tongue of developers, and prayers were answered instantly.<br />His word spread to Cordovans, Browserians and Noders in need of session stores and in memory databases.<br />
-			Why Loki helps us... no one knows, but he does, and we are grateful.
+			
 
 
 			<h2>Choose your favourite paradigm</h2>
@@ -88,8 +94,11 @@
 				</div>
 			
 		</div>
-		<div class="span5 col-md-5 well">
-
+		<div class="span5 col-md-5">
+			<h2>The story of Loki</h2>
+			In the beginning there were Cordova projects in need of persistence. Developers prayed to the only god they knew capable of saving them, SQLite, in their own tongue, Javascript. SQLite seemed to ignore their prayers, and developers lost their faith.<br />
+			When all hope seemed lost, Loki made his appearance. He spoke the tongue of developers, and prayers were answered instantly.<br />His word spread to Cordovans, Browserians and Noders in need of session stores and in-memory, in-browser databases, capable of syncing remotely.<br />
+			Why Loki helps us... no one knows, but he does, and we are grateful.
 
 			<h3>Quick Start</h3>
 			<h4>Installation</h4>
@@ -103,32 +112,37 @@
 			<h4>Usage</h4>
 			<p>
 			Create the database:<br>
-			<code>var db = new loki('loki.json')</code>
+			<pre>
+var db = new loki('loki.json')</pre>
 			<br />Pass the filename where to persist data
 			</p>
 			<p>
 			Create a collection:<br>
-			<code>var children = db.addCollection('children')</code>
+			<pre>
+var children = db.addCollection('children')</pre>
 			</p>
 			<p>
 			Insert a document:<br>
-			<code>children.insert({name:'Sleipnir', legs: 8})</code><br >
-			<code>children.insert({name:'Jormungandr', legs: 0})</code><br>
-			<code>children.insert({name:'Hel', legs: 2})</code>
+			<pre>
+children.insert({name:'Sleipnir', legs: 8})
+children.insert({name:'Jormungandr', legs: 0})
+children.insert({name:'Hel', legs: 2})
+			</pre>
 			</p>
 			<p>
 			Retrieve documents:<br>
-			<code>children.get(1); // returns Sleipnir</code><br> 
-			<code>children.find( {'name':'Sleipnir'} )</code><br>
-			<code>children.find( { legs: { '$gt' : 2 } } )</code><br>
+<pre>children.get(1); // returns Sleipnir 
+children.find( {'name':'Sleipnir'} )
+children.find( { legs: { '$gt' : 2 } } )</pre><br>
 			</p>
 			<p>
 			<p>
 			Create a dynamic view:<br>
-			<code>var legs = children.addDynamicView('legs');</code><br> 
-			<code>legs.applyFind( { legs: { '$gt' : 2 } )</code><br>
-			<code>legs.applySimpleSort('legs');</code><br>
-			<code>legs.data();</code><br>
+			<pre>
+var legs = children.addDynamicView('legs'); 
+legs.applyFind( { legs: { '$gt' : 2 } )
+legs.applySimpleSort('legs');
+legs.data();</pre><br>
 			</p>
 			<p>
 

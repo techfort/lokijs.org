@@ -1,12 +1,13 @@
 body, html { 
 	font-family: "Open Sans", Sans;
 	font-weight:500;
-  background: #eee;
+  background: #111;
+  color:#ddd;
 }
 
 
 html { height : 100%; background: #eef9ee;}
-table, .table-striped { background: #fff !important;}
+/* table, .table-striped { background: #fff !important;} */
 #mainContainer { /* padding-top: 60px;  */ padding-bottom:30px;}
 /*
 .bg-1 { background-color: #0D58A6 }
@@ -76,12 +77,13 @@ img.logo { vertical-align: middle; }
 .lightgreen { background: #eef9ee;}
 
 .codeExplanation{
-	background: #CBF76F;
+	/* background: #CBF76F; */
 	margin: 10px;
-	
+	background: #222;
+  color: #111;
 }
 
-code { color: #333; }
+/* code { color: #333; } */
 code.docheading{ color: #C03233; font-size: 1.2em;}
 .striken { text-decoration: line-through; }
 
@@ -97,3 +99,4 @@ ul.nav { line-height: 0.7em !important; font-size: 0.9em;}
 .logos { text-align: center;}
 ul.nav { line-height: 0.4em !important;}
 ul.nav .nav-header { line-height: 0.6em !important; margin-bottom:2px; }
+.table, .table-striped { background: #111 !important;}
