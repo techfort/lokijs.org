@@ -102,3 +102,4 @@ ul.nav .nav-header { line-height: 0.6em !important; margin-bottom:2px; }
 .table-striped > tbody > tr:nth-child(2n+1) > td, .table-striped > tbody > tr:nth-child(2n+1) > th {
    background-color: #222 !important;
 }
+.table { color: #bbb !important;}
