@@ -273,7 +273,7 @@ users.insert({
 console.log(users.data);
 db.saveDatabase();
  
-db2.loadDatabase(function () {
+db2.loadDatabase({}, function () {
   var users2 = db2.getCollection('users')
   console.log(users2.data);
 });</pre>
