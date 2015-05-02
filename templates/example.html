@@ -24,7 +24,7 @@
 				</thead>
 				<tbody>
 					
-					<tr ng-repeat="todo in todos.data" ng-class="{true:'striken', false:''}[todo.complete]">
+					<tr ng-repeat="todo in todos.data track by todo.$loki" ng-class="{true:'striken', false:''}[todo.complete]">
 						<th>{{ todo.title }}</th>
 						<td>{{ todo.description}}</td>
 						<td>{{ todo.duration }} hours</td>
@@ -53,10 +53,7 @@
 					<th>Outstanding (view query)</th>
 					<td>{{ getIncomplete() }}</td>
 				</tr>
-				<tr>
-					<th>Size of collection</th>
-					<td>{{ getCollectionSize() }} bytes</td>
-				</tr>
+
 			</table>
 
 		</div>

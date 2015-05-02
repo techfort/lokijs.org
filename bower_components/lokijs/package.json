@@ -1,13 +1,11 @@
 {
   "name": "lokijs",
-  "version": "0.0.507",
-  "description": "A document oriented javascript in-memory database",
+  "version": "1.2.5",
+  "description": "Fast document oriented javascript in-memory database",
+  "homepage": "http://lokijs.org",
   "main": "src/lokijs.js",
   "directories": {
     "example": "examples"
-  },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
@@ -16,19 +14,45 @@
   "keywords": [
     "javascript",
     "document-oriented",
+    "mmdb",
     "json",
     "nosql",
     "lokijs",
     "in-memory"
   ],
+  "scripts": {
+    "lint": "jshint src/**.js",
+    "test:browser": "karma start karma.conf.js --single-run",
+    "test:node": "istanbul cover --dir coverage/nodejs jasmine",
+    "test": "npm run test:browser && npm run test:node",
+    "build:lokijs": "uglifyjs src/lokijs.js > build/lokijs.min.js",
+    "build:indexedAdapter": "uglifyjs src/lokiIndexedAdapter.js > build/lokiIndexedAdapter.min.js",
+    "build": "npm run build:lokijs && npm run build:indexedAdapter",
+    "clean": "rimraf build/* coverage/* node_modules"
+  },
   "author": "Joe Minichino <joe.minichino@gmail.com>",
+  "contributors": [{
+    "name": "Dave",
+    "email": "admin@obeliskos.com"
+  }],
   "license": "BSD",
   "bugs": {
     "url": "https://github.com/techfort/LokiJS/issues"
   },
-  "dependencies": {
-    "grunt": "~0.4.1",
-    "grunt-contrib-uglify": "~0.2.2"
-  },
-  "devDependencies": {}
+  "dependencies": {},
+  "devDependencies": {
+    "istanbul": "^0.3.13",
+    "jasmine": "^2.2.1",
+    "jshint": "^2.6.3",
+    "karma": "^0.12.31",
+    "karma-cli": "0.0.4",
+    "karma-coverage": "^0.2.7",
+    "karma-jasmine": "^0.3.5",
+    "karma-phantomjs-launcher": "^0.1.4",
+    "mocha": "^2.0.1",
+    "phantomjs": "^1.9.16",
+    "rimraf": "^2.3.2",
+    "should": "^4.3.0",
+    "uglify-js": "^2.4.17"
+  }
 }
