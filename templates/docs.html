@@ -35,7 +35,7 @@
 			<li><a href="#/docs#customadapter">Custom Adapter</a></li>
 
 			<li class="nav-header">Changes API</li>
-			<li><a href="#/docs#generate">generateChangesNotification</a></li>
+			<li><a href="#/docs#generateChanges">generateChangesNotification</a></li>
 			<li><a href="#/docs#serializeChanges">serializeChanges</a></li>
 			<li><a href="#/docs#flushChanges">flushChanges</a></li>
 
@@ -345,7 +345,7 @@ db2.loadDatabase({}, function () {
 					</p>
 				</div>
 				
-				<div class="container-fluid" id="document">
+				<div class="container-fluid" id="insert">
 					<div><code class="docheading">insert( obj )</code></div>
 					<p>
 						Each record in the database is a document. A document is created through the <code>document()</code> method of the collection class. You can take any object and store it in the collection. While like all nosql databases there's no rule on how documents should be structured it just is good practice to put documents with identical structures in the same collection.
@@ -485,7 +485,11 @@ db2.loadDatabase({}, function () {
 							<li>$regex: use a regex pattern for matching</li>
 						</ul>
 						So for example we can query for all the children with more than two legs: <code>childrenOfLoki.find({'legs':{ '$gt' : 2 }})</code>
-						<br>If an operator is not passed, i.e. like in <code>childrenOfLoki.find({'legs' : 2})</code> then $eq is assumed.
+						<br>If an operator is not passed, i.e. like in <code>childrenOfLoki.find({'legs' : 2})</code> then $eq is
+            assumed. Keep in mind that this only works for single properties; find({a: 1, b: 2}) is not the way to find
+            those objects who have (at least) <code>a=1</code> <b>and</b> <code>b=2</b>, but will sometimes search for objects with
+            <code>a=1</code>, and sometimes for objects with <code>b=2</b>; to search on multiple properties, use
+            <code>{'$and': [{a: 1}, {b: 2}]}</code>
 						<div class="codeExplanation">
 							<table class="table table-striped">
 								<tr>
@@ -933,7 +937,7 @@ Example:
 </p>
 </div>
 
-<div class="container-fluid" id="mapReduce">
+<div class="container-fluid" id="mapreduce">
 	<div><code class="docheading">mapReduce( mapFun, reduceFun )</code></div>
 	<p>This method is available on both Collection and ResultSet. Map reduce works with two functions, the map function and the reduce function.
 		You can return whatever you want from the map function, and the result will be stored in an array which will be passed in the reduce function.
