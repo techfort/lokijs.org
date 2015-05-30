@@ -485,7 +485,11 @@ db2.loadDatabase({}, function () {
 							<li>$regex: use a regex pattern for matching</li>
 						</ul>
 						So for example we can query for all the children with more than two legs: <code>childrenOfLoki.find({'legs':{ '$gt' : 2 }})</code>
-						<br>If an operator is not passed, i.e. like in <code>childrenOfLoki.find({'legs' : 2})</code> then $eq is assumed.
+						<br>If an operator is not passed, i.e. like in <code>childrenOfLoki.find({'legs' : 2})</code> then $eq is
+            assumed. Keep in mind that this only works for single properties; find({a: 1, b: 2}) is not the way to find
+            those objects who have (at least) <code>a=1</code> <b>and</b> <code>b=2</b>, but will sometimes search for objects with
+            <code>a=1</code>, and sometimes for objects with <code>b=2</b>; to search on multiple properties, use
+            <code>{'$and': [{a: 1}, {b: 2}]}</code>
 						<div class="codeExplanation">
 							<table class="table table-striped">
 								<tr>
