@@ -1,8 +1,8 @@
 body, html { 
 	font-family: "Open Sans", Sans;
 	font-weight:500;
-  background: #111;
-  color:#ddd;
+  background: #ccc;
+  color:#333;
 }
 
 
@@ -57,7 +57,7 @@ a { color: #C03233 !important; outline: 0;}
 
 span.loki { color: #C03233; font-family: "Audiowide"; }
 .hero-unit {
-  background: rgba(0,0,0,0) !important;
+  background: rgba(100,0,10,0) !important;
 }
 .hero-unit h1, a.brand {
 	font-family : "Audiowide";
@@ -100,6 +100,6 @@ ul.nav { line-height: 0.7em !important; font-size: 0.9em;}
 ul.nav { line-height: 0.4em !important;}
 ul.nav .nav-header { line-height: 0.6em !important; margin-bottom:2px; }
 .table-striped > tbody > tr:nth-child(2n+1) > td, .table-striped > tbody > tr:nth-child(2n+1) > th {
-   background-color: #222 !important;
+   background-color: #999 !important;
 }
-.table { color: #bbb !important;}
+.table { color: #333 !important;}

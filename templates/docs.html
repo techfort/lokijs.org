@@ -24,8 +24,10 @@
 			<li class="nav-header">ResultSet, DynamicViews and MapReduce</li>
 			<li><a href="#/docs#resultset">ResultSet (FLuent API)</a></li>
 			<li><a href="#/docs#views">Creating dynamic views and storing them</a></li>
+			<li><a href="#/docs#joins">Joins</a></li>
 			<li><a href="#/docs#mapreduce">Map Reduce</a></li>
 			<li><a href="#/docs#properties">Collection properties</a></li>
+
 
 			<li class="nav-header">Events and Event Listeners</li>
 			<li><a href="#/docs#collectionevents">Events</a></li>
@@ -60,7 +62,7 @@
 				<br><br>
 				LokiJS supports a limited form of indexing for faster document access. The id field in particular is automaticallly populated and indexed, and searched using the binary search algorithm. Other document properties can be indexed for faster search on a particular object field.
 				<h4>New: AngularJS integration</h4>
-				<p>LokiJS is made available to Angular through a 'lokijs' module. Include lokiAngular.js and the following should suffice to have a Loki constructor available as a factory:
+				<p>LokiJS is made available to Angular through a 'lokijs' module. Include loki-angular.js and the following should suffice to have a Loki constructor available as a factory:
 				<pre>
 var myApp = angular.module('myApp', ['lokijs'])
 .controller('MyController', ['$scope', 'Loki', function ($scope, Loki) {
@@ -68,25 +70,16 @@ var myApp = angular.module('myApp', ['lokijs'])
 	// etc.
 }])
 </pre>
-				<h4>Important: changes in 1.1</h4>
-				<p>
+				<h4 class="loki">Important: changes in 1.3</h4>
 				<ul>
-					<li><strong>Breaking</strong>: Database and Collection constructor have changed and take an optional configuration object as the second parameter</li>
-					<li><strong>Breaking</strong>: the <code>id</code> property of all objects has been changed to <code>$loki</code> to avoid conflicts with object that may already contain an id property, which is very common.</li>
-					<li>You can now insert class instances in the db and de-serialize / inflate them as such (i.e. load JSON into instances of a User constructor)</li>
-					<li>Meta data is recorded in a meta object in documents. This stores revisions, created and last updated timestamps.</li>
-				</ul>
-				</p>
-
-				<h4 class="loki">Important: changes in 1.2</h4>
-				<ul>
-					<li>Improved MongoDB API compatibility on find() and findOne()</li>
-					<li>Exposed the Collection class</li>
-					<li>Added an AngularJS integration facility</li>
+					<li>Unique Index for 1.1M ops/s on record retrieval on any uniquely indexed field</li>
+					<li>RethinkDB-style joins with eqJoin</li>
+					<li>Filenames renamed to lowercase</li>
 					<li>Bug fixes and stability improvements</li>
-					<li>Exposed (experimental) Key-Value store class</li>
+					<li>(Experimental) Staging and commit facility</li>
 				</ul>
 				</p>
+				
 			</div>
 
 			<h2>Database class</h2>
@@ -378,7 +371,7 @@ db2.loadDatabase({}, function () {
 					<div><code class="docheading">update( obj )</code></div>
 					<p>
 						Updating the document is done by simply updating the properties of a document as the collection only holds a reference to the original object. When you call update on an object though you force a resync of the indexes of the collection.
-
+						<strong>NOTE</strong>: You can only update a document that is already in a collection. LokiJS relies on scanning the object for <code>$loki</code> and <code>meta</code> properties to determine whether an object is already in the collection.
 						<div class="codeExplanation">
 							<table class="table table-striped">
 								<tr>
@@ -463,6 +456,45 @@ db2.loadDatabase({}, function () {
 					</p>
 				</div>
 
+				<div class="container-fluid" id="by">
+					<div><code class="docheading">by(field, value)</code></div>
+					<p>
+						Returns the record whose field matches value, if a UniqueIndex for this collection has been created.
+						If value is omitted, it returns a curried function, which you can use to supply only values.
+						This is by far the fastest retrieval method. It requires <code>ensureUniqueIndex(field)</code> explained below.
+						<div class="codeExplanation">
+							<table class="table table-striped">
+								<tr>
+									<th>arguments</th>
+									<td>
+										<strong>field</strong>: the uniquely indexed field<br>
+										<strong>value</strong>: the value of the uniquely indexed field<br>
+									</td>
+								</tr>
+							</table>
+						</div>
+					</p>
+				</div>
+
+				<div class="container-fluid" id="by">
+					<div><code class="docheading">ensureUniqueIndex(field)</code></div>
+					<p>
+						It creates a unique index for the field. The index is accessible through <code>Collection.constraints.unique[field]</code><br>
+						<strong>IMPORTANT</strong>: if the collection contains records with duplicate keys this operation will fail throwing Error. 
+						<strong>IMPORTANT</strong>: unique index are NOT serialized for persistence. As they use in memory references it is not practical to serialize them. Just explictly call the function after you create a collection or after you loaded a database.
+						<div class="codeExplanation">
+							<table class="table table-striped">
+								<tr>
+									<th>arguments</th>
+									<td>
+										<strong>field</strong>: the uniquely indexed field<br>
+									</td>
+								</tr>
+							</table>
+						</div>
+					</p>
+				</div>
+
 				<div class="container-fluid" id="find">
 					<div><code class="docheading">find( query )</code></div>
 					<p>
@@ -487,8 +519,8 @@ db2.loadDatabase({}, function () {
 						So for example we can query for all the children with more than two legs: <code>childrenOfLoki.find({'legs':{ '$gt' : 2 }})</code>
 						<br>If an operator is not passed, i.e. like in <code>childrenOfLoki.find({'legs' : 2})</code> then $eq is
             assumed. Keep in mind that this only works for single properties; find({a: 1, b: 2}) is not the way to find
-            those objects who have (at least) <code>a=1</code> <b>and</b> <code>b=2</b>, but will sometimes search for objects with
-            <code>a=1</code>, and sometimes for objects with <code>b=2</b>; to search on multiple properties, use
+            those objects who have (at least) <code>a=1</code> <b>and</b> <code>b=2</code>, but will sometimes search for objects with
+            <code>a=1</code>, and sometimes for objects with <code>b=2</code>; to search on multiple properties, use
             <code>{'$and': [{a: 1}, {b: 2}]}</code>
 						<div class="codeExplanation">
 							<table class="table table-striped">
@@ -496,6 +528,23 @@ db2.loadDatabase({}, function () {
 									<th>arguments</th>
 									<td>
 										<strong>query</strong>: the query object literal.<br>
+									</td>
+								</tr>
+							</table>
+						</div>
+					</p>
+				</div>
+
+				<div class="container-fluid" id="findOne">
+					<div><code class="docheading">findObject( template )</code> and <code class="docheading">findObjects( template )</code></div>
+					<p>
+						findObject returns the first document matching the template query, findObjects returns all objects matching the template query.
+						<div class="codeExplanation">
+							<table class="table table-striped">
+								<tr>
+									<th>arguments</th>
+									<td>
+										<strong>template</strong>: template object literal. (i.e. <code>{age: 20, city: 'Cork'}</code>)<br>
 									</td>
 								</tr>
 							</table>
@@ -935,6 +984,36 @@ Example:
 	<div><code class="docheading">.data()</code></div>
 	<p>resolves any pending filtering and sorting and returns results as an array of documents</p>
 </p>
+</div>
+
+<div class="container-fluid" id="joins">
+	<div><code class="docheading">eqJoin(joinData, leftJoinKey, rightJoinKey, mapFun)</code></div>
+	<p>Left joining two sets of data. Join keys can be defined or calculated properties. <code>eqJoin</code> expects the right join key values to be unique.  Otherwise left data will be joined on the last joinData object with that key
+	<div class="codeExplanation">
+	<table class="table table-striped">
+
+		<tr>
+			<th>arguments</th>
+			<td>
+			  <strong>joinData</strong>: {Array} Data array to join to.<br>
+	      <strong>leftJoinKey</strong>: {String,function} Property name in this result set to join on or a function to produce a value to join on<br>
+	      <strong>rightJoinKey</strong>: {String,function} Property name in the joinData to join on or a function to produce a value to join on<br>
+	      <strong>(optional) mapFun</strong>: {function} A function that receives each matching pair and maps them into output objects<br>
+			</td>
+		</tr>
+
+		<tr>
+			<th>returns</th>
+			<td>
+				<strong>result</strong>: {Resultset} A resultset with data in the format [{left: leftObj, right: rightObj}]
+			</td>
+		</tr>
+	</table>
+</div>
+     
+<pre>
+var result = users.eqJoin(phones.data(), '$loki', 'userId');
+</pre>
 </div>
 
 <div class="container-fluid" id="mapreduce">
