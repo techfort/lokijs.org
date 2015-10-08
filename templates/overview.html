@@ -1,32 +1,29 @@
 <div class="container-fluid">
-	
 	<div class="hero-unit well darkgreen">
 		<h1><img src="images/kaunaz.gif" class="logo" style="width:90px"/> LokiJS [v1.3]</h1>
 		<p><span class="striken">500,000+</span> 1.1M ops/s.
-		<br />A fast, in-memory document-oriented datastore for node.js, browser and cordova</p>
-		<iframe src="https://ghbtns.com/github-btn.html?user=techfort&repo=LokiJS&type=star&count=true&v=2&size=large" frameborder="0" scrolling="0" width="160px" height="30px"></iframe>
+	<br />A fast, in-memory document-oriented datastore for node.js, browser and cordova</p>
+	<iframe src="https://ghbtns.com/github-btn.html?user=techfort&repo=LokiJS&type=star&count=true&v=2&size=large" frameborder="0" scrolling="0" width="160px" height="30px"></iframe>
+</div>
 
-	</div>
-	
-	<div class="row-fluid">
-		
-		<div class="span7 col-md-7">	
-			<h2>In-memory Javascript Datastore with Persistence</h2>
-			What is LokiJS?
-			<ul>
-				<li>In-Browser NoSQL db with syncing and persisting</li>
-				<li>a Redis-style store an npm install away</li>
-				<li>Persistable NoSQL db for Cordova</li>
-				<li>Embeddable NoSQL db with Persistence for node-webkit</li>
-			</ul>
-			<p>
+<div class="row-fluid">
+	<div class="span7 col-md-7">
+		<h2>In-memory Javascript Datastore with Persistence</h2>
+		What is LokiJS?
+		<ul>
+			<li>In-Browser NoSQL db with syncing and persisting</li>
+			<li>a Redis-style store an npm install away</li>
+			<li>Persistable NoSQL db for Cordova</li>
+			<li>Embeddable NoSQL db with Persistence for node-webkit</li>
+		</ul>
+		<p>
 			<span class="loki">LokiJS</span> is an in-memory database which prioritises <span class="loki">performance</span> over everything <span class="loki">&#42;</span> <br>
 			<span class="loki">LokiJS</span> supports field indexing for faster document access and performs really well (near 500,000 ops/s on an average dev machine) on those. Its built-in DynamicView class also enables to utilize indexes on data subsets for even faster performance. <br />
 			DynamicView has the very handy feature of detecting changes in the database and recomputing itself to contain the most up-to-date data, and data is always readily available through the <code>data()</code> method.
 			<p>
-			<span class="loki">&#42;</span> read <a target="_blank" href="https://github.com/techfort/LokiJS/wiki/Indexing-and-Query-Performance">this</a> to get an idea of <span class="loki">LokiJS</span>'s performance.
+				<span class="loki">&#42;</span> read <a target="_blank" href="https://github.com/techfort/LokiJS/wiki/Indexing-and-Query-Performance">this</a> to get an idea of <span class="loki">LokiJS</span>'s performance.
 			</p>
-			<p>Among the features that make LokiJS attractive are: 
+			<p>Among the features that make LokiJS attractive are:
 				<ul>
 					<li>Fast Performance</li>
 					<li>Replaces SQLite in Cordova, works as a session store in node.js, works an in-browser database with syncing capabilities</li>
@@ -43,8 +40,8 @@
 				</ul>
 			</p>
 			<p>
-			<span class="loki">NEWS</span>: LokiJS 1.3 brings the following improvements:
-			<ul>
+				<span class="loki">NEWS</span>: LokiJS 1.3 brings the following improvements:
+				<ul>
 					<li>Unique Index for 1.1M ops/s on record retrieval on any uniquely indexed field</li>
 					<li>RethinkDB-style joins with eqJoin</li>
 					<li>Filenames renamed to lowercase</li>
@@ -52,119 +49,101 @@
 					<li>(Experimental) Staging and commit facility</li>
 				</ul>
 			</p>
-			
 			<br />
 			<span class="loki">LokiJS</span> supports collections, much like MongoDB, and saves data to disk (to resume state across sessions) in JSON, so your data is portable.<br />
 			<span class="loki">LokiJS</span> is compatible with node.js and browser.
-			</p>
-			<p>
-			Javascript is an easy to learn, versatile language, so database development in javascript can be easy and very productive. You may not want to 
+		</p>
+		<p>
+			Javascript is an easy to learn, versatile language, so database development in javascript can be easy and very productive. You may not want to
 			retire your MongoDB instances just yet but here are some situations in which you may find <span class="loki">LokiJS</span> to be the ideal solution:
 			<ul class="nav nav-pills nav-stacked">
-			<li><a href="#">Mobile applications - especially HTML5 based (Cordova, Phonegap, etc.)</a></li>
-			<li><a href="#">Node.js embedded datastore for small-to-medium apps</a></li>
-			<li><a href="#">Embedded in desktop application with Node Webkit</a></li>
+				<li><a href="#">Mobile applications - especially HTML5 based (Cordova, Phonegap, etc.)</a></li>
+				<li><a href="#">Node.js embedded datastore for small-to-medium apps</a></li>
+				<li><a href="#">Embedded in desktop application with Node Webkit</a></li>
 			</ul>
-
 			<span class="loki">LokiJS</span> is also going full blown standalone server soon, with http and tcp clients available.
-			
-			</p>
-			
-			
-
-
-			<h2>Choose your favourite paradigm</h2>
-
-			<p>
+		</p>
+		<h2>Choose your favourite paradigm</h2>
+		<p>
 			<span class="loki">LokiJS</span> leverage the power of javascript by being versatile.<br>
 			If functional programming is your preferred style then you may want to create views to query your data.<br>
 			If you prefer object literals in MongoDB shell style, you can use those.<br>
-			</p>
-			<div class="embed-responsive embed-responsive-16by9">
-				<iframe class="embed-responsive-item" src="//www.slideshare.net/slideshow/embed_code/40269951" width="425" height="355" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;" allowfullscreen> </iframe> <div style="margin-bottom:5px"> <strong> <a href="//www.slideshare.net/techfort/lokijs" title="Lokijs" target="_blank">Lokijs</a> </strong> from <strong><a href="//www.slideshare.net/techfort" target="_blank">Joe Minichino</a></strong> </div>
-			</div>
-			<div class="embed-responsive embed-responsive-16by9">
-				<iframe class="embed-responsive-item" width="425" height="315" src="//www.youtube.com/embed/jgW23Uo-XZ8" allowfullscreen></iframe>
-			</div>
+		</p>
+		<div class="embed-responsive embed-responsive-16by9">
+			<iframe class="embed-responsive-item" src="//www.slideshare.net/slideshow/embed_code/40269951" width="425" height="355" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;" allowfullscreen> </iframe> <div style="margin-bottom:5px"> <strong> <a href="//www.slideshare.net/techfort/lokijs" title="Lokijs" target="_blank">Lokijs</a> </strong> from <strong><a href="//www.slideshare.net/techfort" target="_blank">Joe Minichino</a></strong> </div>
 		</div>
-
-		<div class="span5 col-md-5 endorsements">
-			
-				<div class="logos">
-				Used by: <img src="images/hm-logo.png" /> <img src="images/loomio.png" />
-				</div>
-			
+		<div class="embed-responsive embed-responsive-16by9">
+			<iframe class="embed-responsive-item" width="425" height="315" src="//www.youtube.com/embed/jgW23Uo-XZ8" allowfullscreen></iframe>
 		</div>
-		<div class="span5 col-md-5">
-			<h2>What's new</h2>
-			<p>
+	</div>
+	<div class="span5 col-md-5 endorsements">
+		<div class="logos">
+			Used by: <img src="images/hm-logo.png" /> <img src="images/loomio.png" />
+		</div>
+	</div>
+	<div class="span5 col-md-5">
+		<h2>What's new</h2>
+		<p>
 			LokiJS 1.3 celebrates 1,300 github start by bringing tons of new features including Joins and Unique Index, which pushes performence to 1.1M ops/s on indexed fields.<br />
 			Also, the halls of Asgaard welcome RethinkDB-style joins! <br>
 			A big thank you to obeliskos, seriousme, assafweinberg, jrhicks, retrorquere and everyone else who contributed with code or ideas.
-			</p>
-
-			<h3>Quick Start</h3>
-			<h4>Installation</h4>
-			<p>
+		</p>
+		<h3>Quick Start</h3>
+		<h4>Installation</h4>
+		<p>
 			LokiJS is available on npm and bower. Run:<br>
 			<code>npm install lokijs</code> <br>
 			or:<br>
 			<code>bower install lokijs</code>
-			</p>
-
-			<h4>Usage</h4>
-			<p>
+		</p>
+		<h4>Usage</h4>
+		<p>
 			Create the database:<br>
 			<pre>
-var db = new loki('loki.json')</pre>
+			var db = new loki('loki.json')</pre>
 			<br />Pass the filename where to persist data
-			</p>
-			<p>
+		</p>
+		<p>
 			Create a collection:<br>
 			<pre>
-var children = db.addCollection('children')</pre>
-			</p>
-			<p>
+			var children = db.addCollection('children')</pre>
+		</p>
+		<p>
 			Insert a document:<br>
 			<pre>
-children.insert({name:'Sleipnir', legs: 8})
-children.insert({name:'Jormungandr', legs: 0})
-children.insert({name:'Hel', legs: 2})
+				children.insert({name:'Sleipnir', legs: 8})
+				children.insert({name:'Jormungandr', legs: 0})
+				children.insert({name:'Hel', legs: 2})
 			</pre>
-			</p>
-			<p>
+		</p>
+		<p>
 			Retrieve documents:<br>
-<pre>children.get(1); // returns Sleipnir 
-children.find( {'name':'Sleipnir'} )
-children.find( { legs: { '$gt' : 2 } } )</pre><br>
+			<pre>children.get(1); // returns Sleipnir
+				children.find( {'name':'Sleipnir'} )
+			children.find( { legs: { '$gt' : 2 } } )</pre><br>
+		</p>
+		<p>
+			<p>
+				Create a dynamic view:<br>
+				<pre>
+					var legs = children.addDynamicView('legs');
+					legs.applyFind( { legs: { '$gt' : 2 } )
+					legs.applySimpleSort('legs');
+				legs.data();</pre><br>
 			</p>
 			<p>
-			<p>
-			Create a dynamic view:<br>
-			<pre>
-var legs = children.addDynamicView('legs'); 
-legs.applyFind( { legs: { '$gt' : 2 } )
-legs.applySimpleSort('legs');
-legs.data();</pre><br>
+				MapReduce:<br>
+				<pre>
+					children.mapReduce(
+					  function( obj ){ return obj.legs; } ,
+					  function( array ) {
+					    var sum = 0;
+					    for (var i=0; i < array.length; i++ ){
+					      sum += array[i];
+					    }
+					    return ( sum / array.length ).toFixed(2);
+				});</pre>
 			</p>
-			<p>
-
-			MapReduce:<br>
-			<pre>
-children.mapReduce( 
-  function( obj ){ return obj.legs; } , 
-  function( array ) { 
-    var sum = 0;
-    for (var i=0; i < array.length; i++ ){ 
-      sum += array[i];
-    }
-    return ( sum / array.length ).toFixed(2);
- });</pre>
-			</p>
-
-
 		</div>
-
 	</div>
-	
 </div>
