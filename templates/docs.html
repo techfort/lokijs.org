@@ -757,7 +757,7 @@
 </div>
 <div class="container-fluid">
 <h2 id="views">DynamicView</h2>
-<div><code class="docheading">collection.addDynamicView(name [, persistent])</code></div>
+<div><code class="docheading">collection.addDynamicView(name [, {persistent: value}])</code></div>
 <p>
 	The DynamicView class allows for 'live', optionally persistent views. It supports multiple 'find' and 'where' filters and a single sort criteria.
 	Changes to documents within the collection are automatically evaluated for addition or removal from the view.  DynamicViews are specific to each
@@ -775,7 +775,7 @@
 				<th>arguments</th>
 				<td>
 					<strong>name</strong>: name of the dynamic view<br />
-					<strong>persistent</strong>: (optional) boolean indicating if you want this view to be persistent. Persistent views store a copy of the results in an internal array for optimal read speeds
+					<strong>persistent</strong>: (optional) options object containing a boolean propery (`persistent`) indicating if you want this view to be persistent. Persistent views store a copy of the results in an internal array for optimal read speeds
 				</td>
 			</tr>
 			<tr>
@@ -911,7 +911,7 @@
 			<tr>
 				<th>arguments</th>
 				<td>
-					<strong>joinData</strong>: {Array} Data array to join to.<br>
+					<strong>joinData</strong>: {Array,ResultSet} Data array to join to.<br>
 					<strong>leftJoinKey</strong>: {String,function} Property name in this result set to join on or a function to produce a value to join on<br>
 					<strong>rightJoinKey</strong>: {String,function} Property name in the joinData to join on or a function to produce a value to join on<br>
 					<strong>(optional) mapFun</strong>: {function} A function that receives each matching pair and maps them into output objects<br>
