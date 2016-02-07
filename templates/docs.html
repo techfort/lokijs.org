@@ -470,6 +470,7 @@
 						<li>$or: or operator</li>
 						<li>$regex: use a regex pattern for matching. Example: Children whose name ends with 'ir': <code>childrenOfLoki.find({'name': {'$regex': /^\w+ir$/i}})</code></li>
 						<li>$containsString: use a substring for matching. Example: Children whose name contains 'al': <code>childrenOfLoki.find({'name': {'$containsString': 'al'}})</code></li>
+						<li>$containsAny: match documents that contain any of the specified elements</li>
 					</ul>
 					So for example we can query for all the children with more than two legs: <code>childrenOfLoki.find({'legs':{ '$gt' : 2 }})</code>
 					<br>If an operator is not passed, i.e. like in <code>childrenOfLoki.find({'legs' : 2})</code> then $eq is
