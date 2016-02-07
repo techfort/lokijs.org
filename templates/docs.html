@@ -473,6 +473,7 @@
 						<li>$containsAny: match documents that contain any of the specified elements</li>
 						<li>$containsNone: match documents that do not contain any of the specified elements</li>
 						<li>$type: match documents based on the type of the specified key (supported values are JavaScript types of data)</li>
+						<li>$size: match documents based on the length of the specified array</li>
 					</ul>
 					So for example we can query for all the children with more than two legs: <code>childrenOfLoki.find({'legs':{ '$gt' : 2 }})</code>
 					<br>If an operator is not passed, i.e. like in <code>childrenOfLoki.find({'legs' : 2})</code> then $eq is
