@@ -1,8 +1,8 @@
 <div class="container-fluid">
 	
 	<div class="hero-unit well darkgreen">
-		<h1><img src="images/kaunaz.gif" class="logo" style="width:90px"/> LokiJS [v1.3]</h1>
-		<p><span class="striken">500,000+</span> 1.1M ops/s.
+		<h1><img src="images/kaunaz.gif" class="logo" style="width:90px"/> LokiJS [v1.4]</h1>
+		<p>1.2M ops/s.
 		<br />A fast, in-memory document-oriented datastore for node.js, browser and cordova</p>
 		<iframe src="https://ghbtns.com/github-btn.html?user=techfort&repo=LokiJS&type=star&count=true&v=2&size=large" frameborder="0" scrolling="0" width="160px" height="30px"></iframe>
 
@@ -11,17 +11,17 @@
 	<div class="row-fluid">
 		
 		<div class="span7 col-md-7">	
-			<h2>In-memory Javascript Datastore with Persistence</h2>
+			<h2>In-memory JavaScript Datastore with Persistence</h2>
 			What is LokiJS?
 			<ul>
 				<li>In-Browser NoSQL db with syncing and persisting</li>
-				<li>a Redis-style store an npm install away</li>
-				<li>Persistable NoSQL db for Cordova</li>
+				<li>Persistable NoSQL db for Cordova / Phonegap / Nativescript</li>
 				<li>Embeddable NoSQL db with Persistence for node-webkit</li>
+				<li>a Redis-style store an npm install away</li>
 			</ul>
 			<p>
 			<span class="loki">LokiJS</span> is an in-memory database which prioritises <span class="loki">performance</span> over everything <span class="loki">&#42;</span> <br>
-			<span class="loki">LokiJS</span> supports field indexing for faster document access and performs really well (near 500,000 ops/s on an average dev machine) on those. Its built-in DynamicView class also enables to utilize indexes on data subsets for even faster performance. <br />
+			<span class="loki">LokiJS</span> supports field indexing for faster document access and performs really well (over 1.1M ops/s on an average dev machine) on those. Its built-in DynamicView class also enables to utilize indexes on data subsets for even faster performance.<br />
 			DynamicView has the very handy feature of detecting changes in the database and recomputing itself to contain the most up-to-date data, and data is always readily available through the <code>data()</code> method.
 			<p>
 			<span class="loki">&#42;</span> read <a target="_blank" href="https://github.com/techfort/LokiJS/wiki/Indexing-and-Query-Performance">this</a> to get an idea of <span class="loki">LokiJS</span>'s performance.
@@ -29,13 +29,13 @@
 			<p>Among the features that make LokiJS attractive are: 
 				<ul>
 					<li>Fast Performance</li>
-					<li>Replaces SQLite in Cordova, works as a session store in node.js, works an in-browser database with syncing capabilities</li>
+					<li>Replaces SQLite in Cordova, works as a session store and full blown NoSQL db in node.js, works as in-browser database with syncing capabilities</li>
 					<li>Indexing / Secondary Indexing / Unique Indexing</li>
-					<li>The "Dynamic View", a kind of "live filter"</li>
+					<li>The "Dynamic View", a kind of "live filter" (self-materializing views)</li>
 					<li>Resultset with Fluent API</li>
 					<li>Persistence Adapters (with a built-in IndexedDB and node.js FS adapter)</li>
 					<li>Optional periodic autosave</li>
-					<li>changes API</li>
+					<li>Changes API</li>
 					<li>Compound sort for sorting on multiple columns</li>
 					<li>Insert class instances and deserialize/ inflate objects into class instances</li>
 					<li>partial compatibility with MongoDB API</li>
@@ -43,15 +43,7 @@
 				</ul>
 			</p>
 			<p>
-			<span class="loki">NEWS</span>: LokiJS 1.3 brings the following improvements:
-			<ul>
-					<li>Unique Index for 1.1M ops/s on record retrieval on any uniquely indexed field</li>
-					<li>RethinkDB-style joins with eqJoin</li>
-					<li>Filenames renamed to lowercase</li>
-					<li>Bug fixes and stability improvements</li>
-					<li>(Experimental) Staging and commit facility</li>
-				</ul>
-			</p>
+			
 			
 			<br />
 			<span class="loki">LokiJS</span> supports collections, much like MongoDB, and saves data to disk (to resume state across sessions) in JSON, so your data is portable.<br />
@@ -63,7 +55,7 @@
 			<ul class="nav nav-pills nav-stacked">
 			<li><a href="#">Mobile applications - especially HTML5 based (Cordova, Phonegap, etc.)</a></li>
 			<li><a href="#">Node.js embedded datastore for small-to-medium apps</a></li>
-			<li><a href="#">Embedded in desktop application with Node Webkit</a></li>
+			<li><a href="#">Embedded in desktop application with NW.js, Electron etc.</a></li>
 			</ul>
 
 			<span class="loki">LokiJS</span> is also going full blown standalone server soon, with http and tcp clients available.
@@ -88,19 +80,17 @@
 			</div>
 		</div>
 
-		<div class="span5 col-md-5 endorsements">
-			
-				<div class="logos">
-				Used by: <img src="images/hm-logo.png" /> <img src="images/loomio.png" />
-				</div>
-			
-		</div>
+		
 		<div class="span5 col-md-5">
-			<h2>What's new</h2>
+			<h2>NEWS!</h2>
 			<p>
-			LokiJS 1.3 celebrates 1,300 github start by bringing tons of new features including Joins and Unique Index, which pushes performence to 1.1M ops/s on indexed fields.<br />
-			Also, the halls of Asgaard welcome RethinkDB-style joins! <br>
-			A big thank you to obeliskos, seriousme, assafweinberg, jrhicks, retrorquere and everyone else who contributed with code or ideas.
+			LokiJS has seen incredible momentum going in the community, with some important contributions made by many talented developers. Among those:
+			<ul>
+			<li><a href="https://github.com/TobiasHennig/loki-nativescript-adapter" target="_blank">Nativescript Adapter</a></li>
+			<li><a href="http://lean-stack.io" target="_blank">LEAN STACK</a>: the first Pure JavaScript full-stack framework</li>
+			<li>Further (!!) performance improvements</li>
+			<li>A huge number of bug fixes</li>
+			</ul>
 			</p>
 
 			<h3>Quick Start</h3>
