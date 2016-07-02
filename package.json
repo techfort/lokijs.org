@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "serv": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Joe Minichino <joe.minichino@gmail.com> (http://github.com/techfort)",
