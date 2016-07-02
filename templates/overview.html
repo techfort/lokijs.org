@@ -102,50 +102,49 @@
 		<h4>Usage</h4>
 		<p>
 			Create the database:<br>
-			<pre>
-			var db = new loki('loki.json')</pre>
+			<pre>var db = new loki('loki.json')</pre>
 			<br />Pass the filename where to persist data
 		</p>
 		<p>
 			Create a collection:<br>
 			<pre>
-			var children = db.addCollection('children')</pre>
+var children = db.addCollection('children')</pre>
 		</p>
 		<p>
 			Insert a document:<br>
 			<pre>
-				children.insert({name:'Sleipnir', legs: 8})
-				children.insert({name:'Jormungandr', legs: 0})
-				children.insert({name:'Hel', legs: 2})
-			</pre>
+children.insert({name:'Sleipnir', legs: 8})
+children.insert({name:'Jormungandr', legs: 0})
+children.insert({name:'Hel', legs: 2})</pre>
 		</p>
 		<p>
 			Retrieve documents:<br>
-			<pre>children.get(1); // returns Sleipnir
-				children.find( {'name':'Sleipnir'} )
-			children.find( { legs: { '$gt' : 2 } } )</pre><br>
+			<pre>
+children.get(1); // returns Sleipnir
+children.find( {'name':'Sleipnir'} )
+children.find( { legs: { '$gt' : 2 } } )</pre><br>
 		</p>
 		<p>
 			<p>
 				Create a dynamic view:<br>
 				<pre>
-					var legs = children.addDynamicView('legs');
-					legs.applyFind( { legs: { '$gt' : 2 } })
-					legs.applySimpleSort('legs');
-				legs.data();</pre><br>
+var legs = children.addDynamicView('legs');
+legs.applyFind( { legs: { '$gt' : 2 } })
+legs.applySimpleSort('legs');
+legs.data();</pre><br>
 			</p>
 			<p>
 				MapReduce:<br>
 				<pre>
-					children.mapReduce(
-					  function( obj ){ return obj.legs; } ,
-					  function( array ) {
-					    var sum = 0;
-					    for (var i=0; i < array.length; i++ ){
-					      sum += array[i];
-					    }
-					    return ( sum / array.length ).toFixed(2);
-				});</pre>
+children.mapReduce(
+  function( obj ){ return obj.legs; } ,
+  function( array ) {
+    var sum = 0;
+    for (var i=0; i < array.length; i++ ){
+      sum += array[i];
+    }
+    return ( sum / array.length ).toFixed(2);
+});</pre>
 			</p>
 		</div>
 	</div>
